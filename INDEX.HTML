@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>InvenTrack v3 — Sistema de Gestión Integrado</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f4f5f7;color:#1a1a1a;min-height:100vh}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 100%)}
+.login-card{background:#fff;border-radius:16px;padding:36px 32px;width:380px;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo-icon{width:54px;height:54px;background:#dbeafe;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px;color:#1d4ed8}
+.login-logo h1{font-size:22px;font-weight:700;color:#111}
+.login-logo p{font-size:13px;color:#6b7280;margin-top:2px}
+.login-form label{display:block;font-size:12px;font-weight:500;color:#374151;margin-bottom:4px}
+.login-form input,.login-form select{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;transition:border .12s;margin-bottom:14px;color:#111}
+.login-form input:focus,.login-form select:focus{border-color:#3b82f6}
+.login-btn{width:100%;padding:11px;background:#1d4ed8;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .12s}
+.login-btn:hover{background:#1e40af}
+.login-error{background:#fee2e2;color:#b91c1c;border-radius:7px;padding:8px 12px;font-size:13px;margin-bottom:12px;display:none}
+.user-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.user-pill{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:500;transition:background .12s}
+.user-pill:hover{background:#dbeafe}
+
+/* APP */
+.app-wrap{display:none;flex-direction:row;height:100vh}
+.sidebar{width:230px;min-width:230px;background:#fff;border-right:1px solid #e5e7eb;display:flex;flex-direction:column;height:100vh}
+.logo{padding:16px 14px 12px;border-bottom:1px solid #e5e7eb}
+.logo-title{font-size:15px;font-weight:700;color:#1a1a1a;display:flex;align-items:center;gap:7px}
+.logo-sub{font-size:11px;color:#6b7280;margin-top:2px}
+nav{flex:1;padding:8px 7px;overflow-y:auto}
+.nav-sec{font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;padding:12px 8px 3px;font-weight:500}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;font-size:13px;color:#4b5563;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .12s;position:relative}
+.nav-item:hover{background:#f3f4f6;color:#111}
+.nav-item.active{background:#eff6ff;color:#1d4ed8;font-weight:500}
+.nav-item i{font-size:15px;flex-shrink:0}
+.nav-item.locked{opacity:.4;cursor:not-allowed}
+.nb{margin-left:auto;background:#ef4444;color:#fff;border-radius:999px;font-size:10px;padding:1px 6px;font-weight:600}
+.nb-y{background:#f59e0b}
+.sidebar-foot{padding:11px 12px;border-top:1px solid #e5e7eb}
+.user-chip{display:flex;align-items:center;gap:8px}
+.avatar{width:31px;height:31px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.av-log{background:#dbeafe;color:#1d4ed8}
+.av-plan{background:#dcfce7;color:#15803d}
+.av-prod{background:#fef3c7;color:#b45309}
+.av-cal{background:#ede9fe;color:#6d28d9}
+.av-adm{background:#f3f4f6;color:#374151}
+.user-n{font-size:13px;font-weight:600}
+.user-r{font-size:10px;color:#6b7280;text-transform:capitalize}
+.logout-btn{margin-left:auto;background:none;border:none;color:#9ca3af;cursor:pointer;font-size:16px;padding:4px}
+.logout-btn:hover{color:#ef4444}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 18px;height:50px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar-l{display:flex;align-items:center;gap:10px}
+.page-title{font-size:14px;font-weight:600}
+.role-badge{font-size:11px;padding:3px 9px;border-radius:999px;font-weight:500}
+.rb-logistica{background:#dbeafe;color:#1d4ed8}
+.rb-planeacion{background:#dcfce7;color:#15803d}
+.rb-produccion{background:#fef3c7;color:#b45309}
+.rb-calidad{background:#ede9fe;color:#6d28d9}
+.rb-admin{background:#f3f4f6;color:#374151}
+.topbar-r{display:flex;gap:6px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid transparent;transition:all .12s}
+.btn-p{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+.btn-p:hover{background:#1e40af}
+.btn-s{background:#fff;color:#374151;border-color:#d1d5db}
+.btn-s:hover{background:#f9fafb}
+.btn-sm{padding:5px 9px;font-size:12px}
+.btn-danger{background:#fee2e2;color:#b91c1c;border-color:#fca5a5}
+.btn-danger:hover{background:#fecaca}
+.btn-success{background:#dcfce7;color:#15803d;border-color:#a7f3d0}
+.btn-success:hover{background:#bbf7d0}
+.btn-warning{background:#fef3c7;color:#b45309;border-color:#fde68a}
+.btn-warning:hover{background:#fde68a}
+.btn-icon{width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:7px;background:#fff;border:1px solid #e5e7eb;cursor:pointer;color:#4b5563;transition:background .12s}
+.btn-icon:hover{background:#f3f4f6}
+.btn-locked{opacity:.4;cursor:not-allowed;pointer-events:none}
+.content{flex:1;overflow-y:auto;padding:16px 18px}
+.page{display:none}
+.page.active{display:block}
+
+/* Cards & Panels */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:16px}
+.stat-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:13px 15px}
+.stat-label{font-size:11px;color:#6b7280;margin-bottom:4px}
+.stat-value{font-size:21px;font-weight:700;color:#111}
+.stat-sub{font-size:11px;margin-top:3px;color:#6b7280}
+.up{color:#16a34a} .down{color:#dc2626}
+.panel{background:#fff;border:1px solid #e5e7eb;border-radius:10px;margin-bottom:14px;overflow:hidden}
+.panel-hdr{padding:12px 15px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between}
+.panel-title{font-size:13px;font-weight:600}
+
+/* Table */
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th{font-size:11px;color:#6b7280;font-weight:500;padding:8px 13px;text-align:left;border-bottom:1px solid #e5e7eb;background:#f9fafb}
+td{font-size:13px;padding:9px 13px;border-bottom:1px solid #f3f4f6;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:500}
+.bg{background:#dcfce7;color:#15803d}
+.by{background:#fef3c7;color:#b45309}
+.br{background:#fee2e2;color:#b91c1c}
+.bb{background:#dbeafe;color:#1d4ed8}
+.bgr{background:#f3f4f6;color:#4b5563}
+.bpu{background:#ede9fe;color:#6d28d9}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+.dg{background:#22c55e} .dy{background:#f59e0b} .dr{background:#ef4444} .dgr{background:#9ca3af} .db{background:#3b82f6}
+
+/* Semaforo */
+.sema-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px}
+.sema-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:13px 15px}
+.sema-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sema-area{font-size:14px;font-weight:600}
+.sema-dot-big{width:13px;height:13px;border-radius:50%}
+.op-mini{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:12px}
+.op-mini:last-child{border-bottom:none}
+
+/* Progress */
+.prog-bg{height:5px;background:#e5e7eb;border-radius:999px;margin-top:5px}
+.prog-bar{height:5px;border-radius:999px}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .15s}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:12px;padding:20px;width:500px;max-width:96vw;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.form-row.full{grid-template-columns:1fr}
+.fg{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
+.fg label{font-size:12px;font-weight:500;color:#374151}
+.fg input,.fg select,.fg textarea{padding:8px 10px;border:1px solid #d1d5db;border-radius:7px;font-size:13px;color:#111;outline:none;transition:border .12s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#3b82f6}
+.fg textarea{min-height:65px;resize:vertical}
+.form-actions{display:flex;gap:7px;justify-content:flex-end;margin-top:14px;padding-top:12px;border-top:1px solid #e5e7eb}
+
+/* Misc */
+.search-bar{padding:9px 13px;border-bottom:1px solid #e5e7eb}
+.search-input{width:100%;padding:7px 10px;border:1px solid #e5e7eb;border-radius:7px;font-size:13px;outline:none;background:#f9fafb;color:#111}
+.search-input:focus{border-color:#3b82f6;background:#fff}
+.tabs{display:flex;border-bottom:1px solid #e5e7eb;padding:0 14px}
+.tab{padding:9px 13px;font-size:13px;color:#6b7280;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .12s}
+.tab.active{color:#1d4ed8;border-bottom-color:#1d4ed8;font-weight:500}
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.k-col{background:#f9fafb;border:1px solid #e5e7eb;border-radius:9px;padding:10px}
+.k-hdr{font-size:12px;font-weight:600;color:#374151;margin-bottom:9px;display:flex;justify-content:space-between}
+.k-card{background:#fff;border:1px solid #e5e7eb;border-radius:7px;padding:9px 11px;margin-bottom:7px;cursor:pointer;transition:border .12s}
+.k-card:hover{border-color:#93c5fd}
+.k-title{font-size:13px;font-weight:500;margin-bottom:3px}
+.k-sub{font-size:11px;color:#6b7280}
+.filter-row{display:flex;gap:7px;flex-wrap:wrap;padding:9px 13px;border-bottom:1px solid #e5e7eb}
+.chip{padding:4px 10px;border-radius:999px;font-size:12px;border:1px solid #e5e7eb;background:#fff;color:#374151;cursor:pointer;transition:all .12s}
+.chip.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:13px}
+.kpi{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:11px 13px}
+.kpi-label{font-size:11px;color:#6b7280}
+.kpi-val{font-size:18px;font-weight:700;color:#111;margin-top:1px}
+.mpa-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.mpa-f{background:#f9fafb;border-radius:7px;padding:8px 10px}
+.mpa-l{font-size:10px;color:#6b7280;font-weight:500}
+.mpa-v{font-size:14px;font-weight:700;color:#111;margin-top:1px}
+.drag-zone{border:2px dashed #d1d5db;border-radius:8px;padding:20px;text-align:center;color:#6b7280;font-size:13px;cursor:pointer;transition:border .12s}
+.drag-zone:hover{border-color:#3b82f6;color:#1d4ed8}
+.etiq-preview{background:#fff;border:2px solid #1a1a1a;border-radius:4px;padding:13px 15px;font-size:11px;font-family:monospace;max-width:300px;margin:10px auto}
+.etiq-title{font-size:13px;font-weight:700;border-bottom:1px solid #1a1a1a;padding-bottom:5px;margin-bottom:7px}
+.etiq-row{display:flex;justify-content:space-between;margin-bottom:3px}
+.qr-ph{width:60px;height:60px;background:#f3f4f6;border:1px solid #d1d5db;display:flex;align-items:center;justify-content:center;margin:7px auto;border-radius:4px;font-size:9px;color:#9ca3af}
+.sel-mat-list{max-height:180px;overflow-y:auto;border:1px solid #e5e7eb;border-radius:7px;margin-top:5px}
+.sel-mat-item{padding:8px 11px;cursor:pointer;font-size:13px;border-bottom:1px solid #f3f4f6;display:flex;justify-content:space-between}
+.sel-mat-item:hover{background:#eff6ff}
+.sel-mat-item:last-child{border-bottom:none}
+.sel-item{background:#eff6ff;border:1px solid #bfdbfe;border-radius:7px;padding:7px 9px;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.toast{position:fixed;bottom:18px;right:18px;background:#1a1a1a;color:#fff;padding:9px 15px;border-radius:8px;font-size:13px;z-index:9999;opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;max-width:340px}
+.toast.show{opacity:1;transform:translateY(0)}
+.access-denied{background:#fee2e2;border:1px solid #fca5a5;border-radius:9px;padding:20px;text-align:center;color:#b91c1c;font-size:14px;margin:20px 0}
+.notif-item{display:flex;gap:10px;padding:11px 15px;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:background .1s}
+.notif-item:hover{background:#f9fafb}
+.notif-item.unread{background:#eff6ff}
+.notif-item:last-child{border-bottom:none}
+.notif-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nov-form{background:#fffbeb;border:1px solid #fcd34d;border-radius:9px;padding:14px;margin-bottom:14px}
+.nov-list .nov-item{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:11px 13px;margin-bottom:8px}
+.prog-slider{width:100%;accent-color:#1d4ed8;cursor:pointer}
+
+/* SOP CASILLA CREATIVA */
+.sop-box{display:grid;grid-template-columns:250px 1fr;gap:14px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+.sop-sidebar{background:#f9fafb;border-right:1px solid #e5e7eb;padding:12px}
+.sop-flow-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;background:none;border:none;border-radius:7px;font-size:13px;color:#4b5563;text-align:left;cursor:pointer;margin-bottom:6px;transition:all .12s}
+.sop-flow-btn:hover{background:#f3f4f6;color:#111}
+.sop-flow-btn.active{background:#eff6ff;color:#1d4ed8;font-weight:600}
+.sop-content{padding:18px}
+.sop-header-banner{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;padding:14px 18px;border-radius:8px;margin-bottom:14px}
+.sop-checklist-item{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid #f3f4f6}
+.sop-checklist-item input[type="checkbox"]{margin-top:4px}
+
+/* TOGGLE SWITCHES FOR PERMISSION EDITING */
+.switch{position:relative;display:inline-block;width:34px;height:20px}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background-color:#ccc;transition:.3s;border-radius:20px}
+.slider:before{position:absolute;content:"";height:14px;width:14px;left:3px;bottom:3px;background-color:white;transition:.3s;border-radius:50%}
+input:checked + .slider{background-color:#1d4ed8}
+input:checked + .slider:before{-webkit-transform:translateX(14px);-ms-transform:translateX(14px);transform:translateX(14px)}
+
+/* EMAIL PREVIEW MOCKUP */
+.email-mockup{background:#f1f5f9;border-radius:10px;padding:16px;border:1px solid #cbd5e1;font-family:sans-serif;margin-top:12px}
+.email-hdr-mock{border-bottom:1px solid #e2e8f0;padding-bottom:10px;margin-bottom:12px;font-size:12px;color:#475569}
+.email-body-mock{background:#fff;border-radius:6px;padding:18px;box-shadow:0 2px 4px rgba(0,0,0,0.05);color:#1e293b;font-size:13px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- ====== LOGIN ====== -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="login-logo-icon"><i class="ti ti-package"></i></div>
+        <h1>InvenTrack v3</h1>
+        <p>Sistema de Gestión Integrado</p>
+      </div>
+      <div class="login-form">
+        <div id="login-error" class="login-error"><i class="ti ti-alert-circle"></i> Usuario o contraseña incorrectos</div>
+        <label>Usuario</label>
+        <select id="login-user">
+          <option value="">Seleccionar usuario...</option>
+          <option value="admin">admin — Administrador</option>
+          <option value="logistica">logistica — Logística</option>
+          <option value="planeacion">planeacion — Planeación</option>
+          <option value="produccion">produccion — Producción</option>
+          <option value="calidad">calidad — Calidad</option>
+        </select>
+        <label>Contraseña</label>
+        <input type="password" id="login-pass" placeholder="••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="login-btn" onclick="doLogin()"><i class="ti ti-login"></i> Ingresar</button>
+      </div>
+      <div style="margin-top:14px;font-size:11px;color:#9ca3af;text-align:center">Accesos de prueba (contraseña = nombre de rol):</div>
+      <div class="user-pills">
+        <span class="user-pill" onclick="quickLogin('admin','admin')">admin / admin</span>
+        <span class="user-pill" onclick="quickLogin('logistica','logistica')">logistica</span>
+        <span class="user-pill" onclick="quickLogin('planeacion','planeacion')">planeacion</span>
+        <span class="user-pill" onclick="quickLogin('produccion','produccion')">produccion</span>
+        <span class="user-pill" onclick="quickLogin('calidad','calidad')">calidad</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== APP ====== -->
+<div id="app-wrap" class="app-wrap">
+
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-title"><i class="ti ti-package" style="color:#1d4ed8"></i> InvenTrack v3</div>
+    <div class="logo-sub" id="sb-dept">Cargando...</div>
+  </div>
+  <nav id="sidebar-nav"></nav>
+  <div class="sidebar-foot">
+    <div class="user-chip">
+      <div class="avatar" id="sb-avatar">?</div>
+      <div><div class="user-n" id="sb-name">—</div><div class="user-r" id="sb-role">—</div></div>
+      <button class="logout-btn" onclick="doLogout()" title="Cerrar sesión"><i class="ti ti-logout"></i></button>
+    </div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-l">
+      <span class="page-title" id="page-title">Dashboard</span>
+      <span class="role-badge" id="role-badge-top"></span>
+    </div>
+    <div class="topbar-r">
+      <button class="btn btn-warning btn-sm" onclick="goTo('procedimientos')"><i class="ti ti-book"></i> SOP / Procedimientos</button>
+      <button class="btn-icon" onclick="refreshPage()" title="Actualizar"><i class="ti ti-refresh"></i></button>
+      <button class="btn-icon" onclick="goTo('notificaciones')" title="Notificaciones" style="position:relative">
+        <i class="ti ti-bell"></i>
+        <span id="notif-dot" style="position:absolute;top:4px;right:4px;width:7px;height:7px;background:#ef4444;border-radius:50%;display:none"></span>
+      </button>
+      <button class="btn btn-p" id="topbar-btn" onclick="topbarAction()"><i class="ti ti-plus"></i> Nuevo</button>
+    </div>
+  </div>
+  <div class="content" id="app-content">
+    <!-- Pages injected here -->
+  </div>
+</div>
+
+</div>
+
+<!-- MODALS -->
+<div class="modal-bg" id="modal-op" onclick="if(event.target===this)closeModal('modal-op')">
+  <div class="modal">
+    <div class="modal-title">Nueva Orden de Producción <button class="btn-icon" onclick="closeModal('modal-op')"><i class="ti ti-x"></i></button></div>
+    <div class="form-row">
+      <div class="fg"><label>N° OP</label><input id="op-num" placeholder="OP-1005 (auto si vacío)"></div>
+      <div class="fg"><label>Prioridad</label><select id="op-prio"><option value="alta">Alta</option><option value="media">Media</option><option value="baja">Baja</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Inicio estimado</label><input id="op-ini" type="datetime-local"></div>
+      <div class="fg"><label>Fin estimado</label><input id="op-fin" type="datetime-local"></div>
+    </div>
+    <div class="fg"><label>Asignar máquina / área</label><select id="op-maq"><option value="">Sin asignar</option></select></div>
+    <div class="fg"><label>Materiales requeridos</label>
+      <input type="text" id="mat-search" placeholder="Buscar por código o descripción..." oninput="searchMat(this.value)">
+      <div class="sel-mat-list" id="mat-results" style="display:none"></div>
+      <div id="op-items-sel" style="margin-top:7px"></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-op')">Cancelar</button>
+      <button class="btn btn-p" onclick="crearOP()"><i class="ti ti-check"></i> Crear OP</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-op-det" onclick="if(event.target===this)closeModal('modal-op-det')">
+  <div class="modal">
+    <div class="modal-title" id="op-det-title">Detalle OP <button class="btn-icon" onclick="closeModal('modal-op-det')"><i class="ti ti-x"></i></button></div>
+    <div id="op-det-body"></div>
+    <div class="form-actions" id="op-det-actions"></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-salida" onclick="if(event.target===this)closeModal('modal-salida')">
+  <div class="modal">
+    <div class="modal-title">Registrar salida de stock <button class="btn-icon" onclick="closeModal('modal-salida')"><i class="ti ti-x"></i></button></div>
+    <div class="fg"><label>Lote</label><select id="sal-lote"></select></div>
+    <div class="form-row">
+      <div class="fg"><label>Cantidad</label><input id="sal-cant" type="number" min="1" placeholder="0"></div>
+      <div class="fg"><label>Referencia OP</label><input id="sal-ref" placeholder="OP-1001"></div>
+    </div>
+    <div class="fg"><label>Observación</label><textarea id="sal-obs" placeholder="Motivo..."></textarea></div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-salida')">Cancelar</button>
+      <button class="btn btn-p" onclick="registrarSalida()"><i class="ti ti-arrow-down-circle"></i> Registrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-cert-det" onclick="if(event.target===this)closeModal('modal-cert-det')">
+  <div class="modal">
+    <div class="modal-title" id="cert-det-title">Certificado MPA <button class="btn-icon" onclick="closeModal('modal-cert-det')"><i class="ti ti-x"></i></button></div>
+    <div id="cert-det-body"></div>
+    <div class="form-actions" id="cert-det-actions"></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-maq" onclick="if(event.target===this)closeModal('modal-maq')">
+  <div class="modal">
+    <div class="modal-title">Nueva máquina / área <button class="btn-icon" onclick="closeModal('modal-maq')"><i class="ti ti-x"></i></button></div>
+    <div class="form-row">
+      <div class="fg"><label>Nombre *</label><input id="maq-nom" placeholder="Torno-3, TL3B, Corte-2..."></div>
+      <div class="fg"><label>Área *</label><select id="maq-area"><option>Tornos</option><option>Corte</option><option>Formado</option><option>Soldadura</option><option>Acabados</option><option>Otro</option></select></div>
+    </div>
+    <div class="fg"><label>Estado</label><select id="maq-est"><option>operativa</option><option>mantenimiento</option><option>parada</option></select></div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-maq')">Cancelar</button>
+      <button class="btn btn-p" onclick="crearMaquina()"><i class="ti ti-check"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-recep" onclick="if(event.target===this)closeModal('modal-recep')">
+  <div class="modal" style="width:560px">
+    <div class="modal-title">Registrar recepción de material <button class="btn-icon" onclick="closeModal('modal-recep')"><i class="ti ti-x"></i></button></div>
+    <div class="form-row">
+      <div class="fg"><label>Tipo *</label><select id="r-tipo"><option value="">Seleccionar...</option><option>Tubo acero</option><option>Placa</option><option>Barra</option><option>Lámina</option><option>Perfil</option><option>Otro</option></select></div>
+      <div class="fg"><label>Código *</label><input id="r-cod" placeholder="TUB-001"></div>
+    </div>
+    <div class="fg"><label>Descripción *</label><input id="r-desc" placeholder="Tubo acero estructural galvanizado..."></div>
+    <div class="form-row">
+      <div class="fg"><label>Longitud (mm) *</label><input id="r-lon" type="number" placeholder="6000"></div>
+      <div class="fg"><label>Diámetro (mm)</label><input id="r-dia" type="number" placeholder="60"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Espesor (mm) *</label><input id="r-esp" type="number" placeholder="3.2"></div>
+      <div class="fg"><label>Colada *</label><input id="r-col" placeholder="C-2026"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Cantidad *</label><input id="r-can" type="number" placeholder="50"></div>
+      <div class="fg"><label>Unidad</label><select id="r-uni"><option>m</option><option>kg</option><option>unid</option><option>pzas</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Proveedor *</label><input id="r-pro" placeholder="Proveedor Alfa"></div>
+      <div class="fg"><label>Ubicación *</label><input id="r-ubi" placeholder="Bodega A - Estante 3"></div>
+    </div>
+    <div class="fg"><label>Adjuntar certificado MPA (PDF)</label>
+      <div class="drag-zone" onclick="document.getElementById('r-file').click()">
+        <i class="ti ti-upload" style="font-size:20px;display:block;margin-bottom:3px"></i>
+        <span id="r-fname">Clic para subir o arrastrar PDF aquí</span>
+        <input type="file" id="r-file" accept=".pdf" style="display:none" onchange="document.getElementById('r-fname').textContent=this.files[0]?this.files[0].name:'Sin archivo'">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-recep')">Cancelar</button>
+      <button class="btn btn-p" onclick="registrarRecepcion()"><i class="ti ti-check"></i> Registrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-novedad" onclick="if(event.target===this)closeModal('modal-novedad')">
+  <div class="modal">
+    <div class="modal-title">Registrar novedad en OP <button class="btn-icon" onclick="closeModal('modal-novedad')"><i class="ti ti-x"></i></button></div>
+    <div class="fg"><label>OP afectada</label><select id="nov-op"></select></div>
+    <div class="fg"><label>Tipo de novedad</label>
+      <select id="nov-tipo">
+        <option value="material">Falta de material</option>
+        <option value="maquina">Falla de máquina</option>
+        <option value="cert">Certificado no válido</option>
+        <option value="calidad">No cumple calidad</option>
+        <option value="retraso">Retraso detectado</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
+    <div class="fg"><label>Descripción *</label><textarea id="nov-desc" placeholder="Describe la novedad en detalle..."></textarea></div>
+    <div class="fg"><label>Acción recomendada</label><textarea id="nov-accion" placeholder="¿Qué se debe hacer?"></textarea></div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-novedad')">Cancelar</button>
+      <button class="btn btn-p" onclick="registrarNovedad()"><i class="ti ti-alert-triangle"></i> Registrar novedad</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-prog" onclick="if(event.target===this)closeModal('modal-prog')">
+  <div class="modal">
+    <div class="modal-title" id="prog-title">Actualizar progreso <button class="btn-icon" onclick="closeModal('modal-prog')"><i class="ti ti-x"></i></button></div>
+    <input type="hidden" id="prog-op-id">
+    <div class="fg"><label>Estado</label><select id="prog-estado"><option value="en_proceso">En proceso</option><option value="pausada">Pausada</option><option value="completada">Completada</option></select></div>
+    <div class="fg"><label>Progreso: <span id="prog-val-lbl">50</span>%</label>
+      <input type="range" id="prog-slider" class="prog-slider" min="0" max="100" value="50" oninput="document.getElementById('prog-val-lbl').textContent=this.value">
+    </div>
+    <div class="fg"><label>Nota</label><textarea id="prog-nota" placeholder="Comentario del operador..."></textarea></div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-prog')">Cancelar</button>
+      <button class="btn btn-p" onclick="guardarProgreso()"><i class="ti ti-check"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SIMULADOR CORREO 6 AM -->
+<div class="modal-bg" id="modal-email-sim" onclick="if(event.target===this)closeModal('modal-email-sim')">
+  <div class="modal" style="width: 600px; max-width:96vw;">
+    <div class="modal-title">Simulador de Alertas Automatizadas (6:00 AM) <button class="btn-icon" onclick="closeModal('modal-email-sim')"><i class="ti ti-x"></i></button></div>
+    <p style="font-size:12px; color:#6b7280; margin-bottom:12px">El sistema realiza un barrido diario automático a las 6:00 AM y despacha alertas automáticas por correo electrónico a todas las dependencias involucradas al detectar OPs retrasadas.</p>
+    <div id="email-preview-content"></div>
+    <div class="form-actions">
+      <button class="btn btn-p" onclick="enviarCorreoPrueba()"><i class="ti ti-mail-forward"></i> Forzar despacho de prueba</button>
+      <button class="btn btn-s" onclick="closeModal('modal-email-sim')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-el" class="toast"></div>
+
+<script>
+// ============================================================
+// DATA Y CONFIGURACIÓN DE PERMISOS MUTABLES
+// ============================================================
+const USERS = {
+  admin:     {pass:'admin',    nombre:'Admin Sistema',  rol:'admin',     dept:'Administración'},
+  logistica: {pass:'logistica',nombre:'Nicolás León',   rol:'logistica', dept:'Logística'},
+  planeacion:{pass:'planeacion',nombre:'Carlos Ruiz',   rol:'planeacion',dept:'Planeación'},
+  produccion:{pass:'produccion',nombre:'María Pérez',   rol:'produccion',dept:'Producción'},
+  calidad:   {pass:'calidad',  nombre:'Luis Gómez',     rol:'calidad',   dept:'Calidad'},
+};
+
+// Matriz de permisos modificable en tiempo real por el Administrador
+let PERMISOS = {
+  logistica: {
+    pages: ['dashboard','notificaciones','recepcion','stock','etiquetas','reportes','calidad','procedimientos'], // Logística ahora puede "ver" certificados
+    canReleaseLote: true,
+    canEditOP: false,
+    canValidateCert: false, // Pero no puede validarlos/rechazarlos
+    canCreateOP: false,
+    canAssignMaq: false,
+    canEditProg: false,
+    canNovedad: false,
+    canLiberar: false,
+  },
+  planeacion: {
+    pages: ['dashboard','notificaciones','ops','maquinas','stock','reportes','procedimientos'],
+    canReleaseLote: false,
+    canEditOP: true,
+    canValidateCert: false,
+    canCreateOP: true,
+    canAssignMaq: true,
+    canEditProg: false,
+    canNovedad: false,
+    canLiberar: false,
+  },
+  produccion: {
+    pages: ['dashboard','notificaciones','produccion','stock','reportes','procedimientos'],
+    canReleaseLote: false,
+    canEditOP: false,
+    canValidateCert: false,
+    canCreateOP: false,
+    canAssignMaq: false,
+    canEditProg: true,
+    canNovedad: false,
+    canLiberar: false,
+  },
+  calidad: {
+    pages: ['dashboard','notificaciones','calidad','ops','stock','reportes','procedimientos'],
+    canReleaseLote: false,
+    canEditOP: false,
+    canValidateCert: true,
+    canCreateOP: false,
+    canAssignMaq: false,
+    canEditProg: false,
+    canNovedad: true,
+    canLiberar: true, // Calidad puede liberar OPs
+  },
+  admin: {
+    pages: ['dashboard','notificaciones','recepcion','stock','etiquetas','ops','maquinas','produccion','calidad','reportes','usuarios','procedimientos'],
+    canReleaseLote: true,
+    canEditOP: true,
+    canValidateCert: true,
+    canCreateOP: true,
+    canAssignMaq: true,
+    canEditProg: true,
+    canNovedad: true,
+    canLiberar: true,
+  }
+};
+
+const DB = {
+  lotes: [
+    {id:'l1',numero:'L-2026-0001',tipo:'Tubo acero',codigo:'TUB-001',desc:'Tubo acero estructural',longitud:6000,diametro:60,espesor:3.2,colada:'C-2026',cantidad_recibida:50,cantidad_disponible:50,ubicacion:'Bodega A - Estante 3',fecha:'2026-04-20',proveedor:'Proveedor Alfa',estado:'en_cuarentena'},
+    {id:'l2',numero:'L-2026-0002',tipo:'Placa',codigo:'PLQ-010',desc:'Placa acero inox 316',longitud:2000,diametro:0,espesor:6,colada:'C-3101',cantidad_recibida:200,cantidad_disponible:200,ubicacion:'Bodega B - Pallet 12',fecha:'2026-04-22',proveedor:'Proveedor Beta',estado:'disponible'},
+    {id:'l3',numero:'L-2026-0003',tipo:'Barra',codigo:'BAR-005',desc:'Barra redonda SAE 1045',longitud:3000,diametro:50,espesor:50,colada:'C-1805',cantidad_recibida:80,cantidad_disponible:45,ubicacion:'Bodega C - Rack 2',fecha:'2026-04-25',proveedor:'Proveedor Gamma',estado:'disponible'},
+    {id:'l4',numero:'L-2026-0004',tipo:'Lámina',codigo:'LAM-003',desc:'Lámina galvanizada cal 16',longitud:2440,diametro:0,espesor:1.5,colada:'C-2201',cantidad_recibida:30,cantidad_disponible:30,ubicacion:'Bodega A - Piso',fecha:'2026-05-01',proveedor:'Proveedor Alfa',estado:'bloqueado'},
+  ],
+  certificados: [
+    {id:'c1',lote_id:'l1',tipo:'MPA',archivo:'cert_L2026-0001.pdf',fecha_emision:'2026-04-19',firmado:'LabX Colombia',estado:'pendiente',obs:'',campos:{norma:'ISO 6892-1',traccion:420,elasticidad:250,elongacion:18,dureza:150,quimico:[{e:'C',p:0.12},{e:'Mn',p:0.80},{e:'Si',p:0.25}]}},
+    {id:'c2',lote_id:'l2',tipo:'MPA',archivo:'cert_L2026-0002.pdf',fecha_emision:'2026-04-21',firmado:'LabY',estado:'validado',obs:'Aprobado sin observaciones',campos:{norma:'ASTM A240',traccion:540,elasticidad:290,elongacion:22,dureza:210,quimico:[{e:'Cr',p:18},{e:'Ni',p:8},{e:'Mo',p:2.1}]}},
+    {id:'c3',lote_id:'l4',tipo:'MPA',archivo:'cert_L2026-0004.pdf',fecha_emision:'2026-04-30',firmado:'LabZ',estado:'rechazado',obs:'Tracción fuera de rango (305 MPa, mín 310)',campos:{norma:'NTC 4004',traccion:305,elasticidad:195,elongacion:14,dureza:120,quimico:[{e:'C',p:0.08},{e:'Zn',p:0.45}]}},
+  ],
+  ops: [
+    {id:'op1',numero:'OP-1001',prioridad:'alta',estado:'en_proceso',items:[{lote_id:'l3',cantidad:10,lote_num:'L-2026-0003',desc:'Barra redonda SAE 1045'}],maquina:'mc2',maquina_nombre:'TL3B',area:'Tornos',inicio:'2026-05-14T07:00',fin:'2026-05-15T15:00',planeador:'Carlos Ruiz',progreso:65,novedades:[]},
+    {id:'op2',numero:'OP-1002',prioridad:'media',estado:'pendiente',items:[{lote_id:'l2',cantidad:20,lote_num:'L-2026-0002',desc:'Placa acero inox 316'}],maquina:'mc3',maquina_nombre:'Corte-1',area:'Corte',inicio:'2026-05-16T07:00',fin:'2026-05-20T15:00',planeador:'Carlos Ruiz',progreso:10,novedades:[]}, // Marcada con retraso al comparar fin con hoy (2026-05-21)
+    {id:'op3',numero:'OP-1003',prioridad:'alta',estado:'bloqueada',items:[{lote_id:'l4',cantidad:15,lote_num:'L-2026-0004',desc:'Lámina galvanizada cal 16'}],maquina:null,maquina_nombre:null,area:'Corte',inicio:'2026-05-15T07:00',fin:'2026-05-15T12:00',planeador:'Carlos Ruiz',progreso:0,novedades:[{tipo:'cert',desc:'Certificado del lote rechazado por LabZ',accion:'Solicitar nuevo certificado al proveedor',fecha:'2026-05-01',por:'calidad'}]},
+    {id:'op4',numero:'OP-1004',prioridad:'baja',estado:'completada',items:[{lote_id:'l3',cantidad:5,lote_num:'L-2026-0003',desc:'Barra redonda SAE 1045'}],maquina:'mc1',maquina_nombre:'Torno-1',area:'Tornos',inicio:'2026-05-13T07:00',fin:'2026-05-13T11:00',planeador:'Carlos Ruiz',progreso:100,novedades:[]},
+  ],
+  maquinas: [
+    {id:'mc1',nombre:'Torno-1',area:'Tornos',estado:'operativa'},
+    {id:'mc2',nombre:'TL3B',area:'Tornos',estado:'operativa'},
+    {id:'mc3',nombre:'Corte-1',area:'Corte',estado:'operativa'},
+    {id:'mc4',nombre:'Soldadura-1',area:'Soldadura',estado:'mantenimiento'},
+    {id:'mc5',nombre:'Prensa-2',area:'Formado',estado:'parada'},
+  ],
+  notificaciones: [
+    {id:'n1',tipo:'cert',icono:'ti-certificate',bg:'#dbeafe',ic:'#1d4ed8',msg:'Certificado MPA del lote L-2026-0001 pendiente de validación.',tiempo:'Hace 10 min',leido:false},
+    {id:'n2',tipo:'alerta',icono:'ti-alert-triangle',bg:'#fee2e2',ic:'#b91c1c',msg:'Certificado del lote L-2026-0004 rechazado. OP-1003 bloqueada.',tiempo:'Hace 45 min',leido:false},
+    {id:'n3',tipo:'op',icono:'ti-clipboard-list',bg:'#dcfce7',ic:'#15803d',msg:'OP-1002 creada por Planeación. Materiales listos para Producción.',tiempo:'Hace 2 horas',leido:false},
+    {id:'n4',tipo:'stock',icono:'ti-package',bg:'#fef3c7',ic:'#b45309',msg:'Lote L-2026-0003 (Barra SAE 1045) disponible. Stock: 45 unidades.',tiempo:'Hace 3 horas',leido:true},
+  ],
+  movimientos: [
+    {material:'Barra SAE 1045',tipo:'salida',cant:'-10',usuario:'María Pérez',hora:'08:42'},
+    {material:'Placa inox 316',tipo:'entrada',cant:'+200',usuario:'Nicolás León',hora:'07:15'},
+    {material:'Tubo acero TUB-001',tipo:'entrada',cant:'+50',usuario:'Nicolás León',hora:'Ayer 16:30'},
+    {material:'Barra SAE 1045',tipo:'salida',cant:'-25',usuario:'María Pérez',hora:'Ayer 10:00'},
+  ],
+  usuarios_reg: [
+    {user:'logistica',nombre:'Nicolás León',rol:'logistica',dept:'Logística',activo:true},
+    {user:'planeacion',nombre:'Carlos Ruiz',rol:'planeacion',dept:'Planeación',activo:true},
+    {user:'produccion',nombre:'María Pérez',rol:'produccion',dept:'Producción',activo:true},
+    {user:'calidad',nombre:'Luis Gómez',rol:'calidad',dept:'Calidad',activo:true},
+    {user:'admin',nombre:'Admin Sistema',rol:'admin',dept:'Administración',activo:true},
+  ]
+};
+
+// Datos para la Casilla Creativa de Procedimientos (SOP)
+const PROCEDIMIENTOS = {
+  logistica: {
+    titulo: "Procedimiento de Recepción y Control de Inventarios (SOP-LOG-01)",
+    icon: "ti-truck-delivery",
+    pasos: [
+      "Verificar físicamente la mercancía y remisión del transportador.",
+      "Cotejar el código de colada troquelado en los perfiles contra la remisión.",
+      "Escanear o cargar el Certificado de Materiales (MPA) en PDF adjunto al lote.",
+      "Registrar el lote en InvenTrack; el sistema lo catalogará automáticamente 'En Cuarentena'.",
+      "Imprimir los rótulos de identificación y adherirlos a los pallets.",
+      "Verificar en la sección de 'Certificados' el dictamen de Calidad antes de despachar a producción."
+    ]
+  },
+  planeacion: {
+    titulo: "Planificación de Órdenes de Producción y Secuenciación (SOP-PLN-02)",
+    icon: "ti-clipboard-list",
+    pasos: [
+      "Evaluar la demanda comercial o plan de ensamble semanal.",
+      "Consultar el stock de lotes en estado 'Disponible' antes de generar una OP.",
+      "Crear la OP en InvenTrack seleccionando los lotes exactos y la cantidad requerida.",
+      "Asignar la máquina en estado 'Operativa' con la carga de trabajo óptima.",
+      "Monitorear diariamente a las 6:00 AM las alertas de OPs con retrasos.",
+      "Reprogramar de forma prioritaria cualquier OP bloqueada por alerta de Calidad."
+    ]
+  },
+  produccion: {
+    titulo: "Flujo de Operación y Reporte en Planta (SOP-PRD-03)",
+    icon: "ti-arrows-right-left",
+    pasos: [
+      "Consultar en el panel de 'Mis OP Asignadas' el plan de la jornada.",
+      "Retirar de la bodega los lotes asignados y escanear el código QR para validar.",
+      "Alistar las máquinas asignadas y configurar los herramentales según orden de trabajo.",
+      "Reportar el avance parcial utilizando la barra deslizadora de InvenTrack.",
+      "Reportar cualquier parada inesperada registrando una 'Novedad' de tipo Máquina o Material.",
+      "Alcanzar el 100% para archivar la OP como 'Completada' de forma automática."
+    ]
+  },
+  calidad: {
+    titulo: "Validación de Ensayos Mecánicos y Gestión de Desviaciones (SOP-CAL-04)",
+    icon: "ti-certificate",
+    pasos: [
+      "Ingresar al módulo de Certificados al arribo de todo nuevo lote.",
+      "Cotejar el análisis químico y propiedades mecánicas (tracción, elasticidad, dureza) contra la norma técnica aplicable.",
+      "Validar el certificado para liberar automáticamente el lote, o rechazar si hay desvíos críticos.",
+      "En caso de desvíos menores, evaluar en comité la liberación condicionada.",
+      "Registrar novedades ante anomalías de calidad detectadas en la planta.",
+      "Auditar y ajustar de ser necesario un rechazo erróneo usando el botón de Reversión."
+    ]
+  }
+};
+
+let currentUser = null;
+let currentPerm = null;
+let currentPage = 'dashboard';
+let selectedOpItems = [];
+let currentStockFilter = '';
+let selectedSopArea = 'logistica';
+
+// ============================================================
+// AUTH
+// ============================================================
+function doLogin() {
+  const u = document.getElementById('login-user').value;
+  const p = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-error');
+  if (!u || !p) { err.style.display='flex'; err.innerHTML='<i class="ti ti-alert-circle"></i>&nbsp; Selecciona usuario e ingresa contraseña'; return; }
+  if (!USERS[u] || USERS[u].pass !== p) { err.style.display='flex'; err.innerHTML='<i class="ti ti-alert-circle"></i>&nbsp; Contraseña incorrecta'; return; }
+  err.style.display='none';
+  currentUser = {...USERS[u], username: u};
+  currentPerm = PERMISOS[currentUser.rol];
+  startApp();
+}
+
+function quickLogin(u, p) {
+  document.getElementById('login-user').value = u;
+  document.getElementById('login-pass').value = p;
+  doLogin();
+}
+
+function doLogout() {
+  currentUser = null; currentPerm = null;
+  document.getElementById('app-wrap').style.display='none';
+  document.getElementById('login-screen').style.display='block';
+  document.getElementById('login-pass').value='';
+}
+
+function startApp() {
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-wrap').style.display='flex';
+  buildSidebar();
+  updateUserUI();
+  goTo('dashboard');
+}
+
+function updateUserUI() {
+  const avCls = {logistica:'av-log',planeacion:'av-plan',produccion:'av-prod',calidad:'av-cal',admin:'av-adm'};
+  const av = document.getElementById('sb-avatar');
+  av.textContent = currentUser.nombre.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  av.className = 'avatar ' + (avCls[currentUser.rol]||'av-adm');
+  document.getElementById('sb-name').textContent = currentUser.nombre;
+  document.getElementById('sb-role').textContent = currentUser.dept;
+  document.getElementById('sb-dept').textContent = currentUser.dept;
+  const rb = document.getElementById('role-badge-top');
+  rb.className = 'role-badge rb-'+currentUser.rol;
+  rb.textContent = currentUser.dept;
+  updateBadges();
+}
+
+// ============================================================
+// SIDEBAR (Actualizado con SOP)
+// ============================================================
+const NAV_ITEMS = [
+  {sec:'General'},
+  {id:'dashboard',label:'Dashboard',icon:'ti-layout-dashboard'},
+  {id:'notificaciones',label:'Notificaciones',icon:'ti-bell',badge:'notif'},
+  {id:'procedimientos',label:'SOP & Procesos',icon:'ti-book'},
+  {sec:'Logística'},
+  {id:'recepcion',label:'Recepción',icon:'ti-truck-delivery'},
+  {id:'stock',label:'Stock / Kardex',icon:'ti-stack-2'},
+  {id:'etiquetas',label:'Etiquetas',icon:'ti-tag'},
+  {sec:'Planeación'},
+  {id:'ops',label:'Órdenes de Prod.',icon:'ti-clipboard-list'},
+  {id:'maquinas',label:'Máquinas / Áreas',icon:'ti-tool'},
+  {sec:'Producción'},
+  {id:'produccion',label:'Mis OP asignadas',icon:'ti-arrows-right-left'},
+  {sec:'Calidad'},
+  {id:'calidad',label:'Certificados Calidad',icon:'ti-certificate',badge:'cert'},
+  {sec:'Administración'},
+  {id:'reportes',label:'Reportes',icon:'ti-chart-bar'},
+  {id:'usuarios',label:'Usuarios y Roles',icon:'ti-users'},
+];
+
+function buildSidebar() {
+  const nav = document.getElementById('sidebar-nav');
+  nav.innerHTML = NAV_ITEMS.map(item => {
+    if (item.sec) return `<div class="nav-sec">${item.sec}</div>`;
+    const allowed = currentPerm.pages.includes(item.id);
+    const lockCls = allowed ? '' : ' locked';
+    const badgeHtml = item.badge==='notif' ? `<span class="nb" id="nb-notif">0</span>` : item.badge==='cert' ? `<span class="nb nb-y" id="nb-cert">0</span>` : '';
+    return `<button class="nav-item${lockCls}" id="nav-${item.id}" onclick="${allowed?`goTo('${item.id}')`:`toast('⛔ Sin acceso: tu rol no tiene permiso para ${item.id}')`}"  title="${allowed?item.label:'Sin acceso — '+item.label}"><i class="ti ${item.icon}"></i>${item.label}${badgeHtml}</button>`;
+  }).join('');
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+const PAGE_TITLES = {
+  dashboard:'Dashboard de Operaciones',
+  notificaciones:'Notificaciones del Sistema',
+  recepcion:'Recepción e Inspección de Lotes',
+  stock:'Stock de Materiales / Kardex',
+  etiquetas:'Etiquetas y Rótulos QR',
+  ops:'Órdenes de Producción (OP)',
+  maquinas:'Control de Máquinas y Áreas',
+  produccion:'Avance de Producción',
+  calidad:'Inspección y Certificados MPA',
+  reportes:'Reportes de Productividad',
+  usuarios:'Gestión de Usuarios y Matriz de Permisos',
+  procedimientos:'SOP & Manual de Operaciones Estándar'
+};
+
+function goTo(page) {
+  if (!currentPerm.pages.includes(page)) { toast('⛔ No tienes acceso a esta sección'); return; }
+  currentPage = page;
+  document.getElementById('page-title').textContent = PAGE_TITLES[page]||page;
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  const nav = document.getElementById('nav-'+page);
+  if (nav) nav.classList.add('active');
+  
+  const btnLabels = {
+    dashboard:'Nueva Alerta 6:00 AM',
+    recepcion:'+ Recepción',
+    stock:'+ Salida',
+    etiquetas:'Imprimir',
+    ops:'+ Nueva OP',
+    maquinas:'+ Máquina',
+    produccion:'Actualizar',
+    calidad:'+ Novedad',
+    reportes:'Exportar',
+    usuarios:'+ Usuario',
+    notificaciones:'Marcar leídas',
+    procedimientos: 'Ver Todo'
+  };
+  
+  const topbarBtn = document.getElementById('topbar-btn');
+  if (page === 'dashboard') {
+    topbarBtn.innerHTML = `<i class="ti ti-mail"></i> Simulador 6AM`;
+  } else {
+    topbarBtn.innerHTML = `<i class="ti ti-plus"></i> ${btnLabels[page]||'Nuevo'}`;
+  }
+  
+  renderPage(page);
+}
+
+function topbarAction() {
+  const p = currentPage;
+  if (p==='dashboard') { abrirSimulador6AM(); }
+  else if (p==='recepcion') { if(can('canReleaseLote')) openModal('modal-recep'); else denied(); }
+  else if (p==='stock') { if(can('canReleaseLote')) { populateSalidaSel(); openModal('modal-salida'); } else denied(); }
+  else if (p==='ops') { if(can('canCreateOP')) { populateOpMaq(); openModal('modal-op'); } else denied(); }
+  else if (p==='maquinas') { if(can('canAssignMaq')) openModal('modal-maq'); else denied(); }
+  else if (p==='calidad') { if(can('canNovedad')) openNovedad(); else denied(); }
+  else if (p==='notificaciones') { markAllRead(); }
+  else if (p==='etiquetas') { if(can('canReleaseLote')) printEtiq(); else denied(); }
+  else if (p==='procedimientos') { toast('Manuales actualizados a la versión vigente 2026.'); }
+  else toast('Selecciona una sección con acción disponible');
+}
+
+function can(perm) { return currentPerm && currentPerm[perm] === true; }
+function denied() { toast('⛔ Tu rol ('+currentUser.dept+') no tiene permiso para esta acción'); }
+function refreshPage() { renderPage(currentPage); toast('Actualizado'); }
+
+// ============================================================
+// PAGE RENDERER
+// ============================================================
+function renderPage(page) {
+  const c = document.getElementById('app-content');
+  switch(page) {
+    case 'dashboard':      c.innerHTML = tplDashboard(); postDashboard(); break;
+    case 'notificaciones': c.innerHTML = tplNotificaciones(); break;
+    case 'recepcion':      c.innerHTML = tplRecepcion(); break;
+    case 'stock':          c.innerHTML = tplStock(''); break;
+    case 'etiquetas':      c.innerHTML = tplEtiquetas(); postEtiq(); break;
+    case 'ops':            c.innerHTML = tplOPs(); break;
+    case 'maquinas':       c.innerHTML = tplMaquinas(); break;
+    case 'produccion':     c.innerHTML = tplProduccion(); break;
+    case 'calidad':        c.innerHTML = tplCalidad(); break;
+    case 'reportes':       c.innerHTML = tplReportes(); break;
+    case 'usuarios':       c.innerHTML = tplUsuarios(); break;
+    case 'procedimientos': c.innerHTML = tplProcedimientos(); break;
+    default:               c.innerHTML = '<p>Página no encontrada</p>';
+  }
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function statusBadge(s) { const m={disponible:'<span class="badge bg">Disponible</span>',en_cuarentena:'<span class="badge by">En cuarentena</span>',bloqueado:'<span class="badge br">Bloqueado</span>'}; return m[s]||`<span class="badge bgr">${s}</span>`; }
+function opBadge(s) { const m={pendiente:'<span class="badge bgr">Pendiente</span>',asignada:'<span class="badge bb">Asignada</span>',en_proceso:'<span class="badge bg">En proceso</span>',pausada:'<span class="badge by">Pausada</span>',completada:'<span class="badge bpu">Completada</span>',bloqueada:'<span class="badge br">Bloqueada</span>'}; return m[s]||`<span class="badge bgr">${s}</span>`; }
+function prioBadge(p) { return {alta:'<span class="badge br">Alta</span>',media:'<span class="badge by">Media</span>',baja:'<span class="badge bgr">Baja</span>'}[p]||p; }
+function certBadge(s) { return {pendiente:'<span class="badge by"><i class="ti ti-clock"></i> Pendiente</span>',validado:'<span class="badge bg"><i class="ti ti-check"></i> Validado</span>',rechazado:'<span class="badge br"><i class="ti ti-x"></i> Rechazado</span>'}[s]||s; }
+function maqBadge(s) { return {operativa:'<span class="badge bg">Operativa</span>',mantenimiento:'<span class="badge by">Mantenimiento</span>',parada:'<span class="badge br">Parada</span>'}[s]||s; }
+
+function semaDot(op) {
+  // Verificación de retraso en tiempo real (fin estimado < hoy && progreso < 100)
+  const esRetrasada = estaOpRetrasada(op);
+  if(esRetrasada) return '<span class="dot dr" style="width:9px;height:9px;display:inline-block;border-radius:50%" title="Retrasada"></span>';
+  if(op.estado==='completada') return '<span class="dot db" style="width:9px;height:9px;display:inline-block;border-radius:50%"></span>';
+  if(op.estado==='bloqueada') return '<span class="dot dr" style="width:9px;height:9px;display:inline-block;border-radius:50%"></span>';
+  if(op.estado==='pendiente') return '<span class="dot dgr" style="width:9px;height:9px;display:inline-block;border-radius:50%"></span>';
+  if(op.progreso>=80) return '<span class="dot dy" style="width:9px;height:9px;display:inline-block;border-radius:50%"></span>';
+  return '<span class="dot dg" style="width:9px;height:9px;display:inline-block;border-radius:50%"></span>';
+}
+
+function estaOpRetrasada(op) {
+  if (op.estado === 'completada') return false;
+  if (!op.fin) return false;
+  const fechaFin = new Date(op.fin);
+  const hoy = new Date("2026-05-21T11:41:00"); // Fecha actual del sistema
+  return fechaFin < hoy && op.progreso < 100;
+}
+
+function lockBtn(html, permKey) { return can(permKey) ? html : html.replace(/class="btn/g, 'class="btn btn-locked'); }
+function toast(msg, dur=2600) { const e=document.getElementById('toast-el'); e.textContent=msg; e.classList.add('show'); setTimeout(()=>e.classList.remove('show'),dur); }
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function accessDeniedBlock(feature) { return `<div class="access-denied"><i class="ti ti-lock" style="font-size:20px;display:block;margin-bottom:6px"></i><strong>Acceso restringido</strong><br>Tu rol (${currentUser.dept}) no tiene acceso a ${feature}.</div>`; }
+
+function updateBadges() {
+  const un = DB.notificaciones.filter(n=>!n.leido).length;
+  const cp = DB.certificados.filter(c=>c.estado==='pendiente').length;
+  const nb = document.getElementById('nb-notif');
+  const cb = document.getElementById('nb-cert');
+  const nd = document.getElementById('notif-dot');
+  if(nb) nb.textContent = un;
+  if(cb) cb.textContent = cp;
+  if(nd) nd.style.display = un>0?'block':'none';
+}
+
+function addNotif(tipo,icono,bg,ic,msg) {
+  DB.notificaciones.unshift({id:'n'+Date.now(),tipo,icono,bg,ic,msg,tiempo:'Ahora mismo',leido:false});
+  updateBadges();
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function tplDashboard() {
+  const retrasadasNum = DB.ops.filter(o=>estaOpRetrasada(o)).length;
+  return `
+  <!-- Alerta de OPs Retrasadas con acceso rápido al simulador de correo -->
+  ${retrasadasNum > 0 ? `
+  <div style="background:#fee2e2; border:1px solid #fca5a5; border-radius:10px; padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center">
+    <div style="display:flex; align-items:center; gap:10px">
+      <i class="ti ti-mail-flash" style="font-size:24px; color:#b91c1c"></i>
+      <div>
+        <strong style="color:#b91c1c; font-size:14px">⚠️ Alerta Crítica de Retraso</strong>
+        <p style="font-size:12px; color:#7f1d1d; margin-top:2px">Hay ${retrasadasNum} OP(s) retrasada(s). Se generaron alertas automáticas a las 6:00 AM para todas las dependencias.</p>
+      </div>
+    </div>
+    <button class="btn btn-danger btn-sm" onclick="abrirSimulador6AM()"><i class="ti ti-eye"></i> Ver Correo Enviado</button>
+  </div>
+  ` : ''}
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">Lotes en stock</div><div class="stat-value">${DB.lotes.length}</div><div class="stat-sub up">↑ 3 esta semana</div></div>
+    <div class="stat-card"><div class="stat-label">OP activas</div><div class="stat-value">${DB.ops.filter(o=>o.estado!=='completada').length}</div><div class="stat-sub">${DB.ops.filter(o=>o.estado==='en_proceso').length} en proceso</div></div>
+    <div class="stat-card"><div class="stat-label">Certs. pendientes</div><div class="stat-value">${DB.certificados.filter(c=>c.estado==='pendiente').length}</div><div class="stat-sub down">Requieren revisión</div></div>
+    <div class="stat-card" style="cursor:pointer; transition: background .1s" onclick="abrirSimulador6AM()"><div class="stat-label" style="color:#b91c1c"><strong>OPs Retrasadas (6 AM)</strong></div><div class="stat-value" style="color:#b91c1c">${retrasadasNum}</div><div class="stat-sub down">Click para ver alerta</div></div>
+  </div>
+  <div id="sema-grid" class="sema-grid"></div>
+  <div style="display:grid;grid-template-columns:1fr 340px;gap:13px">
+    <div class="panel">
+      <div class="panel-hdr"><span class="panel-title">Últimos movimientos de materiales</span></div>
+      <table><thead><tr><th style="width:30%">Material</th><th style="width:18%">Tipo</th><th style="width:14%">Cant.</th><th style="width:20%">Usuario</th><th style="width:18%">Hora</th></tr></thead>
+      <tbody>${DB.movimientos.map(m=>`<tr><td>${m.material}</td><td>${m.tipo==='entrada'?'<span class="badge bg">Entrada</span>':'<span class="badge br">Salida</span>'}</td><td style="font-weight:600;color:${m.tipo==='entrada'?'#16a34a':'#dc2626'}">${m.cant}</td><td>${m.usuario}</td><td style="color:#6b7280;font-size:12px">${m.hora}</td></tr>`).join('')}</tbody></table>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><span class="panel-title">Notificaciones de Sistemas</span></div>
+      <div>${DB.notificaciones.slice(0,5).map(n=>`<div style="padding:8px 13px;border-bottom:1px solid #f3f4f6;display:flex;gap:9px">
+        <div style="width:7px;height:7px;border-radius:50%;background:${n.leido?'#9ca3af':'#3b82f6'};margin-top:4px;flex-shrink:0"></div>
+        <div><div style="font-size:12px;line-height:1.45">${n.msg}</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">${n.tiempo}</div></div>
+      </div>`).join('')}</div>
+    </div>
+  </div>`;
+}
+
+function postDashboard() {
+  const areas = ['Tornos','Corte','Formado','Soldadura'];
+  const grid = document.getElementById('sema-grid');
+  if (!grid) return;
+  grid.innerHTML = areas.map(area=>{
+    const aOps = DB.ops.filter(o=>o.area===area);
+    const v=aOps.filter(o=>o.estado==='en_proceso'&&o.progreso<80&&!estaOpRetrasada(o)).length;
+    const am=aOps.filter(o=>o.estado==='en_proceso'&&o.progreso>=80&&!estaOpRetrasada(o)).length;
+    const r=aOps.filter(o=>o.estado==='bloqueada'||estaOpRetrasada(o)).length;
+    const g=aOps.filter(o=>o.estado==='pendiente').length;
+    const dom=r>0?'dr':am>0?'dy':v>0?'dg':'dgr';
+    const minis=aOps.slice(0,3).map(op=>`<div class="op-mini">${semaDot(op)}<span style="font-weight:500">${op.numero}</span><span style="margin-left:auto">${estaOpRetrasada(op)?'<span class="badge br">RETRASO</span>':opBadge(op.estado)}</span></div>`).join('');
+    return `<div class="sema-card">
+      <div class="sema-hdr"><span class="sema-area">${area}</span><span class="dot ${dom}" style="width:13px;height:13px;display:inline-block;border-radius:50%"></span></div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><span class="badge bg">${v} act.</span><span class="badge by">${am} SLA</span><span class="badge br">${r} alarm.</span><span class="badge bgr">${g} pend.</span></div>
+      ${minis||'<span style="font-size:12px;color:#9ca3af">Sin órdenes</span>'}
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// SIMULADOR DE CORREO 6:00 AM (Retrasos)
+// ============================================================
+function abrirSimulador6AM() {
+  const retrasadas = DB.ops.filter(o=>estaOpRetrasada(o));
+  const el = document.getElementById('email-preview-content');
+  if(retrasadas.length === 0) {
+    el.innerHTML = `
+    <div style="text-align:center; padding:30px; color:#475569">
+      <i class="ti ti-circle-check" style="font-size:42px; color:#16a34a"></i>
+      <p style="margin-top:10px; font-weight:600">¡Al día! No se registran OPs retrasadas hoy.</p>
+    </div>`;
+  } else {
+    const filasOp = retrasadas.map(op => `
+      <tr style="border-bottom:1px solid #e2e8f0">
+        <td style="padding:6px; font-weight:600; color:#1e293b">${op.numero}</td>
+        <td style="padding:6px; color:#475569">${op.area}</td>
+        <td style="padding:6px; color:#475569">${op.maquina_nombre||'Sin asignar'}</td>
+        <td style="padding:6px; color:#b91c1c; font-weight:600">${op.progreso}%</td>
+        <td style="padding:6px; color:#e11d48">${op.fin.split('T')[0]}</td>
+        <td style="padding:6px; color:#475569">${op.planeador}</td>
+      </tr>
+    `).join('');
+
+    el.innerHTML = `
+    <div class="email-mockup">
+      <div class="email-hdr-mock">
+        <div><strong>De:</strong> automatic-alerts@inventrack.com</div>
+        <div><strong>Para:</strong> logistica@empresa.com, calidad@empresa.com, planeacion@empresa.com, produccion@empresa.com</div>
+        <div><strong>Fecha:</strong> Hoy, 06:00 AM</div>
+        <div><strong>Asunto:</strong> <span style="color:#b91c1c; font-weight:600">[ALERTA INVENTRACK] Reporte Diario de Desviaciones y Retrasos de Producción</span></div>
+      </div>
+      <div class="email-body-mock">
+        <p>Estimado equipo interdisciplinario,</p><br>
+        <p>El barrido de control automatizado de las <strong>06:00 AM</strong> ha detectado las siguientes órdenes de producción (OP) en estado de <strong>desviación crítica por retraso en el cronograma</strong>:</p>
+        
+        <table style="width:100%; border-collapse:collapse; margin:14px 0; font-size:12px">
+          <thead>
+            <tr style="background:#f1f5f9; border-bottom:2px solid #cbd5e1; text-align:left">
+              <th style="padding:6px">OP</th>
+              <th style="padding:6px">Área</th>
+              <th style="padding:6px">Máquina</th>
+              <th style="padding:6px">Avance</th>
+              <th style="padding:6px">F. Límite</th>
+              <th style="padding:6px">Responsable</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filasOp}
+          </tbody>
+        </table>
+
+        <div style="background:#fffbeb; border:1px solid #fef3c7; border-radius:6px; padding:10px; font-size:12px; color:#b45309; margin-bottom:12px">
+          <strong>Acciones Requeridas por Área:</strong>
+          <ul style="margin-left:18px; margin-top:5px">
+            <li><strong>Planeación:</strong> Re-secuenciar cronogramas y ajustar prioridades.</li>
+            <li><strong>Producción:</strong> Indagar causales en máquina y acelerar turnos de ser viable.</li>
+            <li><strong>Calidad:</strong> Constatar que no existan bloqueos preventivos por no conformidades mecánicas.</li>
+            <li><strong>Logística:</strong> Validar abastecimiento de materia prima crítica en rack de salida.</li>
+          </ul>
+        </div>
+        
+        <p style="font-size:11px; color:#64748b">Por favor, no responder a este correo. Gestionar directamente en el aplicativo InvenTrack.</p>
+      </div>
+    </div>`;
+  }
+  openModal('modal-email-sim');
+}
+
+function enviarCorreoPrueba() {
+  toast('✉️ Correo de contingencia enviado a las 5 áreas involucradas.');
+  closeModal('modal-email-sim');
+}
+
+// ============================================================
+// NOTIFICACIONES
+// ============================================================
+function tplNotificaciones() {
+  return `<div class="panel">
+    <div class="panel-hdr"><span class="panel-title">Centro de notificaciones</span>
+      <button class="btn btn-sm btn-s" onclick="markAllRead()">Marcar todas como leídas</button>
+    </div>
+    ${DB.notificaciones.map(n=>`<div class="notif-item${n.leido?'':' unread'}" onclick="markRead('${n.id}')">
+      <div class="notif-icon" style="background:${n.bg}"><i class="ti ${n.icono}" style="color:${n.ic};font-size:17px"></i></div>
+      <div style="flex:1"><div style="font-size:13px;line-height:1.45">${n.msg}</div>
+      <div style="font-size:11px;color:#9ca3af;margin-top:2px">${n.tiempo}${n.leido?'':' · <span style="color:#1d4ed8;font-weight:500">No leída</span>'}</div></div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function markRead(id) { const n=DB.notificaciones.find(x=>x.id===id); if(n)n.leido=true; updateBadges(); renderPage('notificaciones'); }
+function markAllRead() { DB.notificaciones.forEach(n=>n.leido=true); updateBadges(); renderPage('notificaciones'); toast('Todas marcadas como leídas'); }
+
+// ============================================================
+// RECEPCIÓN
+// ============================================================
+function tplRecepcion() {
+  if (!can('canReleaseLote') && currentUser.rol!=='admin') return accessDeniedBlock('Recepción de materiales');
+  const rows = DB.lotes.map(l=>{
+    const cert=DB.certificados.find(c=>c.lote_id===l.id);
+    return `<tr>
+      <td style="font-weight:500">${l.numero}</td>
+      <td>${l.desc}<br><span style="font-size:11px;color:#9ca3af">${l.proveedor}</span></td>
+      <td>${l.cantidad_disponible}</td>
+      <td>${statusBadge(l.estado)}</td>
+      <td>${cert?certBadge(cert.estado):'<span class="badge bgr">Sin cert.</span>'}</td>
+      <td style="display:flex;gap:4px;flex-wrap:wrap">
+        ${can('canReleaseLote')&&l.estado==='en_cuarentena'?`<button class="btn btn-sm btn-p" onclick="marcarDisponible('${l.id}')">Liberar</button>`:''}
+        ${can('canReleaseLote')?`<button class="btn btn-sm btn-s" onclick="goToEtiq('${l.id}')"><i class="ti ti-tag"></i></button>`:''}
+      </td>
+    </tr>`;
+  }).join('');
+  return `<div class="panel">
+    <div class="panel-hdr"><span class="panel-title">Lotes recibidos</span>
+      <button class="btn btn-sm btn-p" onclick="openModal('modal-recep')"><i class="ti ti-plus"></i> Nueva recepción</button>
+    </div>
+    <div class="search-bar"><input class="search-input" type="text" placeholder="Buscar lote, material, proveedor..." oninput="filterTbody('rec-tbody',this.value)"></div>
+    <table><thead><tr><th style="width:16%">Lote</th><th style="width:26%">Material</th><th style="width:10%">Cant.</th><th style="width:16%">Estado</th><th style="width:16%">Certificado</th><th style="width:16%">Acción</th></tr></thead>
+    <tbody id="rec-tbody">${rows}</tbody></table>
+  </div>`;
+}
+
+function marcarDisponible(id) {
+  const lote=DB.lotes.find(l=>l.id===id);
+  const cert=DB.certificados.find(c=>c.lote_id===id);
+  if(!can('canReleaseLote')){ denied(); return; }
+  if(cert&&cert.estado==='pendiente'){ toast('⚠️ Hay un certificado pendiente de validar. Notificando a Calidad...'); addNotif('cert','ti-certificate','#dbeafe','#1d4ed8',`Logística solicita revisión urgente: certificado lote ${lote.numero}.`); return; }
+  if(cert&&cert.estado==='rechazado'){ toast('❌ Certificado rechazado. No se puede liberar este lote.'); return; }
+  lote.estado='disponible';
+  addNotif('stock','ti-package','#dcfce7','#15803d',`Lote ${lote.numero} disponible. Notificado a Planeación y Producción.`);
+  toast('✅ Lote liberado. Planeación notificada.');
+  updateBadges(); renderPage('recepcion');
+}
+
+function registrarRecepcion() {
+  const tipo=document.getElementById('r-tipo').value;
+  const cod=document.getElementById('r-cod').value;
+  const desc=document.getElementById('r-desc').value;
+  const lon=document.getElementById('r-lon').value;
+  const esp=document.getElementById('r-esp').value;
+  const col=document.getElementById('r-col').value;
+  const can2=document.getElementById('r-can').value;
+  const pro=document.getElementById('r-pro').value;
+  const ubi=document.getElementById('r-ubi').value;
+  if(!tipo||!cod||!desc||!lon||!esp||!col||!can2||!pro||!ubi){ toast('⚠️ Completa todos los campos obligatorios'); return; }
+  const id='l'+Date.now();
+  const num='L-2026-'+(String(DB.lotes.length+1).padStart(4,'0'));
+  
+  DB.lotes.push({
+    id,numero:num,tipo,codigo:cod,desc,longitud:+lon,
+    diametro:+(document.getElementById('r-dia').value||0),espesor:+esp,colada:col,
+    cantidad_recibida:+can2,cantidad_disponible:+can2,ubicacion:ubi,
+    fecha:new Date().toISOString().split('T')[0],proveedor:pro,estado:'en_cuarentena'
+  });
+  
+  // Agregar certificado pendiente por defecto
+  DB.certificados.push({
+    id: 'c'+Date.now(), lote_id: id, tipo: 'MPA', archivo: `cert_${num}.pdf`,
+    fecha_emision: new Date().toISOString().split('T')[0], firmado: 'Lab Certificación S.A.',
+    estado: 'pendiente', obs: '',
+    campos: { norma:'ISO/ASTM', traccion:390, elasticidad:220, elongacion:16, dureza:140, quimico:[{e:'C',p:0.10},{e:'Mn',p:0.75}] }
+  });
+
+  DB.movimientos.unshift({material:desc,tipo:'entrada',cant:`+${can2}`,usuario:currentUser.nombre,hora:'Ahora'});
+  addNotif('op','ti-truck-delivery','#eff6ff','#1d4ed8',`Nuevo lote ${num} (${desc}) recibido por Logística. Pendiente certificado.`);
+  closeModal('modal-recep'); toast(`✅ Lote ${num} registrado`); updateBadges(); renderPage('recepcion');
+}
+
+// ============================================================
+// STOCK
+// ============================================================
+function tplStock(filter) {
+  const f=filter||'';
+  const rows=(f?DB.lotes.filter(l=>l.estado===f):DB.lotes).map(l=>`<tr>
+    <td style="font-weight:500">${l.numero}</td>
+    <td>${l.desc}</td>
+    <td><span class="badge bgr">${l.tipo}</span></td>
+    <td>${l.longitud}mm</td>
+    <td>${l.diametro||'-'}mm</td>
+    <td>${l.espesor}mm</td>
+    <td>${l.colada}</td>
+    <td style="font-weight:700">${l.cantidad_disponible}</td>
+    <td>${statusBadge(l.estado)}</td>
+  </tr>`).join('');
+  return `<div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">Total lotes</div><div class="kpi-val">${DB.lotes.length}</div></div>
+    <div class="kpi"><div class="kpi-label">Disponibles</div><div class="kpi-val">${DB.lotes.filter(l=>l.estado==='disponible').length}</div></div>
+    <div class="kpi"><div class="kpi-label">Bloqueados</div><div class="kpi-val">${DB.lotes.filter(l=>l.estado==='bloqueado').length}</div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-hdr"><span class="panel-title">Kardex de inventario</span>
+      ${can('canReleaseLote')?`<button class="btn btn-sm btn-p" onclick="populateSalidaSel();openModal('modal-salida')"><i class="ti ti-minus"></i> Registrar salida</button>`:`<span class="badge bgr" style="font-size:11px"><i class="ti ti-lock"></i> Solo lectura</span>`}
+    </div>
+    <div class="filter-row">
+      <button class="chip${!f?' active':''}" onclick="document.getElementById('app-content').innerHTML=tplStock('');">Todos</button>
+      <button class="chip${f==='disponible'?' active':''}" onclick="document.getElementById('app-content').innerHTML=tplStock('disponible')">Disponibles</button>
+      <button class="chip${f==='en_cuarentena'?' active':''}" onclick="document.getElementById('app-content').innerHTML=tplStock('en_cuarentena')">En cuarentena</button>
+      <button class="chip${f==='bloqueado'?' active':''}" onclick="document.getElementById('app-content').innerHTML=tplStock('bloqueado')">Bloqueados</button>
+    </div>
+    <div class="search-bar"><input class="search-input" type="text" placeholder="Buscar en inventario..." oninput="filterTbody('stock-tbody',this.value)"></div>
+    <table style="table-layout:fixed"><thead><tr><th style="width:14%">Lote</th><th style="width:22%">Material</th><th style="width:10%">Tipo</th><th style="width:9%">Long.</th><th style="width:8%">Diám.</th><th style="width:8%">Esp.</th><th style="width:9%">Colada</th><th style="width:8%">Disp.</th><th style="width:12%">Estado</th></tr></thead>
+    <tbody id="stock-tbody">${rows}</tbody></table>
+  </div>`;
+}
+
+function populateSalidaSel() {
+  const sel=document.getElementById('sal-lote');
+  sel.innerHTML=DB.lotes.filter(l=>l.estado==='disponible').map(l=>`<option value="${l.id}">${l.numero} — ${l.desc} (${l.cantidad_disponible} disp.)</option>`).join('');
+}
+
+function registrarSalida() {
+  if(!can('canReleaseLote')){ denied(); closeModal('modal-salida'); return; }
+  const loteId=document.getElementById('sal-lote').value;
+  const cant=+document.getElementById('sal-cant').value;
+  const lote=DB.lotes.find(l=>l.id===loteId);
+  if(!lote||!cant||cant<=0){ toast('⚠️ Selecciona lote y cantidad válida'); return; }
+  if(cant>lote.cantidad_disponible){ toast(`❌ Solo hay ${lote.cantidad_disponible} disponibles`); return; }
+  lote.cantidad_disponible-=cant;
+  DB.movimientos.unshift({material:lote.desc,tipo:'salida',cant:`-${cant}`,usuario:currentUser.nombre,hora:'Ahora'});
+  closeModal('modal-salida'); toast(`✅ Salida de ${cant} und. de ${lote.desc} registrada`); renderPage('stock');
+}
+
+// ============================================================
+// ETIQUETAS
+// ============================================================
+function tplEtiquetas() {
+  if(!can('canReleaseLote')) return accessDeniedBlock('Módulo de etiquetas');
+  const opts=DB.lotes.map(l=>`<option value="${l.id}">${l.numero} — ${l.desc}</option>`).join('');
+  return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:13px">
+    <div class="panel">
+      <div class="panel-hdr"><span class="panel-title">Configurar rótulo</span></div>
+      <div style="padding:15px">
+        <div class="fg"><label>Lote</label><select id="etiq-lote" onchange="updateEtiqPreview()">${opts}</select></div>
+        <div class="fg"><label>Empresa</label><input id="etiq-emp" value="InvenTrack S.A.S." oninput="updateEtiqPreview()"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn btn-s" onclick="updateEtiqPreview()"><i class="ti ti-eye"></i> Previsualizar</button>
+          <button class="btn btn-p" onclick="printEtiq()"><i class="ti ti-printer"></i> Imprimir</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><span class="panel-title">Vista previa de Rótulo</span></div>
+      <div id="etiq-prev-cont" style="padding:15px;min-height:200px;display:flex;align-items:center;justify-content:center">
+        <span style="color:#9ca3af;font-size:13px">Selecciona un lote para previsualizar</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function postEtiq() { setTimeout(()=>{ updateEtiqPreview(); },50); }
+
+function updateEtiqPreview() {
+  const sel=document.getElementById('etiq-lote');
+  const emp=document.getElementById('etiq-emp');
+  const cont=document.getElementById('etiq-prev-cont');
+  if(!sel||!cont) return;
+  const id=sel.value;
+  if(!id){ cont.innerHTML='<span style="color:#9ca3af;font-size:13px">Selecciona un lote</span>'; return; }
+  const l=DB.lotes.find(x=>x.id===id);
+  const cert=DB.certificados.find(c=>c.lote_id===id);
+  const cs=cert?cert.estado:'sin cert.';
+  const cc=cs==='validado'?'#16a34a':cs==='pendiente'?'#b45309':'#b91c1c';
+  cont.innerHTML=`<div class="etiq-preview">
+    <div class="etiq-title">${emp?emp.value:'InvenTrack'}</div>
+    <div class="etiq-row"><span>Código:</span><strong>${l.codigo}</strong></div>
+    <div class="etiq-row"><span>Descripción:</span><span>${l.desc}</span></div>
+    <div class="etiq-row"><span>Lote:</span><strong>${l.numero}</strong></div>
+    <div class="etiq-row"><span>Tipo:</span><span>${l.tipo}</span></div>
+    <div class="etiq-row"><span>Colada:</span><span>${l.colada}</span></div>
+    <div class="etiq-row"><span>Long.:</span><span>${l.longitud}mm</span></div>
+    <div class="etiq-row"><span>Diám.:</span><span>${l.diametro||'N/A'}mm</span></div>
+    <div class="etiq-row"><span>Esp.:</span><span>${l.espesor}mm</span></div>
+    <div class="etiq-row"><span>Cant.:</span><strong>${l.cantidad_disponible}</strong></div>
+    <div class="etiq-row"><span>Proveedor:</span><span>${l.proveedor}</span></div>
+    <div class="etiq-row"><span>Fecha:</span><span>${l.fecha}</span></div>
+    <div class="etiq-row"><span>Cert.:</span><span style="color:${cc};font-weight:700">${cs.toUpperCase()}</span></div>
+    <div class="qr-ph"><i class="ti ti-qrcode" style="font-size:26px;color:#9ca3af"></i></div>
+    <div style="text-align:center;font-size:9px;color:#9ca3af">QR → /lote/${l.id}</div>
+  </div>`;
+}
+
+function goToEtiq(id) { goTo('etiquetas'); setTimeout(()=>{ const s=document.getElementById('etiq-lote'); if(s){s.value=id; updateEtiqPreview();} },100); }
+function printEtiq() { const s=document.getElementById('etiq-lote'); if(!s||!s.value){ toast('⚠️ Selecciona un lote'); return; } toast('🖨️ Enviando a impresora / generando PDF...'); }
+
+// ============================================================
+// OPs
+// ============================================================
+function tplOPs() {
+  const can_create = can('canCreateOP');
+  const cols = ['pendiente','asignada','en_proceso','completada'];
+  const colNames = {pendiente:'Pendiente',asignada:'Asignada',en_proceso:'En proceso',completada:'Completada'};
+  const groups = {};
+  cols.forEach(c=>groups[c]=[]);
+  
+  DB.ops.forEach(op=>{ 
+    const k=op.estado==='pausada'||op.estado==='bloqueada'?'pendiente':op.estado; 
+    if(groups[k]) groups[k].push(op); 
+    else groups.pendiente.push(op); 
+  });
+  
+  const kanban=cols.map(col=>`<div class="k-col">
+    <div class="k-hdr">${colNames[col]} <span class="badge bgr">${groups[col].length}</span></div>
+    ${groups[col].map(op=>`<div class="k-card" onclick="showOPDetail('${op.id}')">
+      <div class="k-title">${op.numero} ${semaDot(op)}</div>
+      <div class="k-sub">${prioBadge(op.prioridad)} · ${op.area}</div>
+      <div class="k-sub" style="margin-top:3px; display:flex; justify-content:space-between; align-items:center">
+        <span>${op.maquina_nombre||'Sin asignar'}</span>
+        ${estaOpRetrasada(op)?`<span style="color:#ef4444; font-weight:bold; font-size:9px"><i class="ti ti-mail-flash"></i> RETRASO</span>`:''}
+      </div>
+      ${op.estado==='en_proceso'?`<div class="prog-bg" style="margin-top:5px"><div class="prog-bar" style="width:${op.progreso}%;background:${op.progreso>=80?'#f59e0b':'#22c55e'}"></div></div>`:''}
+    </div>`).join('')}
+  </div>`).join('');
+  
+  const listRows=DB.ops.map(op=>`<tr>
+    <td style="font-weight:600">${op.numero}</td>
+    <td>${prioBadge(op.prioridad)}</td>
+    <td>${estaOpRetrasada(op)?'<span class="badge br"><i class="ti ti-alert-triangle"></i> Retrasada</span>':opBadge(op.estado)}</td>
+    <td>${op.area}</td>
+    <td>${op.maquina_nombre||'<span style="color:#9ca3af">—</span>'}</td>
+    <td style="font-size:12px;color:#6b7280">${op.fin?op.fin.split('T')[0]:'-'}</td>
+    <td><button class="btn btn-sm btn-s" onclick="showOPDetail('${op.id}')">Ver</button></td>
+  </tr>`).join('');
+  
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div class="tabs" style="border:none;padding:0;flex:1">
+      <div class="tab active" id="tab-k" onclick="swTab('kanban',this)">Kanban</div>
+      <div class="tab" id="tab-l" onclick="swTab('lista',this)">Lista</div>
+    </div>
+    ${can_create?`<button class="btn btn-p btn-sm" onclick="populateOpMaq();openModal('modal-op')"><i class="ti ti-plus"></i> Nueva OP</button>`:`<span class="badge bgr"><i class="ti ti-lock"></i> Solo lectura</span>`}
+  </div>
+  <div id="ops-kanban"><div class="kanban">${kanban}</div></div>
+  <div id="ops-lista" style="display:none">
+    <div class="panel">
+      <div class="search-bar"><input class="search-input" placeholder="Buscar OP..." oninput="filterTbody('ops-list-tbody',this.value)"></div>
+      <table><thead><tr><th style="width:13%">OP</th><th style="width:13%">Prioridad</th><th style="width:15%">Estado</th><th style="width:15%">Área</th><th style="width:16%">Máquina</th><th style="width:14%">ETA</th><th style="width:14%">Acción</th></tr></thead>
+      <tbody id="ops-list-tbody">${listRows}</tbody></table>
+    </div>
+  </div>`;
+}
+
+function swTab(tab,el) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); el.classList.add('active');
+  document.getElementById('ops-kanban').style.display=tab==='kanban'?'block':'none';
+  document.getElementById('ops-lista').style.display=tab==='lista'?'block':'none';
+}
+
+function populateOpMaq() {
+  const sel=document.getElementById('op-maq');
+  sel.innerHTML=`<option value="">Sin asignar</option>`+DB.maquinas.filter(m=>m.estado==='operativa').map(m=>`<option value="${m.id}">${m.nombre} — ${m.area}</option>`).join('');
+}
+
+function crearOP() {
+  if(!can('canCreateOP')){ denied(); closeModal('modal-op'); return; }
+  const num=document.getElementById('op-num').value||`OP-${1000+DB.ops.length+1}`;
+  const prio=document.getElementById('op-prio').value;
+  const maqId=document.getElementById('op-maq').value;
+  const maq=DB.maquinas.find(m=>m.id===maqId);
+  const ini=document.getElementById('op-ini').value;
+  const fin=document.getElementById('op-fin').value;
+  if(!selectedOpItems.length){ toast('⚠️ Agrega al menos un material'); return; }
+  
+  DB.ops.push({
+    id:'op'+Date.now(),numero:num,prioridad:prio,estado:maqId?'asignada':'pendiente',
+    items:selectedOpItems.map(i=>({lote_id:i.id,cantidad:i.cant,lote_num:i.lote_num,desc:i.desc})),
+    maquina:maqId||null,maquina_nombre:maq?maq.nombre:null,area:maq?maq.area:'Sin asignar',
+    inicio:ini,fin,planeador:currentUser.nombre,progreso:0,novedades:[]
+  });
+  selectedOpItems=[];
+  if(document.getElementById('op-items-sel')) document.getElementById('op-items-sel').innerHTML='';
+  closeModal('modal-op');
+  addNotif('op','ti-clipboard-list','#eff6ff','#1d4ed8',`Nueva ${num} creada (${prio}). Planeador: ${currentUser.nombre}.`);
+  toast(`✅ ${num} creada`); updateBadges(); renderPage('ops');
+}
+
+function showOPDetail(id) {
+  const op=DB.ops.find(o=>o.id===id);
+  const items=op.items.map(it=>{ 
+    const l=DB.lotes.find(l=>l.id===it.lote_id); 
+    return `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:13px">
+      <span>${l?l.desc:it.desc||'Material'}</span>
+      <span style="font-weight:600">Cant: ${it.cantidad} · Lote ${it.lote_num}</span>
+    </div>`; 
+  }).join('');
+  
+  const novedades=op.novedades&&op.novedades.length?op.novedades.map(n=>`
+    <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:7px;padding:9px 11px;margin-top:7px;font-size:12px">
+      <strong>${n.tipo.toUpperCase()}</strong> — ${n.desc} <span style="color:#9ca3af">(${n.fecha})</span>
+    </div>`).join(''):'<span style="font-size:12px;color:#9ca3af">Sin novedades</span>';
+  
+  const retrasada = estaOpRetrasada(op);
+  
+  document.getElementById('op-det-title').innerHTML=`${op.numero} — ${op.area} <button class="btn-icon" onclick="closeModal('modal-op-det')"><i class="ti ti-x"></i></button>`;
+  document.getElementById('op-det-body').innerHTML=`
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px">
+      ${opBadge(op.estado)} 
+      ${prioBadge(op.prioridad)} 
+      ${retrasada ? '<span class="badge br"><i class="ti ti-alert-triangle"></i> RETRASADA</span>' : ''}
+      ${semaDot(op)}
+    </div>
+    <div class="mpa-grid" style="margin-bottom:11px">
+      <div class="mpa-f"><div class="mpa-l">Máquina</div><div class="mpa-v">${op.maquina_nombre||'Sin asignar'}</div></div>
+      <div class="mpa-f"><div class="mpa-l">Planeador</div><div class="mpa-v">${op.planeador}</div></div>
+      <div class="mpa-f"><div class="mpa-l">Inicio est.</div><div class="mpa-v">${op.inicio?op.inicio.replace('T',' '):'-'}</div></div>
+      <div class="mpa-f"><div class="mpa-l">Fin est.</div><div class="mpa-v">${op.fin?op.fin.replace('T',' '):'-'}</div></div>
+    </div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px">Materiales</div>${items}
+    ${op.estado!=='completada'?`<div style="margin-top:10px"><div style="font-size:13px;font-weight:600;margin-bottom:5px">Progreso: ${op.progreso}%</div><div class="prog-bg" style="height:9px"><div class="prog-bar" style="width:${op.progreso}%;height:9px;background:${op.progreso>=80?'#f59e0b':'#22c55e'}"></div></div></div>`:''}
+    <div style="margin-top:11px"><div style="font-size:13px;font-weight:600;margin-bottom:5px">Historial de Novedades</div>${novedades}</div>
+    ${retrasada ? `
+      <div class="email-mockup" style="margin-top:15px">
+        <div style="font-size:11px; font-weight:600; color:#b91c1c; margin-bottom:6px"><i class="ti ti-mail-flash"></i> Alerta de Correo Diario de las 6:00 AM Despachada</div>
+        <button class="btn btn-sm btn-danger" onclick="abrirSimulador6AM()"><i class="ti ti-mail-forward"></i> Abrir Maqueta de Correo</button>
+      </div>
+    `:''}
+  `;
+  
+  let acts=`<button class="btn btn-s" onclick="closeModal('modal-op-det')">Cerrar</button>`;
+  if(can('canAssignMaq')&&op.estado==='pendiente') acts+=`<button class="btn btn-p" onclick="closeModal('modal-op-det');populateOpMaq();openModal('modal-op')">Reasignar</button>`;
+  if(can('canEditProg')&&(op.estado==='asignada'||op.estado==='en_proceso'||op.estado==='pausada')) acts+=`<button class="btn btn-p" onclick="closeModal('modal-op-det');openProgModal('${id}')"><i class="ti ti-edit"></i> Actualizar progreso</button>`;
+  
+  // Calidad o admin pueden liberar OPs bloqueadas o retroceder rechazos
+  if(can('canLiberar') && (op.estado==='bloqueada' || op.estado==='pendiente')) {
+    acts+=`<button class="btn btn-success" onclick="liberarOP('${id}')"><i class="ti ti-lock-open"></i> Reversar Rechazo / Liberar</button>`;
+  }
+  
+  if(can('canNovedad')) acts+=`<button class="btn btn-danger" onclick="closeModal('modal-op-det');openNovedadForOP('${id}')"><i class="ti ti-alert-triangle"></i> Registrar Novedad</button>`;
+  
+  document.getElementById('op-det-actions').innerHTML=acts;
+  openModal('modal-op-det');
+}
+
+function liberarOP(id) {
+  if(!can('canLiberar')){ denied(); return; }
+  const op=DB.ops.find(o=>o.id===id);
+  op.estado='pendiente'; 
+  op.progreso=0;
+  closeModal('modal-op-det');
+  addNotif('op','ti-lock-open','#dcfce7','#15803d',`OP ${op.numero} liberada tras reversión de rechazo por Calidad.`);
+  toast(`✅ OP ${op.numero} liberada con éxito.`);
+  renderPage(currentPage);
+}
+
+function openProgModal(id) {
+  if(!can('canEditProg')){ denied(); return; }
+  const op=DB.ops.find(o=>o.id===id);
+  document.getElementById('prog-op-id').value=id;
+  document.getElementById('prog-title').innerHTML=`Actualizar progreso — ${op.numero} <button class="btn-icon" onclick="closeModal('modal-prog')"><i class="ti ti-x"></i></button>`;
+  document.getElementById('prog-slider').value=op.progreso;
+  document.getElementById('prog-val-lbl').textContent=op.progreso;
+  document.getElementById('prog-estado').value=op.estado==='pausada'?'pausada':'en_proceso';
+  openModal('modal-prog');
+}
+
+function guardarProgreso() {
+  if(!can('canEditProg')){ denied(); return; }
+  const id=document.getElementById('prog-op-id').value;
+  const op=DB.ops.find(o=>o.id===id);
+  const prog=+document.getElementById('prog-slider').value;
+  const estado=document.getElementById('prog-estado').value;
+  const nota=document.getElementById('prog-nota').value;
+  op.progreso=prog; op.estado=estado==='completada'?'completada':prog>=100?'completada':estado;
+  if(nota) op.novedades.push({tipo:'progreso',desc:nota,accion:'',fecha:new Date().toISOString().split('T')[0],por:currentUser.username});
+  closeModal('modal-prog');
+  addNotif('op','ti-chart-line','#dbeafe','#1d4ed8',`OP ${op.numero}: progreso actualizado a ${prog}% por Producción.`);
+  toast(`✅ Progreso actualizado: ${prog}%`); renderPage(currentPage);
+}
+
+function searchMat(q) {
+  const res=document.getElementById('mat-results');
+  if(!q){res.style.display='none';return;}
+  const found=DB.lotes.filter(l=>(l.desc.toLowerCase()+l.codigo.toLowerCase()).includes(q.toLowerCase())&&l.estado==='disponible');
+  res.style.display='block';
+  res.innerHTML=found.length?found.map(l=>`<div class="sel-mat-item" onclick="addOpItem('${l.id}','${l.desc}','${l.numero}')"><div><strong>${l.codigo}</strong> — ${l.desc}</div><span class="badge bg">${l.cantidad_disponible} disp.</span></div>`).join(''):'<div style="padding:8px 11px;color:#9ca3af;font-size:12px">Sin coincidencias en stock disponible</div>';
+}
+
+function addOpItem(id,desc,loteNum) {
+  if(selectedOpItems.find(i=>i.id===id)){toast('Ya fue agregado');return;}
+  selectedOpItems.push({id,desc,lote_id:id,lote_num:loteNum,cant:1});
+  document.getElementById('mat-results').style.display='none';
+  document.getElementById('mat-search').value='';
+  renderSelItems();
+}
+
+function renderSelItems() {
+  document.getElementById('op-items-sel').innerHTML=selectedOpItems.map((it,i)=>`
+    <div class="sel-item"><span>${it.desc} <span style="font-size:11px;color:#6b7280">(${it.lote_num})</span></span>
+    <div style="display:flex;align-items:center;gap:5px">
+      <input type="number" min="1" value="${it.cant}" onchange="selectedOpItems[${i}].cant=+this.value" style="width:55px;padding:3px 6px;border:1px solid #d1d5db;border-radius:5px;font-size:12px">
+      <button class="btn-icon" style="width:24px;height:24px;color:#dc2626;border-color:#fca5a5" onclick="selectedOpItems.splice(${i},1);renderSelItems()"><i class="ti ti-x"></i></button>
+    </div></div>`).join('');
+}
+
+// ============================================================
+// MÁQUINAS
+// ============================================================
+function tplMaquinas() {
+  if(!can('canAssignMaq')&&currentUser.rol!=='admin') return accessDeniedBlock('Gestión de máquinas');
+  const rows=DB.maquinas.map(m=>{ 
+    const op=DB.ops.find(o=>o.maquina===m.id&&(o.estado==='en_proceso'||o.estado==='asignada'));
+    return `<tr><td style="font-weight:600">${m.nombre}</td><td>${m.area}</td><td>${maqBadge(m.estado)}</td>
+    <td>${op?`${op.numero} ${opBadge(op.estado)}`:'<span style="color:#9ca3af">Libre</span>'}</td>
+    <td><select onchange="cambiarEstadoMaq('${m.id}',this.value)" style="padding:4px 7px;border:1px solid #d1d5db;border-radius:5px;font-size:12px">
+      <option ${m.estado==='operativa'?'selected':''}>operativa</option>
+      <option ${m.estado==='mantenimiento'?'selected':''}>mantenimiento</option>
+      <option ${m.estado==='parada'?'selected':''}>parada</option>
+    </select></td></tr>`;
+  }).join('');
+  return `<div class="panel">
+    <div class="panel-hdr"><span class="panel-title">Máquinas y áreas</span>
+      <button class="btn btn-sm btn-p" onclick="openModal('modal-maq')"><i class="ti ti-plus"></i> Nueva</button>
+    </div>
+    <table><thead><tr><th style="width:20%">Nombre</th><th style="width:18%">Área</th><th style="width:18%">Estado</th><th style="width:26%">OP asignada</th><th style="width:18%">Cambiar estado</th></tr></thead>
+    <tbody>${rows}</tbody></table>
+  </div>`;
+}
+
+function cambiarEstadoMaq(id,est) { const m=DB.maquinas.find(x=>x.id===id); if(m){m.estado=est; toast(`✅ ${m.nombre} → ${est}`);} }
+
+function crearMaquina() {
+  const n=document.getElementById('maq-nom').value;
+  const a=document.getElementById('maq-area').value;
+  const e=document.getElementById('maq-est').value;
+  if(!n){ toast('⚠️ Nombre obligatorio'); return; }
+  DB.maquinas.push({id:'mc'+Date.now(),nombre:n,area:a,estado:e});
+  closeModal('modal-maq'); toast(`✅ Máquina ${n} creada`); renderPage('maquinas');
+}
+
+// ============================================================
+// PRODUCCIÓN
+// ============================================================
+function tplProduccion() {
+  const activas=DB.ops.filter(o=>['asignada','en_proceso','pausada'].includes(o.estado) || estaOpRetrasada(o));
+  const rows=activas.map(op=>`<tr>
+    <td style="font-weight:600">${op.numero}</td>
+    <td>${op.items.map(it=>it.desc||it.lote_num).join(', ')}</td>
+    <td>${op.maquina_nombre||'—'}</td>
+    <td>${estaOpRetrasada(op)?'<span class="badge br"><i class="ti ti-alert-triangle"></i> Retrasada</span>':opBadge(op.estado)}</td>
+    <td>${semaDot(op)} ${op.progreso}%</td>
+    <td style="display:flex;gap:4px;flex-wrap:wrap">
+      ${can('canEditProg')?`<button class="btn btn-sm btn-p" onclick="openProgModal('${op.id}')"><i class="ti ti-edit"></i> Progreso</button>`:''}
+      <button class="btn btn-sm btn-s" onclick="showOPDetail('${op.id}')">Ver</button>
+    </td>
+  </tr>`).join('');
+  return `<div class="panel">
+    <div class="panel-hdr"><span class="panel-title">OP activas asignadas a producción</span>
+      ${!can('canEditProg')?'<span class="badge bgr"><i class="ti ti-lock"></i> Sin permiso de edición</span>':''}
+    </div>
+    <table><thead><tr><th style="width:12%">OP</th><th style="width:24%">Material</th><th style="width:14%">Máquina</th><th style="width:14%">Estado</th><th style="width:14%">Progreso</th><th style="width:22%">Acción</th></tr></thead>
+    <tbody>${rows||'<tr><td colspan="6" style="text-align:center;color:#9ca3af;padding:20px">No hay OP activas</td></tr>'}</tbody></table>
+  </div>`;
+}
+
+// ============================================================
+// CALIDAD Y CERTIFICADOS (Logística puede "ver", Calidad puede validar/rechazar/reversar)
+// ============================================================
+function tplCalidad() {
+  // Verificamos si tiene acceso a la página (Logística ahora tiene acceso como Solo Lectura)
+  if(!currentPerm.pages.includes('calidad')) return accessDeniedBlock('Módulo de Calidad');
+  
+  const tienePermisoValidar = can('canValidateCert');
+
+  const certs=DB.certificados.map(c=>{ 
+    const lote=DB.lotes.find(l=>l.id===c.lote_id); 
+    return `<div style="display:flex;align-items:center;gap:11px;padding:12px 15px;border-bottom:1px solid #f3f4f6">
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:3px">
+          <span style="font-weight:600;font-size:13px">${c.tipo} — ${lote?lote.numero:'?'}</span>
+          ${certBadge(c.estado)}
+        </div>
+        <div style="font-size:12px;color:#6b7280">${lote?lote.desc:''} · Lab: ${c.firmado} · ${c.fecha_emision}</div>
+        ${c.obs?`<div style="font-size:12px;color:#b91c1c;margin-top:2px">Observación: ${c.obs}</div>`:''}
+      </div>
+      <div style="display:flex;gap:5px;flex-shrink:0">
+        <button class="btn btn-sm btn-s" onclick="showCertDet('${c.id}')"><i class="ti ti-eye"></i> Inspeccionar MPA</button>
+        
+        ${tienePermisoValidar && c.estado==='pendiente' ? `
+          <button class="btn btn-sm btn-success" onclick="validarCert('${c.id}','validado')"><i class="ti ti-check"></i> Validar</button>
+          <button class="btn btn-sm btn-danger" onclick="validarCert('${c.id}','rechazado')"><i class="ti ti-x"></i> Rechazar</button>
+        `:''}
+
+        ${tienePermisoValidar && (c.estado==='validado' || c.estado==='rechazado') ? `
+          <button class="btn btn-sm btn-warning" onclick="reversarDecisionCert('${c.id}')" title="Reversar dictamen de calidad"><i class="ti ti-arrow-back-up"></i> Reversar</button>
+        `:''}
+      </div>
+    </div>`; 
+  }).join('');
+  
+  const novedades=DB.ops.filter(o=>o.novedades&&o.novedades.length).flatMap(o=>o.novedades.map(n=>({...n,op_num:o.numero}))).map(n=>`<div class="nov-item">
+    <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-weight:600;font-size:13px">${n.op_num} — ${n.tipo.toUpperCase()}</span><span style="font-size:11px;color:#9ca3af">${n.fecha} · ${n.por}</span></div>
+    <div style="font-size:12px;color:#374151">${n.desc}</div>
+    ${n.accion?`<div style="font-size:12px;color:#6b7280;margin-top:2px">Acción: ${n.accion}</div>`:''}
+  </div>`).join('');
+  
+  return `
+  ${!tienePermisoValidar ? `
+    <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:12px; color:#1e40af">
+      <i class="ti ti-info-circle"></i> <strong>Modo Solo Consulta:</strong> Tu rol permite visualizar los ensayos mecánicos y MPA de materiales, pero no autorizar su liberación ni registrar novedades.
+    </div>
+  `:''}
+  
+  <div class="panel" style="margin-bottom:14px">
+    <div class="panel-hdr"><span class="panel-title">Dictámenes de Calidad en Certificados Mecánicos (MPA)</span>
+      ${can('canNovedad')?`<button class="btn btn-sm btn-p" onclick="openNovedad()"><i class="ti ti-alert-triangle"></i> + Registrar Novedad</button>`:''}
+    </div>${certs}
+  </div>
+  <div class="panel">
+    <div class="panel-hdr"><span class="panel-title">Novedades y Desviaciones de Planta</span></div>
+    <div style="padding:12px 15px" class="nov-list">${novedades||'<span style="color:#9ca3af;font-size:13px">Sin novedades registradas</span>'}</div>
+  </div>`;
+}
+
+function showCertDet(id) {
+  const c=DB.certificados.find(x=>x.id===id);
+  const lote=DB.lotes.find(l=>l.id===c.lote_id);
+  const q=c.campos;
+  const tienePermisoValidar = can('canValidateCert');
+
+  document.getElementById('cert-det-title').innerHTML=`Certificado ${c.tipo} — ${lote?lote.numero:''} <button class="btn-icon" onclick="closeModal('modal-cert-det')"><i class="ti ti-x"></i></button>`;
+  document.getElementById('cert-det-body').innerHTML=`
+    <div style="display:flex;gap:8px;margin-bottom:11px">
+      ${certBadge(c.estado)}
+      <span style="font-size:12px;color:#6b7280">${c.fecha_emision} · ${c.firmado}</span>
+    </div>
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:600;margin-bottom:8px"><i class="ti ti-file-certificate"></i> MPA — Norma Técnica de Ensayo: ${q.norma}</div>
+      <div class="mpa-grid">
+        <div class="mpa-f"><div class="mpa-l">Tracción (Esfuerzo Máx.)</div><div class="mpa-v">${q.traccion} MPa</div></div>
+        <div class="mpa-f"><div class="mpa-l">Elasticidad (Fluencia)</div><div class="mpa-v">${q.elasticidad} MPa</div></div>
+        <div class="mpa-f"><div class="mpa-l">Elongación (Porcentaje)</div><div class="mpa-v">${q.elongacion} %</div></div>
+        <div class="mpa-f"><div class="mpa-l">Dureza Promedio</div><div class="mpa-v">${q.dureza} HV</div></div>
+      </div>
+      <div style="margin-top:9px">
+        <div class="mpa-l" style="font-weight:600;margin-bottom:5px">Análisis químico de colada</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">${q.quimico.map(e=>`<span class="badge bgr">${e.e}: ${e.p}%</span>`).join('')}</div>
+      </div>
+    </div>
+    ${c.obs?`<div style="padding:8px 10px;background:#fffbeb;border-radius:7px;font-size:12px;color:#854f0b;margin-bottom:10px"><i class="ti ti-alert-triangle"></i> Observación de revisión: ${c.obs}</div>`:''}`;
+  
+  document.getElementById('cert-det-actions').innerHTML=`
+    <button class="btn btn-s" onclick="closeModal('modal-cert-det')">Cerrar</button>
+    <button class="btn btn-s" onclick="toast('📥 Descargando PDF del ensayo...')"><i class="ti ti-download"></i> PDF</button>
+    
+    ${tienePermisoValidar && c.estado==='pendiente' ? `
+      <button class="btn btn-success" onclick="validarCert('${id}','validado');closeModal('modal-cert-det')"><i class="ti ti-check"></i> Validar</button>
+      <button class="btn btn-danger" onclick="validarCert('${id}','rechazado');closeModal('modal-cert-det')"><i class="ti ti-x"></i> Rechazar</button>
+    `:''}
+
+    ${tienePermisoValidar && (c.estado==='validado' || c.estado==='rechazado') ? `
+      <button class="btn btn-warning" onclick="reversarDecisionCert('${id}');closeModal('modal-cert-det')"><i class="ti ti-arrow-back-up"></i> Reversar Rechazo / Aprobación</button>
+    `:''}
+  `;
+  openModal('modal-cert-det');
+}
+
+// Función para Reversar el Rechazo/Validación de Certificados
+function reversarDecisionCert(id) {
+  if(!can('canValidateCert')) { denied(); return; }
+  const c = DB.certificados.find(x=>x.id===id);
+  const lote = DB.lotes.find(l=>l.id===c.lote_id);
+  
+  c.estado = 'pendiente';
+  c.obs = 'Dictamen anterior reversado por control de calidad para re-inspección.';
+  lote.estado = 'en_cuarentena';
+  
+  // Si había OPs bloqueadas, pasarlas a pendientes de inspección
+  DB.ops.filter(o => o.items.some(it=>it.lote_id===lote.id) && o.estado==='bloqueada').forEach(o => {
+    o.estado = 'pendiente';
+  });
+
+  addNotif('cert','ti-refresh','#ede9fe','#6d28d9',`Dictamen de calidad del lote ${lote.numero} reversado a 'Pendiente'.`);
+  toast('🔄 Dictamen reversado a Pendiente. El lote vuelve a Cuarentena.');
+  updateBadges(); 
+  renderPage(currentPage);
+}
+
+function validarCert(id,estado) {
+  if(!can('canValidateCert')){ denied(); return; }
+  const c=DB.certificados.find(x=>x.id===id);
+  const lote=DB.lotes.find(l=>l.id===c.lote_id);
+  c.estado=estado;
+  
+  if(estado==='validado') {
+    lote.estado='disponible';
+    c.obs = 'Aprobado bajo especificaciones de fábrica.';
+    addNotif('stock','ti-package','#dcfce7','#15803d',`Certificado de ${lote.numero} validado. Lote disponible automáticamente.`);
+    toast('✅ Certificado validado. Lote liberado.');
+  } else {
+    lote.estado='bloqueado';
+    c.obs = 'Tracción y dureza por debajo del límite mínimo establecido.';
+    DB.ops.filter(o=>o.items.some(it=>it.lote_id===lote.id)&&o.estado!=='completada').forEach(o=>{o.estado='bloqueada';});
+    addNotif('alerta','ti-alert-triangle','#fee2e2','#b91c1c',`Certificado rechazado. Lote ${lote.numero} bloqueado. OPs afectadas bloqueadas preventivamente.`);
+    toast('❌ Rechazado. Lote bloqueado. OPs afectadas en estado BLOQUEADA.','3200');
+  }
+  updateBadges(); renderPage(currentPage);
+}
+
+function openNovedad() {
+  if(!can('canNovedad')){ denied(); return; }
+  const sel=document.getElementById('nov-op');
+  sel.innerHTML=DB.ops.filter(o=>o.estado!=='completada').map(o=>`<option value="${o.id}">${o.numero} — ${o.estado}</option>`).join('');
+  openModal('modal-novedad');
+}
+
+function openNovedadForOP(opId) {
+  openNovedad();
+  setTimeout(()=>{ const sel=document.getElementById('nov-op'); if(sel) sel.value=opId; },50);
+}
+
+function registrarNovedad() {
+  if(!can('canNovedad')){ denied(); closeModal('modal-novedad'); return; }
+  const opId=document.getElementById('nov-op').value;
+  const tipo=document.getElementById('nov-tipo').value;
+  const desc=document.getElementById('nov-desc').value;
+  const accion=document.getElementById('nov-accion').value;
+  if(!desc.trim()){ toast('⚠️ La descripción es obligatoria'); return; }
+  const op=DB.ops.find(o=>o.id===opId);
+  if(!op.novedades) op.novedades=[];
+  op.novedades.push({tipo,desc,accion,fecha:new Date().toISOString().split('T')[0],por:currentUser.username});
+  closeModal('modal-novedad');
+  
+  if(tipo === 'retraso') {
+    addNotif('alerta','ti-mail-flash','#fee2e2','#b91c1c',`Novedad de retraso en OP ${op.numero}: Despachada alerta vía correo.`);
+  } else {
+    addNotif('alerta','ti-alert-triangle','#fef3c7','#b45309',`Novedad registrada en ${op.numero}: ${desc}`);
+  }
+  
+  toast(`✅ Novedad registrada en ${op.numero}`); renderPage(currentPage);
+}
+
+// ============================================================
+// REPORTES
+// ============================================================
+function tplReportes() {
+  const tipos={};
+  DB.lotes.forEach(l=>{if(!tipos[l.tipo])tipos[l.tipo]=0;tipos[l.tipo]+=l.cantidad_disponible;});
+  const max=Math.max(...Object.values(tipos),1);
+  const bars=Object.entries(tipos).map(([t,q])=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f3f4f6">
+    <span style="font-size:13px">${t}</span>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:90px;height:6px;background:#e5e7eb;border-radius:999px"><div style="width:${(q/max)*100}%;height:6px;background:#1d4ed8;border-radius:999px"></div></div>
+      <span style="font-size:13px;font-weight:700;min-width:30px;text-align:right">${q}</span>
+    </div>
+  </div>`).join('');
+  return `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:14px">
+    <div class="kpi"><div class="kpi-label">Movimientos este mes</div><div class="kpi-val">${DB.movimientos.length+43}</div></div>
+    <div class="kpi"><div class="kpi-label">OP completadas</div><div class="kpi-val">${DB.ops.filter(o=>o.estado==='completada').length}</div></div>
+    <div class="kpi"><div class="kpi-label">Certs. rechazados</div><div class="kpi-val">${DB.certificados.filter(c=>c.estado==='rechazado').length}</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px">
+    <div class="panel">
+      <div class="panel-hdr"><span class="panel-title">Stock por categoría</span></div>
+      <div style="padding:14px">${bars}</div>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><span class="panel-title">Exportación de Reportes Consolidados</span></div>
+      <div style="padding:14px;display:flex;flex-direction:column;gap:9px">
+        <button class="btn btn-s" onclick="toast('📥 Exportando inventario...')"><i class="ti ti-file-spreadsheet"></i> Inventario actual (Excel)</button>
+        <button class="btn btn-s" onclick="toast('📥 Exportando kardex...')"><i class="ti ti-file-spreadsheet"></i> Kardex completo (Excel)</button>
+        <button class="btn btn-s" onclick="toast('📥 Exportando OPs...')"><i class="ti ti-file-text"></i> OP por estado (PDF)</button>
+        <button class="btn btn-s" onclick="toast('📥 Exportando certificados...')"><i class="ti ti-certificate"></i> Certificados (PDF)</button>
+        <button class="btn btn-s" onclick="toast('📥 Exportando semáforo...')"><i class="ti ti-chart-bar"></i> Semáforo por área (PDF)</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+// USUARIOS (Administrador puede editar permisos mutables de roles)
+// ============================================================
+function tplUsuarios() {
+  if(currentUser.rol!=='admin') return accessDeniedBlock('Gestión de usuarios');
+  const rolBadge=r=>({logistica:'<span class="badge bb">Logística</span>',planeacion:'<span class="badge bg">Planeación</span>',produccion:'<span class="badge by">Producción</span>',calidad:'<span class="badge bpu">Calidad</span>',admin:'<span class="badge bgr">Admin</span>'}[r]||r);
+  
+  const rows=DB.usuarios_reg.map(u=>`<tr>
+    <td style="font-weight:600">${u.nombre}</td>
+    <td style="color:#6b7280">${u.user}</td>
+    <td>${rolBadge(u.rol)}</td>
+    <td>${u.dept}</td>
+    <td><span class="badge ${u.activo?'bg':'br'}">${u.activo?'Activo':'Inactivo'}</span></td>
+    <td style="display:flex;gap:4px">
+      <button class="btn btn-sm btn-s" onclick="toast('Función de edición de perfil limitada en entorno frontend demo.')"><i class="ti ti-edit"></i></button>
+      <button class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;border-radius:5px;padding:5px 9px;font-size:12px;cursor:pointer" onclick="toggleUser('${u.user}')"><i class="ti ti-power"></i></button>
+    </td>
+  </tr>`).join('');
+  
+  // Listado de permisos que el Administrador puede activar o desactivar
+  const keysPerms = [
+    {key: 'canReleaseLote', label: 'Liberar Lote / Salidas'},
+    {key: 'canCreateOP', label: 'Crear OPs'},
+    {key: 'canAssignMaq', label: 'Asignar Máquinas'},
+    {key: 'canEditProg', label: 'Actualizar Avance OP'},
+    {key: 'canValidateCert', label: 'Validar MPA (Calidad)'},
+    {key: 'canLiberar', label: 'Reversar / Desbloquear OP'},
+    {key: 'canNovedad', label: 'Registrar Novedades'}
+  ];
+
+  const rolesEditables = ['logistica', 'planeacion', 'produccion', 'calidad'];
+  
+  const tRowsPermisos = rolesEditables.map(rol => {
+    const tCells = keysPerms.map(p => {
+      const isChecked = PERMISOS[rol][p.key] ? 'checked' : '';
+      return `
+        <td style="text-align:center; padding:8px 4px">
+          <label class="switch">
+            <input type="checkbox" ${isChecked} onchange="togglePermisoRol('${rol}', '${p.key}', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </td>`;
+    }).join('');
+
+    return `
+      <tr style="border-bottom: 1px solid #e2e8f0">
+        <td style="font-weight:600; text-transform:capitalize; color:#1e293b; padding:10px 13px">${rol}</td>
+        ${tCells}
+      </tr>`;
+  }).join('');
+
+  return `
+  <div class="panel" style="margin-bottom:14px">
+    <div class="panel-hdr"><span class="panel-title">Usuarios registrados</span>
+      <button class="btn btn-sm btn-p" onclick="toast('Creación de cuentas disponible en base de datos productiva.')"><i class="ti ti-plus"></i> Nuevo usuario</button>
+    </div>
+    <table><thead><tr><th style="width:20%">Nombre</th><th style="width:16%">Usuario</th><th style="width:16%">Rol</th><th style="width:18%">Departamento</th><th style="width:14%">Estado</th><th style="width:16%">Acciones</th></tr></thead>
+    <tbody>${rows}</tbody></table>
+  </div>
+  
+  <div class="panel">
+    <div class="panel-hdr" style="background:#f8fafc">
+      <div style="display:flex; align-items:center; gap:8px">
+        <i class="ti ti-shield-lock" style="font-size:18px; color:#1d4ed8"></i>
+        <strong style="font-size:13px; color:#0f172a">Consola Administrativa: Gestión Dinámica de Derechos Operativos</strong>
+      </div>
+      <span class="badge bg">Cambios en Caliente</span>
+    </div>
+    <div style="padding:15px; overflow-x:auto">
+      <p style="font-size:11px; color:#64748b; margin-bottom:12px">Los interruptores modifican el acceso lógico en memoria de inmediato para toda la sesión de los usuarios involucrados.</p>
+      <table style="width:100%; border-collapse:collapse; min-width:800px">
+        <thead>
+          <tr style="background:#f1f5f9; border-bottom:2px solid #cbd5e1">
+            <th style="width:14%; padding:8px 13px">Rol / Área</th>
+            <th style="width:12%; text-align:center; padding:8px 4px">Liberar Lote</th>
+            <th style="width:12%; text-align:center; padding:8px 4px">Crear OP</th>
+            <th style="width:12%; text-align:center; padding:8px 4px">Asignar Máquina</th>
+            <th style="width:12%; text-align:center; padding:8px 4px">Editar Avance</th>
+            <th style="width:12%; text-align:center; padding:8px 4px">Validar MPA</th>
+            <th style="width:12%; text-align:center; padding:8px 4px">Reversar OP</th>
+            <th style="width:14%; text-align:center; padding:8px 4px">Reg. Novedades</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tRowsPermisos}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function togglePermisoRol(rol, permKey, checked) {
+  PERMISOS[rol][permKey] = checked;
+  // Si cambia permisos del usuario logueado actualmente, refrescar la sesión lógica
+  if (currentUser && currentUser.rol === rol) {
+    currentPerm = PERMISOS[rol];
+  }
+  toast(`🔧 Permiso '${permKey}' para el rol '${rol.toUpperCase()}' actualizado.`);
+  buildSidebar(); // Re-renderizar sidebar por si cambiaron accesos de páginas
+}
+
+function toggleUser(u) { const usr=DB.usuarios_reg.find(x=>x.user===u); if(usr){usr.activo=!usr.activo; toast(`Usuario ${u} ${usr.activo?'activado':'desactivado'}`); renderPage('usuarios');} }
+
+// ============================================================
+// CASILLA CREATIVA: CENTRAL DE PROCEDIMIENTOS (SOP)
+// ============================================================
+function tplProcedimientos() {
+  const areas = ['logistica','planeacion','produccion','calidad'];
+  const labels = {logistica:'Logística',planeacion:'Planeación',produccion:'Producción',calidad:'Calidad'};
+  
+  const tabs = areas.map(a => `
+    <button class="sop-flow-btn ${selectedSopArea === a ? 'active' : ''}" onclick="selectSopArea('${a}')">
+      <i class="ti ${PROCEDIMIENTOS[a].icon}"></i>
+      <span>Área de ${labels[a]}</span>
+    </button>
+  `).join('');
+
+  const pSel = PROCEDIMIENTOS[selectedSopArea];
+  const checklistHtml = pSel.pasos.map((paso, index) => `
+    <div class="sop-checklist-item">
+      <input type="checkbox" id="chk-sop-${index}" onchange="toggleSopProgress()">
+      <label for="chk-sop-${index}" style="font-size:13px; color:#334155; cursor:pointer">${paso}</label>
+    </div>
+  `).join('');
+
+  return `
+  <div class="sop-header-banner">
+    <div style="display:flex; align-items:center; gap:10px">
+      <i class="ti ti-book-2" style="font-size:28px"></i>
+      <div>
+        <h2 style="font-size:16px; font-weight:700">Central Interactiva de Procedimientos Estándar (SOP)</h2>
+        <p style="font-size:12px; opacity:0.85; margin-top:2px">Verifica los flujos de control oficiales y audita tus tareas para garantizar los estándares de calidad ISO 9001.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-box">
+    <div class="sop-sidebar">
+      <div style="font-size:11px; font-weight:600; color:#94a3b8; text-transform:uppercase; margin-bottom:10px; padding:0 8px">Mapa de Procesos</div>
+      ${tabs}
+      <div style="margin-top:20px; padding:10px; background:#f1f5f9; border-radius:8px">
+        <div style="font-size:11px; font-weight:600; color:#475569; margin-bottom:4px">Progreso de Audición:</div>
+        <div style="font-size:16px; font-weight:700; color:#1e293b" id="sop-audit-score">0%</div>
+        <div class="prog-bg" style="height:6px"><div id="sop-audit-bar" class="prog-bar" style="width:0%; background:#1d4ed8; height:6px"></div></div>
+      </div>
+    </div>
+    <div class="sop-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid #e2e8f0; padding-bottom:8px">
+        <h3 style="font-size:14px; color:#1e293b; font-weight:700" id="sop-title">${pSel.titulo}</h3>
+        <span class="badge bpu" style="text-transform:uppercase" id="sop-area-badge">${selectedSopArea}</span>
+      </div>
+      
+      <div style="margin-bottom:16px">
+        <h4 style="font-size:12px; font-weight:600; color:#475569; margin-bottom:6px">Flujo Operativo Paso a Paso:</h4>
+        <div id="sop-checklist-container">
+          ${checklistHtml}
+        </div>
+      </div>
+
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:12px; display:flex; justify-content:space-between; align-items:center">
+        <div>
+          <strong style="color:#0f172a">¿Completaste todos los pasos de este rol?</strong>
+          <p style="color:#64748b; margin-top:2px">Al finalizar el checklist estarás habilitado ante auditorías del sistema.</p>
+        </div>
+        <button class="btn btn-p btn-sm" onclick="validarAuditoria()"><i class="ti ti-shield-check"></i> Registrar Autoevaluación</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function selectSopArea(area) {
+  selectedSopArea = area;
+  renderPage('procedimientos');
+}
+
+function toggleSopProgress() {
+  const inputs = document.querySelectorAll('#sop-checklist-container input[type="checkbox"]');
+  const checked = Array.from(inputs).filter(i => i.checked).length;
+  const pct = Math.round((checked / inputs.length) * 100);
+  document.getElementById('sop-audit-score').textContent = `${pct}%`;
+  document.getElementById('sop-audit-bar').style.width = `${pct}%`;
+}
+
+function validarAuditoria() {
+  const inputs = document.querySelectorAll('#sop-checklist-container input[type="checkbox"]');
+  const checked = Array.from(inputs).filter(i => i.checked).length;
+  if (checked < inputs.length) {
+    toast('⚠️ Debes auditar y marcar todos los pasos obligatorios del procedimiento.');
+  } else {
+    addNotif('op','ti-shield-check','#dcfce7','#15803d',`Usuario ${currentUser.nombre} completó autoevaluación del manual ${selectedSopArea.toUpperCase()}.`);
+    toast('✅ Registro de autoevaluación SOP archivado con éxito.');
+  }
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function filterTbody(tbodyId, q) {
+  const rows=document.querySelectorAll(`#${tbodyId} tr`);
+  rows.forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';});
+}
+</script>
+</body>
+</html>

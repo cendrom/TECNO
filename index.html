@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>InvenTrack v5 — Sistema de Gestión Integrado</title>
+<title>InvenTrack v11 — Sistema de Gestión Integrado</title>
 <style>/*!
  * Tabler Icons 3.44.0 by tabler - https://tabler.io
  * License - https://github.com/tabler/tabler-icons/blob/master/LICENSE
@@ -53,6 +53,8 @@ nav{flex:1;padding:8px 7px;overflow-y:auto}
 .av-prod{background:#fef3c7;color:#b45309}
 .av-cal{background:#ede9fe;color:#6d28d9}
 .av-adm{background:#f3f4f6;color:#374151}
+.av-ing{background:#065f46;color:#f0fdf4}
+.av-sol{background:#7c2d12;color:#fef3c7}
 .av-cmp{background:#fce7f3;color:#9d174d}
 .user-n{font-size:13px;font-weight:600}
 .user-r{font-size:10px;color:#6b7280;text-transform:capitalize}
@@ -218,41 +220,97 @@ input:checked + .slider:before{-webkit-transform:translateX(14px);-ms-transform:
 .email-body-mock{background:#fff;border-radius:6px;padding:18px;box-shadow:0 2px 4px rgba(0,0,0,0.05);color:#1e293b;font-size:13px;line-height:1.5}
 
 /* ============================================================
-   RESPONSIVE — sidebar always visible, content scrolls
+   RESPONSIVE — MOBILE FIRST
    ============================================================ */
+
+/* ── Tablet ── */
 @media (max-width: 900px) {
-  .sidebar { width: 180px; min-width: 180px; }
+  .sidebar { width: 170px; min-width: 170px; }
   .nav-item { padding: 7px 9px; font-size: 12px; }
-  .nav-sec { font-size: 10px; padding: 8px 8px 2px; }
+  .nav-sec  { font-size: 10px; padding: 8px 8px 2px; }
   .logo-title { font-size: 13px; }
-  .content { padding: 10px 10px; }
+  .content  { padding: 10px; }
   .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 8px; }
-  .sema-grid { grid-template-columns: 1fr 1fr !important; }
-  .kanban { grid-template-columns: 1fr 1fr !important; }
-  .form-row { grid-template-columns: 1fr !important; }
-  .mpa-grid { grid-template-columns: 1fr 1fr !important; }
-  th, td { padding: 7px 8px; font-size: 12px; }
-  .btn { padding: 6px 9px; font-size: 12px; }
-  .btn-sm { padding: 4px 7px; font-size: 11px; }
-  .topbar { padding: 0 10px; }
+  .sema-grid  { grid-template-columns: 1fr 1fr !important; }
+  .kanban     { grid-template-columns: 1fr 1fr !important; }
+  .form-row   { grid-template-columns: 1fr !important; }
+  .mpa-grid   { grid-template-columns: 1fr 1fr !important; }
   div[style*="grid-template-columns:1fr 340px"] { display: block !important; }
+  th, td { padding: 7px 8px; font-size: 12px; }
+  .btn   { padding: 6px 9px; font-size: 12px; }
+  .btn-sm{ padding: 4px 7px; font-size: 11px; }
 }
+
+/* ── Mobile: barra de navegación inferior ── */
 @media (max-width: 600px) {
-  .sidebar { width: 140px; min-width: 140px; }
-  .nav-item span { display: none; }
-  .nav-item { justify-content: center; padding: 9px 6px; }
-  .nav-item i { margin: 0; font-size: 16px; }
-  .nav-sec { display: none; }
-  .logo-sub { display: none; }
-  .logo-title { font-size: 12px; }
-  .user-n, .user-r { display: none; }
-  .modal { width: 95vw !important; max-width: 95vw !important; }
-  .kpi-row { grid-template-columns: 1fr 1fr !important; }
-  .stats-grid { grid-template-columns: 1fr !important; }
-}
-  .stats-grid{grid-template-columns:1fr 1fr!important}
-  .kanban{grid-template-columns:1fr 1fr!important}
-  .content{padding:12px 14px}
+  .app-wrap { flex-direction: column !important; height: 100vh !important; overflow: hidden; }
+
+  .sidebar {
+    width: 100% !important; min-width: 0 !important;
+    height: 56px !important; min-height: 56px !important;
+    flex-direction: row !important;
+    border-right: none !important; border-top: 1px solid #e5e7eb !important;
+    order: 2; position: sticky; bottom: 0; z-index: 100;
+    background: #fff; flex-shrink: 0; overflow-x: auto; overflow-y: hidden;
+  }
+  .sidebar .logo        { display: none !important; }
+  .sidebar .nav-sec     { display: none !important; }
+  .sidebar .sidebar-foot{ display: none !important; }
+  .sidebar nav {
+    display: flex !important; flex-direction: row !important;
+    align-items: stretch; padding: 0; gap: 0;
+    overflow-x: auto; flex: 1; height: 56px; scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sidebar nav::-webkit-scrollbar { display: none; }
+  .nav-item {
+    flex-direction: column !important; align-items: center; justify-content: center;
+    padding: 3px 6px !important; font-size: 9px !important;
+    width: auto !important; min-width: 54px !important; max-width: 72px;
+    height: 54px; border-radius: 0 !important;
+    border-left: none !important; border-bottom: 2px solid transparent;
+    white-space: nowrap; flex-shrink: 0 !important; flex-grow: 0 !important;
+    gap: 1px !important; overflow: hidden;
+  }
+  .nav-item.active { border-bottom: 2px solid #1d4ed8; background: #eff6ff !important; color: #1d4ed8 !important; }
+  .nav-item i { font-size: 18px !important; margin: 0 !important; }
+  .nav-item span { font-size: 9px !important; }
+  .nav-item .nb { top: 2px !important; right: 2px !important; font-size: 8px !important; }
+  .locked { opacity: 0.35; }
+
+  .main { flex: 1 !important; order: 1; overflow-y: auto; height: calc(100vh - 56px); display: flex; flex-direction: column; }
+
+  .topbar { height: 46px !important; padding: 0 10px !important; flex-shrink: 0; }
+  .page-title { font-size: 13px !important; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .role-badge { display: none !important; }
+  .topbar-r .btn { padding: 5px 7px !important; font-size: 11px !important; }
+  .topbar-r .btn span { display: none; }
+
+  .content { padding: 10px !important; flex: 1; }
+
+  .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+  .sema-grid  { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+  .kpi-row    { grid-template-columns: 1fr 1fr !important; }
+  .kanban     { grid-template-columns: 1fr !important; }
+  .form-row   { grid-template-columns: 1fr !important; }
+  .mpa-grid   { grid-template-columns: 1fr 1fr !important; }
+  div[style*="grid-template-columns:1fr 340px"] { display: block !important; }
+
+  .panel { overflow-x: auto; }
+  table  { min-width: 480px; }
+  th, td { padding: 5px 7px; font-size: 11px; }
+
+  .btn    { padding: 6px 8px !important; font-size: 11px !important; }
+  .btn-sm { padding: 3px 6px !important; font-size: 10px !important; }
+
+  .modal-bg { align-items: flex-end !important; padding: 0 !important; }
+  .modal { width: 100vw !important; max-width: 100vw !important; border-radius: 16px 16px 0 0 !important; max-height: 90vh; overflow-y: auto; margin: 0 !important; }
+
+  .stat-card { padding: 10px 12px !important; }
+  .stat-val  { font-size: 20px !important; }
+  .kpi       { padding: 8px 10px !important; }
+  .kpi-val   { font-size: 20px !important; }
+  .seg-kanban { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
 }
 
 </style>
@@ -265,7 +323,7 @@ input:checked + .slider:before{-webkit-transform:translateX(14px);-ms-transform:
     <div class="login-card">
       <div class="login-logo">
         <div class="login-logo-icon"><i class="ti ti-package"></i></div>
-        <h1>InvenTrack v5</h1>
+        <h1>InvenTrack v11</h1>
         <p>Sistema de Gestión Integrado</p>
       </div>
       <div class="login-form">
@@ -279,6 +337,8 @@ input:checked + .slider:before{-webkit-transform:translateX(14px);-ms-transform:
           <option value="produccion">produccion — Producción</option>
           <option value="calidad">calidad — Calidad</option>
           <option value="compras">compras — Compras</option>
+          <option value="ingenieria">ingenieria — Ingeniería</option>
+          <option value="soldadura">soldadura — Soldadura</option>
         </select>
         <label>Contraseña</label>
         <input type="password" id="login-pass" placeholder="••••••" onkeydown="if(event.key==='Enter')doLogin()">
@@ -292,6 +352,8 @@ input:checked + .slider:before{-webkit-transform:translateX(14px);-ms-transform:
         <span class="user-pill" onclick="quickLogin('produccion','produccion')">produccion</span>
         <span class="user-pill" onclick="quickLogin('calidad','calidad')">calidad</span>
         <span class="user-pill" onclick="quickLogin('compras','compras')">compras</span>
+        <span class="user-pill" onclick="quickLogin('ingenieria','ingenieria')">ingenieria</span>
+        <span class="user-pill" onclick="quickLogin('soldadura','soldadura')">soldadura</span>
       </div>
     </div>
   </div>
@@ -302,7 +364,7 @@ input:checked + .slider:before{-webkit-transform:translateX(14px);-ms-transform:
 
 <aside class="sidebar">
   <div class="logo">
-    <div class="logo-title"><i class="ti ti-package" style="color:#1d4ed8"></i> InvenTrack v5</div>
+    <div class="logo-title"><i class="ti ti-package" style="color:#1d4ed8"></i> InvenTrack v11</div>
     <div class="logo-sub" id="sb-dept">Cargando...</div>
   </div>
   <nav id="sidebar-nav"></nav>
@@ -498,18 +560,20 @@ input:checked + .slider:before{-webkit-transform:translateX(14px);-ms-transform:
 // DATA Y CONFIGURACIÓN DE PERMISOS MUTABLES
 // ============================================================
 const USERS = {
-  admin:     {pass:'admin',    nombre:'Admin Sistema',  rol:'admin',     dept:'Administración'},
-  logistica: {pass:'logistica',nombre:'Nicolás León',   rol:'logistica', dept:'Logística'},
-  planeacion:{pass:'planeacion',nombre:'Carlos Ruiz',   rol:'planeacion',dept:'Planeación'},
-  produccion:{pass:'produccion',nombre:'María Pérez',   rol:'produccion',dept:'Producción'},
-  calidad:   {pass:'calidad',  nombre:'Luis Gómez',     rol:'calidad',   dept:'Calidad'},
-  compras:   {pass:'compras',  nombre:'Sofía Vargas',   rol:'compras',   dept:'Compras'},
+  admin:      {pass:'admin',     nombre:'Admin Sistema',   rol:'admin',      dept:'Administración'},
+  logistica:  {pass:'logistica', nombre:'Nicolás León',    rol:'logistica',  dept:'Logística'},
+  planeacion: {pass:'planeacion',nombre:'Carlos Ruiz',     rol:'planeacion', dept:'Planeación'},
+  produccion: {pass:'produccion',nombre:'María Pérez',     rol:'produccion', dept:'Producción'},
+  calidad:    {pass:'calidad',   nombre:'Luis Gómez',      rol:'calidad',    dept:'Calidad'},
+  compras:    {pass:'compras',   nombre:'Sofía Vargas',    rol:'compras',    dept:'Compras'},
+  ingenieria: {pass:'ingenieria',nombre:'Jorge Martínez',  rol:'ingenieria', dept:'Ingeniería'},
+  soldadura:  {pass:'soldadura', nombre:'Pedro Solano',    rol:'soldadura',  dept:'Soldadura'},
 };
 
 // Matriz de permisos modificable en tiempo real por el Administrador
 let PERMISOS = {
   logistica: {
-    pages: ['dashboard','notificaciones','recepcion','stock','etiquetas','reportes','calidad','procedimientos','compras'], // Logística ahora puede "ver" certificados
+    pages: ['dashboard','notificaciones','recepcion','stock','etiquetas','reportes','calidad','auditorias','procedimientos','compras','seguimiento'], // Logística ahora puede "ver" certificados
     canReleaseLote: true,
     canEditOP: false,
     canValidateCert: false, // Pero no puede validarlos/rechazarlos
@@ -522,9 +586,9 @@ let PERMISOS = {
   planeacion: {
     pages: ['dashboard','notificaciones','ops','maquinas','stock','reportes','procedimientos'],
     canReleaseLote: false,
-    canEditOP: true,
+    canEditOP: false,
     canValidateCert: false,
-    canCreateOP: true,
+    canCreateOP: false,      // Planeación ya NO crea OPs — solo asigna máquinas
     canAssignMaq: true,
     canEditProg: false,
     canNovedad: false,
@@ -542,7 +606,7 @@ let PERMISOS = {
     canLiberar: false,
   },
   calidad: {
-    pages: ['dashboard','notificaciones','calidad','ops','stock','reportes','procedimientos'],
+    pages: ['dashboard','notificaciones','calidad','auditorias','ops','stock','reportes','procedimientos'],
     canReleaseLote: false,
     canEditOP: false,
     canValidateCert: true,
@@ -550,15 +614,34 @@ let PERMISOS = {
     canAssignMaq: false,
     canEditProg: false,
     canNovedad: true,
-    canLiberar: true, // Calidad puede liberar OPs
+    canLiberar: true,
+    canLiberarPieza: true,  // Calidad libera piezas post-inspección
   },
   compras: {
-    pages: ['dashboard','notificaciones','compras','reportes','procedimientos'],
+    pages: ['dashboard','notificaciones','compras','reportes','procedimientos','seguimiento'],
     canReleaseLote:false,canEditOP:false,canValidateCert:false,canCreateOP:false,
     canAssignMaq:false,canEditProg:false,canNovedad:false,canLiberar:false,canCompras:true,
   },
+  soldadura: {
+    pages: ['dashboard','notificaciones','soldadura','ops','stock','reportes','procedimientos'],
+    canReleaseLote: false, canEditOP: false, canValidateCert: false, canCreateOP: false,
+    canAssignMaq: false, canEditProg: true, canNovedad: true, canLiberar: false,
+    canSoldadura: true,
+  },
+  ingenieria: {
+    pages: ['dashboard','notificaciones','ingenieria','ops','stock','reportes','procedimientos'],
+    canReleaseLote: false,
+    canEditOP: true,
+    canValidateCert: false,
+    canCreateOP: true,       // Ingeniería crea las OPs y define la hoja de ruta
+    canAssignMaq: false,
+    canEditProg: false,
+    canNovedad: false,
+    canLiberar: false,
+    canIngenieria: true,
+  },
   admin: {
-    pages: ['dashboard','notificaciones','recepcion','stock','etiquetas','ops','maquinas','produccion','calidad','reportes','usuarios','procedimientos','compras'],
+    pages: ['dashboard','notificaciones','recepcion','stock','etiquetas','ops','maquinas','produccion','calidad','auditorias','reportes','usuarios','procedimientos','compras','seguimiento','ingenieria','soldadura'],
     canReleaseLote: true,
     canEditOP: true,
     canValidateCert: true,
@@ -567,7 +650,10 @@ let PERMISOS = {
     canEditProg: true,
     canNovedad: true,
     canLiberar: true,
+    canLiberarPieza: true,
     canCompras: true,
+    canIngenieria: true,
+    canSoldadura: true,
   }
 };
 
@@ -584,17 +670,25 @@ const DB = {
     {id:'c3',lote_id:'l4',tipo:'MTR',archivo:'cert_L2026-0004.pdf',fecha_emision:'2026-04-30',firmado:'LabZ',estado:'rechazado',obs:'Tracción fuera de rango (305 MTR, mín 310)',campos:{norma:'NTC 4004',traccion:305,elasticidad:195,elongacion:14,dureza:120,quimico:[{e:'C',p:0.08},{e:'Zn',p:0.45}]}},
   ],
   ops: [
-    {id:'op1',numero:'OP-1001',prioridad:'alta',estado:'en_proceso',items:[{lote_id:'l3',cantidad:10,lote_num:'L-2026-0003',desc:'Barra redonda SAE 1045'}],maquina:'mc2',maquina_nombre:'TL3B',area:'Tornos',inicio:'2026-05-14T07:00',fin:'2026-05-15T15:00',planeador:'Carlos Ruiz',progreso:65,novedades:[]},
-    {id:'op2',numero:'OP-1002',prioridad:'media',estado:'pendiente',items:[{lote_id:'l2',cantidad:20,lote_num:'L-2026-0002',desc:'Placa acero inox 316'}],maquina:'mc3',maquina_nombre:'Corte-1',area:'Corte',inicio:'2026-05-16T07:00',fin:'2026-05-20T15:00',planeador:'Carlos Ruiz',progreso:10,novedades:[]}, // Marcada con retraso al comparar fin con hoy (2026-05-21)
-    {id:'op3',numero:'OP-1003',prioridad:'alta',estado:'bloqueada',items:[{lote_id:'l4',cantidad:15,lote_num:'L-2026-0004',desc:'Lámina galvanizada cal 16'}],maquina:null,maquina_nombre:null,area:'Corte',inicio:'2026-05-15T07:00',fin:'2026-05-15T12:00',planeador:'Carlos Ruiz',progreso:0,novedades:[{tipo:'cert',desc:'Certificado del lote rechazado por LabZ',accion:'Solicitar nuevo certificado al proveedor',fecha:'2026-05-01',por:'calidad'}]},
-    {id:'op4',numero:'OP-1004',prioridad:'baja',estado:'completada',items:[{lote_id:'l3',cantidad:5,lote_num:'L-2026-0003',desc:'Barra redonda SAE 1045'}],maquina:'mc1',maquina_nombre:'Torno-1',area:'Tornos',inicio:'2026-05-13T07:00',fin:'2026-05-13T11:00',planeador:'Carlos Ruiz',progreso:100,novedades:[]},
+    {id:'op1',numero:'OP-1001',prioridad:'alta',estado:'en_proceso',items:[{lote_id:'l3',cantidad:10,lote_num:'L-2026-0003',desc:'Barra redonda SAE 1045'}],maquinas:['mc2'],maquina:'mc2',maquina_nombre:'TL3B',area:'Tornos',inicio:'2026-05-14T07:00',fin:'2026-05-15T15:00',planeador:'Carlos Ruiz',progreso:65,novedades:[],
+      hoja_ruta:{fosfato:true,particulas_magneticas:false,tintas_penetrantes:false,prueba_estructural:true,mediciones:[{instrumento:'Micrómetro digital',resultado:'',aprobado:null},{instrumento:'Calibrador pie de rey',resultado:'',aprobado:null}],observaciones:''},
+      liberacion_calidad:null},
+    {id:'op2',numero:'OP-1002',prioridad:'media',estado:'pendiente',items:[{lote_id:'l2',cantidad:20,lote_num:'L-2026-0002',desc:'Placa acero inox 316'}],maquinas:['mc3'],maquina:'mc3',maquina_nombre:'Corte-1',area:'Corte',inicio:'2026-05-16T07:00',fin:'2026-05-20T15:00',planeador:'Carlos Ruiz',progreso:10,novedades:[],
+      hoja_ruta:{fosfato:false,particulas_magneticas:true,tintas_penetrantes:true,prueba_estructural:false,mediciones:[{instrumento:'Rugosímetro',resultado:'',aprobado:null}],observaciones:''},
+      liberacion_calidad:null},
+    {id:'op3',numero:'OP-1003',prioridad:'alta',estado:'bloqueada',items:[{lote_id:'l4',cantidad:15,lote_num:'L-2026-0004',desc:'Lámina galvanizada cal 16'}],maquinas:[],maquina:null,maquina_nombre:null,area:'Corte',inicio:'2026-05-15T07:00',fin:'2026-05-15T12:00',planeador:'Carlos Ruiz',progreso:0,novedades:[{tipo:'cert',desc:'Certificado del lote rechazado por LabZ',accion:'Solicitar nuevo certificado al proveedor',fecha:'2026-05-01',por:'calidad'}],
+      hoja_ruta:{fosfato:false,particulas_magneticas:false,tintas_penetrantes:false,prueba_estructural:false,mediciones:[],observaciones:''},
+      liberacion_calidad:null},
+    {id:'op4',numero:'OP-1004',prioridad:'baja',estado:'completada',items:[{lote_id:'l3',cantidad:5,lote_num:'L-2026-0003',desc:'Barra redonda SAE 1045'}],maquinas:['mc1'],maquina:'mc1',maquina_nombre:'Torno-1',area:'Tornos',inicio:'2026-05-13T07:00',fin:'2026-05-13T11:00',planeador:'Carlos Ruiz',progreso:100,novedades:[],
+      hoja_ruta:{fosfato:true,particulas_magneticas:true,tintas_penetrantes:false,prueba_estructural:true,mediciones:[{instrumento:'Durómetro Rockwell',resultado:'58 HRC',aprobado:true},{instrumento:'Micrómetro digital',resultado:'49.98mm',aprobado:true},{instrumento:'Reloj comparador',resultado:'0.02mm desviación',aprobado:true}],observaciones:'Pieza cumple especificaciones.'},
+      liberacion_calidad:{liberado:true,fecha:'2026-05-13',inspector:'Luis Gómez',obs:'Aprobado sin observaciones'}},
   ],
   maquinas: [
-    {id:'mc1',nombre:'Torno-1',area:'Tornos',estado:'operativa'},
-    {id:'mc2',nombre:'TL3B',area:'Tornos',estado:'operativa'},
-    {id:'mc3',nombre:'Corte-1',area:'Corte',estado:'operativa'},
-    {id:'mc4',nombre:'Soldadura-1',area:'Soldadura',estado:'mantenimiento'},
-    {id:'mc5',nombre:'Prensa-2',area:'Formado',estado:'parada'},
+    {id:'mc1',nombre:'Torno-1',      area:'Tornos',              estado:'operativa'},
+    {id:'mc2',nombre:'TL3B',         area:'Tornos',              estado:'operativa'},
+    {id:'mc3',nombre:'Corte-1',      area:'Corte',               estado:'operativa'},
+    {id:'mc4',nombre:'Soldadura-1',  area:'Soldadura',           estado:'operativa'},
+    {id:'mc5',nombre:'Banco-1',      area:'Banco / Reparaciones',estado:'parada'},
   ],
   notificaciones: [
     {id:'n1',tipo:'cert',icono:'ti-certificate',bg:'#dbeafe',ic:'#1d4ed8',msg:'Certificado MTR del lote L-2026-0001 pendiente de validación (MTR).',tiempo:'Hace 10 min',leido:false},
@@ -615,6 +709,84 @@ const DB = {
     {user:'calidad',nombre:'Luis Gómez',rol:'calidad',dept:'Calidad',activo:true},
     {user:'admin',nombre:'Admin Sistema',rol:'admin',dept:'Administración',activo:true},
     {user:'compras',nombre:'Sofía Vargas',rol:'compras',dept:'Compras',activo:true},
+    {user:'ingenieria',nombre:'Jorge Martínez',rol:'ingenieria',dept:'Ingeniería',activo:true},
+    {user:'soldadura',nombre:'Pedro Solano',rol:'soldadura',dept:'Soldadura',activo:true},
+  ],
+  auditorias: [
+    {
+      id:'aud1', codigo:'AUD-2026-001', tipo:'Interna', area:'Logística',
+      fecha_prog:'2026-04-10', fecha_real:'2026-04-10', estado:'cerrada',
+      auditor:'Luis Gómez', auditado:'Nicolás León',
+      alcance:'Verificación de procedimientos de recepción e inspección de materiales MTR.',
+      hallazgos:[
+        {id:'h1',tipo:'NC Mayor',descripcion:'No se verifica el certificado MTR al momento de la recepción en 2 de 5 lotes revisados.',accion:'Implementar checklist de recepción obligatorio con firma del responsable.',responsable:'Nicolás León',fecha_limite:'2026-04-25',estado:'cerrado'},
+        {id:'h2',tipo:'Observación',descripcion:'El área de almacenamiento no tiene señalización de cuarentena visible.','accion':'Colocar señalización en puntos de cuarentena.',responsable:'Nicolás León',fecha_limite:'2026-04-20',estado:'cerrado'},
+      ],
+      conclusion:'Auditoría cerrada satisfactoriamente. Hallazgos corregidos dentro del plazo.',
+      creado_por:'Luis Gómez', fecha_creacion:'2026-04-01'
+    },
+    {
+      id:'aud2', codigo:'AUD-2026-002', tipo:'Externa', area:'Calidad',
+      fecha_prog:'2026-05-15', fecha_real:'2026-05-15', estado:'abierta',
+      auditor:'Ente Certificador ISO', auditado:'Luis Gómez',
+      alcance:'Auditoría de seguimiento ISO 9001:2015 — control de documentos y trazabilidad de materiales.',
+      hallazgos:[
+        {id:'h3',tipo:'NC Menor',descripcion:'Algunos registros de ensayos mecánicos no tienen firma del responsable de laboratorio.',accion:'Actualizar formato de registros y capacitar al equipo.',responsable:'Luis Gómez',fecha_limite:'2026-06-01',estado:'abierto'},
+      ],
+      conclusion:'',
+      creado_por:'Luis Gómez', fecha_creacion:'2026-05-10'
+    },
+    {
+      id:'aud3', codigo:'AUD-2026-003', tipo:'Interna', area:'Producción',
+      fecha_prog:'2026-06-20', fecha_real:'', estado:'programada',
+      auditor:'Luis Gómez', auditado:'María Pérez',
+      alcance:'Revisión de procedimientos de control de proceso y uso de materiales liberados.',
+      hallazgos:[], conclusion:'',
+      creado_por:'Luis Gómez', fecha_creacion:'2026-05-20'
+    },
+  ],
+  soldadura_registros: [
+    {
+      id:'sol1', codigo:'SOL-2026-001', fecha:'2026-05-10', op_id:'op4', op_num:'OP-1004',
+      lote_id:'l3', lote_num:'L-2026-0003', material_base:'Barra redonda SAE 1045',
+      tipo_soldadura:'SMAW (Electrodo revestido)',
+      proceso:'141 — TIG (GTAW)',
+      consumible:'Electrodo E7018 Ø3.2mm',
+      norma:'AWS D1.1',
+      posicion:'1G — Plana',
+      precalentamiento:'150°C',
+      temperatura_interpase:'250°C max.',
+      inspector:'Pedro Solano',
+      wps:'WPS-001-2026',
+      operario:'Pedro Solano',
+      turno:'Mañana',
+      observaciones:'Soldadura de unión de bridas. Sin porosidad visible. Cordón uniforme.',
+      fotos:[
+        {id:'f1',nombre:'SOL-001-frente.jpg',descripcion:'Vista frontal cordón de soldadura',fecha:'2026-05-10',simulada:true,color:'#fef3c7'},
+        {id:'f2',nombre:'SOL-001-perfil.jpg',descripcion:'Vista lateral — zona HAZ',fecha:'2026-05-10',simulada:true,color:'#dbeafe'},
+      ],
+      estado:'aprobado', liberado_calidad: true
+    },
+    {
+      id:'sol2', codigo:'SOL-2026-002', fecha:'2026-05-22', op_id:'op1', op_num:'OP-1001',
+      lote_id:'l3', lote_num:'L-2026-0003', material_base:'Barra redonda SAE 1045',
+      tipo_soldadura:'GMAW (MIG/MAG)',
+      proceso:'135 — MAG',
+      consumible:'Alambre ER70S-6 Ø1.2mm / Gas CO₂ 75% + Ar 25%',
+      norma:'AWS D1.1',
+      posicion:'2G — Horizontal',
+      precalentamiento:'Sin precalentamiento',
+      temperatura_interpase:'200°C max.',
+      inspector:'Pedro Solano',
+      wps:'WPS-002-2026',
+      operario:'Pedro Solano',
+      turno:'Tarde',
+      observaciones:'Pendiente revisión de raíz. Se tomaron 3 fotos de secuencia.',
+      fotos:[
+        {id:'f3',nombre:'SOL-002-raiz.jpg',descripcion:'Raíz del cordón antes de relleno',fecha:'2026-05-22',simulada:true,color:'#fce7f3'},
+      ],
+      estado:'en_proceso', liberado_calidad: false
+    },
   ],
   compras_items: [
     {id:'cmp1',fecha:'2026-04-18',tipo_material:'Tubo acero',op:'OP-1001',id_compra:'OC-2026-0045',mtr:'cert_L2026-0001.pdf',observacion:'Pedido urgente para OP de tornos.',creado_por:'Sofía Vargas'},
@@ -728,10 +900,12 @@ function startApp() {
   buildSidebar();
   updateUserUI();
   goTo('dashboard');
+  // Rebuild sidebar on resize/orientation change
+  window.addEventListener('resize', () => { buildSidebar(); updateUserUI(); });
 }
 
 function updateUserUI() {
-  const avCls = {logistica:'av-log',planeacion:'av-plan',produccion:'av-prod',calidad:'av-cal',admin:'av-adm',compras:'av-cmp'};
+  const avCls = {logistica:'av-log',planeacion:'av-plan',produccion:'av-prod',calidad:'av-cal',admin:'av-adm',compras:'av-cmp',ingenieria:'av-ing',soldadura:'av-sol'};
   const av = document.getElementById('sb-avatar');
   av.textContent = currentUser.nombre.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
   av.className = 'avatar ' + (avCls[currentUser.rol]||'av-adm');
@@ -748,36 +922,46 @@ function updateUserUI() {
 // SIDEBAR (Actualizado con SOP)
 // ============================================================
 const NAV_ITEMS = [
-  {sec:'General'},
-  {id:'dashboard',label:'Dashboard',icon:'ti-layout-dashboard'},
-  {id:'notificaciones',label:'Notificaciones',icon:'ti-bell',badge:'notif'},
-  {id:'procedimientos',label:'SOP & Procesos',icon:'ti-book'},
-  {sec:'Logística'},
-  {id:'recepcion',label:'Recepción',icon:'ti-truck-delivery'},
-  {id:'stock',label:'Stock / Kardex',icon:'ti-stack-2'},
-  {id:'etiquetas',label:'Etiquetas',icon:'ti-tag'},
-  {sec:'Planeación'},
-  {id:'ops',label:'Órdenes de Prod.',icon:'ti-clipboard-list'},
-  {id:'maquinas',label:'Máquinas / Áreas',icon:'ti-tool'},
-  {sec:'Producción'},
-  {id:'produccion',label:'Mis OP asignadas',icon:'ti-arrows-right-left'},
-  {sec:'Calidad'},
-  {id:'calidad',label:'Certificados Calidad',icon:'ti-certificate',badge:'cert'},
-  {sec:'Compras'},
-  {id:'compras',label:'Gestión de Compras',icon:'ti-shopping-cart'},
-  {sec:'Administración'},
-  {id:'reportes',label:'Reportes',icon:'ti-chart-bar'},
-  {id:'usuarios',label:'Usuarios y Roles',icon:'ti-users'},
+  {sec:'⚙️ General'},
+  {id:'dashboard',     label:'📊 Dashboard',          mob:'📊',          icon:'ti-layout-dashboard'},
+  {id:'notificaciones',label:'🔔 Notificaciones',      mob:'🔔',          icon:'ti-bell',badge:'notif'},
+  {id:'procedimientos',label:'📖 SOP & Procesos',       mob:'📖 SOP',      icon:'ti-book'},
+  {sec:'🔧 Ingeniería'},
+  {id:'ingenieria',    label:'🔧 Ingeniería / OPs',     mob:'🔧 Ing.',     icon:'ti-ruler-2'},
+  {sec:'🚚 Logística'},
+  {id:'recepcion',     label:'🚚 Recepción',            mob:'🚚',          icon:'ti-truck-delivery'},
+  {id:'stock',         label:'📦 Stock / Kardex',       mob:'📦 Stock',    icon:'ti-stack-2'},
+  {id:'etiquetas',     label:'🏷️ Etiquetas',            mob:'🏷️',          icon:'ti-tag'},
+  {sec:'📅 Planeación'},
+  {id:'ops',           label:'📅 Asig. Máquinas',       mob:'📅 Máq.',     icon:'ti-clipboard-list'},
+  {id:'maquinas',      label:'🏭 Máquinas / Áreas',     mob:'🏭 Máq.',     icon:'ti-tool'},
+  {sec:'⚙️ Producción'},
+  {id:'produccion',    label:'⚙️ Mis OP asignadas',     mob:'⚙️ OPs',      icon:'ti-arrows-right-left'},
+  {sec:'🔥 Soldadura'},
+  {id:'soldadura',     label:'🔥 Registro de Soldadura',mob:'🔥 Sold.',    icon:'ti-flame'},
+  {sec:'✅ Calidad'},
+  {id:'calidad',       label:'✅ Certificados / Lib.',   mob:'✅ Cal.',     icon:'ti-certificate',badge:'cert'},
+  {sec:'🛒 Compras'},
+  {id:'compras',       label:'🛒 Gestión de Compras',   mob:'🛒',          icon:'ti-shopping-cart'},
+  {sec:'📡 Seguimiento'},
+  {id:'seguimiento',   label:'📡 Estado de OPs',        mob:'📡 OPs',      icon:'ti-timeline'},
+  {sec:'🛠️ Administración'},
+  {id:'reportes',      label:'📈 Reportes',             mob:'📈',          icon:'ti-chart-bar'},
+  {id:'usuarios',      label:'👥 Usuarios y Roles',     mob:'👥',          icon:'ti-users'},
 ];
 
 function buildSidebar() {
   const nav = document.getElementById('sidebar-nav');
+  const isMob = window.innerWidth <= 600;
   nav.innerHTML = NAV_ITEMS.map(item => {
-    if (item.sec) return `<div class="nav-sec">${item.sec}</div>`;
+    if (item.sec) return isMob ? '' : `<div class="nav-sec">${item.sec}</div>`;
     const allowed = currentPerm.pages.includes(item.id);
+    // En móvil: ocultar ítems sin acceso para no saturar la barra
+    if (isMob && !allowed) return '';
     const lockCls = allowed ? '' : ' locked';
     const badgeHtml = item.badge==='notif' ? `<span class="nb" id="nb-notif">0</span>` : item.badge==='cert' ? `<span class="nb nb-y" id="nb-cert">0</span>` : '';
-    return `<button class="nav-item${lockCls}" id="nav-${item.id}" onclick="${allowed?`goTo('${item.id}')`:`toast('⛔ Sin acceso: tu rol no tiene permiso para ${item.id}')`}"  title="${allowed?item.label:'Sin acceso — '+item.label}"><i class="ti ${item.icon}"></i>${item.label}${badgeHtml}</button>`;
+    const lbl = isMob ? (item.mob || item.label) : item.label;
+    return `<button class="nav-item${lockCls}" id="nav-${item.id}" onclick="${allowed?`goTo('${item.id}')`:`toast('⛔ Sin acceso: tu rol no tiene permiso para ${item.id}')`}" title="${allowed?item.label:'Sin acceso — '+item.label}"><i class="ti ${item.icon}"></i><span>${lbl}</span>${badgeHtml}</button>`;
   }).join('');
 }
 
@@ -790,14 +974,18 @@ const PAGE_TITLES = {
   recepcion:'Recepción e Inspección de Lotes',
   stock:'Stock de Materiales / Kardex',
   etiquetas:'Etiquetas y Rótulos QR',
-  ops:'Órdenes de Producción (OP)',
+  ops:'Planeación — Asignación de Máquinas',
   maquinas:'Control de Máquinas y Áreas',
   produccion:'Avance de Producción',
-  calidad:'Inspección y Certificados MTR',
+  calidad:'Inspección, Certificados MTR y Liberación de Piezas',
   reportes:'Reportes de Productividad',
   usuarios:'Gestión de Usuarios y Matriz de Permisos',
   procedimientos:'SOP & Manual de Operaciones Estándar',
-  compras:'Gestión de Compras y Órdenes de Compra'
+  compras:'Gestión de Compras y Órdenes de Compra',
+  seguimiento:'Estado y Seguimiento de OPs',
+  auditorias:'Control y Registro de Auditorías',
+  ingenieria:'Ingeniería — Creación de OPs y Hojas de Ruta',
+  soldadura:'Soldadura — Registro de Procesos y Fotografías',
 };
 
 function goTo(page) {
@@ -813,15 +1001,18 @@ function goTo(page) {
     recepcion:'+ Recepción',
     stock:'+ Salida',
     etiquetas:'Imprimir',
-    ops:'+ Nueva OP',
+    ops:'Asignar Máquina',
     maquinas:'+ Máquina',
     produccion:'Actualizar',
     calidad:'+ Novedad',
     compras:'+ Nueva Compra',
+    auditorias:'+ Nueva Auditoría',
     reportes:'Exportar',
     usuarios:'+ Usuario',
     notificaciones:'Marcar leídas',
-    procedimientos: 'Ver Todo'
+    procedimientos: 'Ver Todo',
+    ingenieria: '+ Nueva OP',
+    soldadura:  '+ Nuevo Registro',
   };
   
   const topbarBtn = document.getElementById('topbar-btn');
@@ -837,12 +1028,15 @@ function goTo(page) {
 function topbarAction() {
   const p = currentPage;
   if (p==='dashboard') { abrirSimulador6AM(); }
-  else if (p==='recepcion') { if(can('canReleaseLote')) openModal('modal-recep'); else denied(); }
+  else if (p==='recepcion') { if(can('canReleaseLote')) abrirRecepcion(); else denied(); }
   else if (p==='stock') { if(can('canReleaseLote')) { populateSalidaSel(); openModal('modal-salida'); } else denied(); }
-  else if (p==='ops') { if(can('canCreateOP')) { populateOpMaq(); openModal('modal-op'); } else denied(); }
+  else if (p==='ops') { if(can('canAssignMaq')) { openAsignacionMaquinas(); } else denied(); }
+  else if (p==='ingenieria') { if(can('canCreateOP')) { populateIngOPModal(); openModal('modal-ing-op'); } else denied(); }
+  else if (p==='soldadura') { if(can('canSoldadura')) { abrirNuevoRegistroSoldadura(); } else denied(); }
   else if (p==='maquinas') { if(can('canAssignMaq')) openModal('modal-maq'); else denied(); }
   else if (p==='calidad') { if(can('canNovedad')) openNovedad(); else denied(); }
   else if (p==='compras') { if(can('canCompras')) abrirNuevaCompra(); else denied(); }
+  else if (p==='auditorias') { if(can('canValidateCert')||currentUser.rol==='admin') abrirNuevaAuditoria(); else denied(); }
   else if (p==='notificaciones') { markAllRead(); }
   else if (p==='etiquetas') { if(can('canReleaseLote')) printEtiq(); else denied(); }
   else if (p==='procedimientos') { toast('Manuales actualizados a la versión vigente 2026.'); }
@@ -872,6 +1066,10 @@ function renderPage(page) {
     case 'usuarios':       c.innerHTML = tplUsuarios(); break;
     case 'procedimientos': c.innerHTML = tplProcedimientos(); break;
     case 'compras':        c.innerHTML = tplCompras(); break;
+    case 'seguimiento':    c.innerHTML = tplSeguimiento(); break;
+    case 'auditorias':     c.innerHTML = tplAuditorias(); break;
+    case 'ingenieria':     c.innerHTML = tplIngenieria(); break;
+    case 'soldadura':      c.innerHTML = tplSoldadura(); break;
     default:               c.innerHTML = '<p>Página no encontrada</p>';
   }
 }
@@ -1104,7 +1302,7 @@ function tplRecepcion() {
   }).join('');
   return `<div class="panel">
     <div class="panel-hdr"><span class="panel-title">Lotes recibidos</span>
-      <button class="btn btn-sm btn-p" onclick="populateRecepcionOP();openModal('modal-recep')"><i class="ti ti-plus"></i> Nueva recepción</button>
+      <button class="btn btn-sm btn-p" onclick="abrirRecepcion()"><i class="ti ti-plus"></i> Nueva recepción</button>
     </div>
     <div class="search-bar"><input class="search-input" type="text" placeholder="Buscar lote, material, proveedor..." oninput="filterTbody('rec-tbody',this.value)"></div>
     <table><thead><tr><th style="width:14%">Lote</th><th style="width:22%">Material</th><th style="width:8%">Cant.</th><th style="width:12%">OP</th><th style="width:14%">Estado</th><th style="width:14%">Certificado</th><th style="width:16%">Acción</th></tr></thead>
@@ -1247,99 +1445,116 @@ function goToEtiq(id) { goTo('etiquetas'); setTimeout(()=>{ const s=document.get
 function printEtiq() { const s=document.getElementById('etiq-lote'); if(!s||!s.value){ toast('⚠️ Selecciona un lote'); return; } toast('🖨️ Enviando a impresora / generando PDF...'); }
 
 // ============================================================
-// OPs
+// OPs — PLANEACIÓN: solo asigna máquinas a las OPs creadas por Ingeniería
 // ============================================================
 function tplOPs() {
-  const can_create = can('canCreateOP');
-  const cols = ['pendiente','asignada','en_proceso','completada'];
-  const colNames = {pendiente:'Pendiente',asignada:'Asignada',en_proceso:'En proceso',completada:'Completada'};
-  const groups = {};
-  cols.forEach(c=>groups[c]=[]);
-  
-  DB.ops.forEach(op=>{ 
-    const k=op.estado==='pausada'||op.estado==='bloqueada'?'pendiente':op.estado; 
-    if(groups[k]) groups[k].push(op); 
-    else groups.pendiente.push(op); 
-  });
-  
-  const kanban=cols.map(col=>`<div class="k-col">
-    <div class="k-hdr">${colNames[col]} <span class="badge bgr">${groups[col].length}</span></div>
-    ${groups[col].map(op=>`<div class="k-card" onclick="showOPDetail('${op.id}')">
-      <div class="k-title">${op.numero} ${semaDot(op)}</div>
-      <div class="k-sub">${prioBadge(op.prioridad)} · ${op.area}</div>
-      <div class="k-sub" style="margin-top:3px; display:flex; justify-content:space-between; align-items:center">
-        <span>${op.maquina_nombre||'Sin asignar'}</span>
-        ${estaOpRetrasada(op)?`<span style="color:#ef4444; font-weight:bold; font-size:9px"><i class="ti ti-mail-flash"></i> RETRASO</span>`:''}
-      </div>
-      ${op.estado==='en_proceso'?`<div class="prog-bg" style="margin-top:5px"><div class="prog-bar" style="width:${op.progreso}%;background:${op.progreso>=80?'#f59e0b':'#22c55e'}"></div></div>`:''}
-    </div>`).join('')}
-  </div>`).join('');
-  
-  const listRows=DB.ops.map(op=>{
-    const iniciada = op.operario_inicio ? true : false;
-    const iniciadaBadge = iniciada
-      ? `<span class="badge bg"><i class="ti ti-player-play"></i> Iniciada</span>`
-      : `<span class="badge bgr"><i class="ti ti-clock-pause"></i> Sin iniciar</span>`;
+  const can_assign = can('canAssignMaq');
+
+  // Banner aclaratorio
+  const banner = `<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#1e40af">
+    <i class="ti ti-info-circle"></i> <strong>Módulo de Planeación:</strong> Aquí asignas las máquinas a las OPs creadas por Ingeniería. 
+    Cada OP puede recorrer <strong>múltiples máquinas</strong> según su secuencia de proceso. Las OPs son generadas exclusivamente por el módulo de <strong>Ingeniería</strong>.
+  </div>`;
+
+  const rows = DB.ops.map(op => {
+    const maqsAsig = (op.maquinas||[]).map(mid => {
+      const m = DB.maquinas.find(x=>x.id===mid);
+      return m ? `<span class="badge bb" style="font-size:10px">${m.nombre}</span>` : '';
+    }).join(' ');
+    const hrBadge = op.hoja_ruta ? `<span class="badge bg" style="font-size:10px"><i class="ti ti-file-check"></i> HR</span>` : `<span class="badge bgr" style="font-size:10px">Sin HR</span>`;
     return `<tr>
-    <td style="font-weight:600">${op.numero}</td>
-    <td>${prioBadge(op.prioridad)}</td>
-    <td>${estaOpRetrasada(op)?'<span class="badge br"><i class="ti ti-alert-triangle"></i> Retrasada</span>':opBadge(op.estado)}</td>
-    <td>${op.area}</td>
-    <td>${op.maquina_nombre||'<span style="color:#9ca3af">—</span>'}</td>
-    <td>${iniciadaBadge}</td>
-    <td style="font-size:12px;color:#6b7280">${op.fin?op.fin.split('T')[0]:'-'}</td>
-    <td><button class="btn btn-sm btn-s" onclick="showOPDetail('${op.id}')">Ver</button></td>
-  </tr>`}).join('');
-  
-  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-    <div class="tabs" style="border:none;padding:0;flex:1">
-      <div class="tab active" id="tab-k" onclick="swTab('kanban',this)">Kanban</div>
-      <div class="tab" id="tab-l" onclick="swTab('lista',this)">Lista</div>
-    </div>
-    ${can_create?`<button class="btn btn-p btn-sm" onclick="populateOpMaq();openModal('modal-op')"><i class="ti ti-plus"></i> Nueva OP</button>`:`<span class="badge bgr"><i class="ti ti-lock"></i> Solo lectura</span>`}
+      <td style="font-weight:700;color:#1d4ed8">${op.numero}</td>
+      <td>${prioBadge(op.prioridad)}</td>
+      <td>${op.area||'—'}</td>
+      <td>${estaOpRetrasada(op)?'<span class="badge br"><i class="ti ti-alert-triangle"></i> Retrasada</span>':opBadge(op.estado)}</td>
+      <td>${hrBadge}</td>
+      <td style="max-width:180px">${maqsAsig||'<span style="color:#9ca3af;font-size:12px">Sin asignar</span>'}</td>
+      <td style="font-size:12px;color:#6b7280">${op.fin?op.fin.split('T')[0]:'-'}</td>
+      <td>
+        ${can_assign && op.estado!=='completada' ? `<button class="btn btn-sm btn-p" onclick="abrirAsignMaq('${op.id}')"><i class="ti ti-tool"></i> Asignar</button>` : ''}
+        <button class="btn btn-sm btn-s" onclick="showOPDetail('${op.id}')">Ver</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  // KPIs
+  const sinMaq = DB.ops.filter(o=>o.estado!=='completada'&&(!o.maquinas||!o.maquinas.length)).length;
+  const conMaq = DB.ops.filter(o=>o.maquinas&&o.maquinas.length>0).length;
+  const multiMaq = DB.ops.filter(o=>o.maquinas&&o.maquinas.length>1).length;
+
+  return banner +
+  `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+    <div class="kpi"><div class="kpi-label">Total OPs</div><div class="kpi-val">${DB.ops.length}</div></div>
+    <div class="kpi"><div class="kpi-label">Sin máquina</div><div class="kpi-val" style="color:#dc2626">${sinMaq}</div></div>
+    <div class="kpi"><div class="kpi-label">Con máquina</div><div class="kpi-val" style="color:#15803d">${conMaq}</div></div>
+    <div class="kpi"><div class="kpi-label">Multi-máquina</div><div class="kpi-val" style="color:#7c3aed">${multiMaq}</div></div>
   </div>
-  <div id="ops-kanban"><div class="kanban">${kanban}</div></div>
-  <div id="ops-lista" style="display:none">
-    <div class="panel">
-      <div class="search-bar"><input class="search-input" placeholder="Buscar OP..." oninput="filterTbody('ops-list-tbody',this.value)"></div>
-      <table><thead><tr><th style="width:12%">OP</th><th style="width:11%">Prioridad</th><th style="width:13%">Estado</th><th style="width:12%">Área</th><th style="width:13%">Máquina</th><th style="width:12%">Inicio OP</th><th style="width:13%">ETA</th><th style="width:14%">Acción</th></tr></thead>
-      <tbody id="ops-list-tbody">${listRows}</tbody></table>
+  <div class="panel">
+    <div class="panel-hdr">
+      <span class="panel-title"><i class="ti ti-tool" style="color:#1d4ed8"></i> Asignación de Máquinas por OP</span>
+      ${!can_assign?'<span class="badge bgr"><i class="ti ti-lock"></i> Solo lectura</span>':''}
     </div>
+    <div class="search-bar"><input class="search-input" placeholder="Buscar OP, área, máquina..." oninput="filterTbody('ops-asig-tbody',this.value)"></div>
+    <div style="overflow-x:auto"><table style="min-width:700px">
+      <thead><tr>
+        <th style="width:11%">OP</th><th style="width:9%">Prioridad</th><th style="width:10%">Área</th>
+        <th style="width:12%">Estado</th><th style="width:8%">H. Ruta</th>
+        <th style="width:22%">Máquinas asignadas</th><th style="width:10%">ETA</th><th style="width:18%">Acción</th>
+      </tr></thead>
+      <tbody id="ops-asig-tbody">${rows||'<tr><td colspan="8" style="text-align:center;padding:24px;color:#9ca3af">No hay OPs registradas</td></tr>'}</tbody>
+    </table></div>
   </div>`;
 }
 
+function openAsignacionMaquinas() {
+  // Abrir modal de asignación rápida para la primera OP sin máquina
+  const op = DB.ops.find(o=>o.estado!=='completada'&&(!o.maquinas||!o.maquinas.length));
+  if(op) abrirAsignMaq(op.id);
+  else toast('✅ Todas las OPs activas tienen máquina asignada.');
+}
+
+function abrirAsignMaq(opId) {
+  if(!can('canAssignMaq')){ denied(); return; }
+  const op = DB.ops.find(o=>o.id===opId);
+  document.getElementById('asig-op-id').value = opId;
+  document.getElementById('asig-op-label').textContent = op.numero + ' — ' + op.area;
+  // Render checkboxes de máquinas
+  const cont = document.getElementById('asig-maq-list');
+  cont.innerHTML = DB.maquinas.map(m => {
+    const checked = (op.maquinas||[]).includes(m.id) ? 'checked' : '';
+    const dis = m.estado!=='operativa' ? 'opacity:0.5' : '';
+    return `<label style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #f3f4f6;cursor:pointer;${dis}">
+      <input type="checkbox" value="${m.id}" ${checked} ${m.estado!=='operativa'?'disabled':''} style="width:15px;height:15px">
+      <span style="flex:1;font-size:13px"><strong>${m.nombre}</strong> <span style="color:#6b7280;font-size:11px">(${m.area})</span></span>
+      ${maqBadge(m.estado)}
+    </label>`;
+  }).join('');
+  openModal('modal-asig-maq');
+}
+
+function guardarAsignMaquinas() {
+  if(!can('canAssignMaq')){ denied(); return; }
+  const opId = document.getElementById('asig-op-id').value;
+  const op = DB.ops.find(o=>o.id===opId);
+  const checks = document.querySelectorAll('#asig-maq-list input[type=checkbox]:checked');
+  const selIds = Array.from(checks).map(c=>c.value);
+  if(!selIds.length){ toast('⚠️ Selecciona al menos una máquina'); return; }
+  op.maquinas = selIds;
+  // Compatibilidad: guardar primera máquina en campo legacy
+  const primera = DB.maquinas.find(m=>m.id===selIds[0]);
+  op.maquina = selIds[0];
+  op.maquina_nombre = primera?primera.nombre:'?';
+  if(op.area==='Sin asignar'&&primera) op.area = primera.area;
+  if(op.estado==='pendiente') op.estado='asignada';
+  closeModal('modal-asig-maq');
+  addNotif('op','ti-tool','#ede9fe','#6d28d9',`${op.numero}: ${selIds.length} máquina(s) asignada(s) por Planeación.`);
+  toast(`✅ ${selIds.length} máquina(s) asignadas a ${op.numero}`);
+  renderPage('ops');
+}
 function swTab(tab,el) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); el.classList.add('active');
   document.getElementById('ops-kanban').style.display=tab==='kanban'?'block':'none';
   document.getElementById('ops-lista').style.display=tab==='lista'?'block':'none';
-}
-
-function populateOpMaq() {
-  const sel=document.getElementById('op-maq');
-  sel.innerHTML=`<option value="">Sin asignar</option>`+DB.maquinas.filter(m=>m.estado==='operativa').map(m=>`<option value="${m.id}">${m.nombre} — ${m.area}</option>`).join('');
-}
-
-function crearOP() {
-  if(!can('canCreateOP')){ denied(); closeModal('modal-op'); return; }
-  const num=document.getElementById('op-num').value||`OP-${1000+DB.ops.length+1}`;
-  const prio=document.getElementById('op-prio').value;
-  const maqId=document.getElementById('op-maq').value;
-  const maq=DB.maquinas.find(m=>m.id===maqId);
-  const ini=document.getElementById('op-ini').value;
-  const fin=document.getElementById('op-fin').value;
-  if(!selectedOpItems.length){ toast('⚠️ Agrega al menos un material'); return; }
-  
-  DB.ops.push({
-    id:'op'+Date.now(),numero:num,prioridad:prio,estado:maqId?'asignada':'pendiente',
-    items:selectedOpItems.map(i=>({lote_id:i.id,cantidad:i.cant,lote_num:i.lote_num,desc:i.desc})),
-    maquina:maqId||null,maquina_nombre:maq?maq.nombre:null,area:maq?maq.area:'Sin asignar',
-    inicio:ini,fin,planeador:currentUser.nombre,progreso:0,novedades:[]
-  });
-  selectedOpItems=[];
-  if(document.getElementById('op-items-sel')) document.getElementById('op-items-sel').innerHTML='';
-  closeModal('modal-op');
-  addNotif('op','ti-clipboard-list','#eff6ff','#1d4ed8',`Nueva ${num} creada (${prio}). Planeador: ${currentUser.nombre}.`);
-  toast(`✅ ${num} creada`); updateBadges(); renderPage('ops');
 }
 
 function showOPDetail(id) {
@@ -1360,16 +1575,33 @@ function showOPDetail(id) {
   const retrasada = estaOpRetrasada(op);
   
   document.getElementById('op-det-title').innerHTML=`${op.numero} — ${op.area} <button class="btn-icon" onclick="closeModal('modal-op-det')"><i class="ti ti-x"></i></button>`;
+  
+  // Multi-machine display
+  const maqsHtml = (op.maquinas&&op.maquinas.length)
+    ? op.maquinas.map(mid=>{const m=DB.maquinas.find(x=>x.id===mid);return m?`<span class="badge bb" style="font-size:11px">${m.nombre}</span>`:''}).join(' ')
+    : `<span style="color:#9ca3af">Sin asignar</span>`;
+
+  // Hoja de ruta badges
+  const hr = op.hoja_ruta;
+  const hrHtml = hr ? [
+    hr.fosfato?'<span class="badge bb" style="font-size:10px"><i class="ti ti-droplet"></i> Fosfato</span>':'',
+    hr.particulas_magneticas?'<span class="badge by" style="font-size:10px"><i class="ti ti-magnet"></i> P.Mag.</span>':'',
+    hr.tintas_penetrantes?'<span class="badge bpu" style="font-size:10px"><i class="ti ti-palette"></i> Tintas</span>':'',
+    hr.prueba_estructural?'<span class="badge br" style="font-size:10px"><i class="ti ti-building-bridge"></i> Estructural</span>':'',
+  ].filter(Boolean).join(' ') || '<span style="color:#9ca3af;font-size:11px">Sin ensayos</span>'
+  : '<span style="color:#9ca3af;font-size:11px">Sin hoja de ruta</span>';
+
   document.getElementById('op-det-body').innerHTML=`
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px">
       ${opBadge(op.estado)} 
       ${prioBadge(op.prioridad)} 
       ${retrasada ? '<span class="badge br"><i class="ti ti-alert-triangle"></i> RETRASADA</span>' : ''}
+      ${op.liberacion_calidad ? libBadge(op.liberacion_calidad) : ''}
       ${semaDot(op)}
     </div>
     <div class="mpa-grid" style="margin-bottom:11px">
-      <div class="mpa-f"><div class="mpa-l">Máquina / OP</div><div class="mpa-v">${op.maquina_nombre||'Sin asignar'} <span style="font-size:11px;color:#6b7280">(${op.numero})</span></div></div>
-      <div class="mpa-f"><div class="mpa-l">Planeador</div><div class="mpa-v">${op.planeador}</div></div>
+      <div class="mpa-f" style="grid-column:1/-1"><div class="mpa-l">Máquinas asignadas</div><div class="mpa-v" style="display:flex;gap:4px;flex-wrap:wrap">${maqsHtml}</div></div>
+      <div class="mpa-f"><div class="mpa-l">Planeador / Ing.</div><div class="mpa-v">${op.planeador}</div></div>
       <div class="mpa-f"><div class="mpa-l">Inicio est.</div><div class="mpa-v">${op.inicio?op.inicio.replace('T',' '):'-'}</div></div>
       <div class="mpa-f"><div class="mpa-l">Fin est.</div><div class="mpa-v">${op.fin?op.fin.replace('T',' '):'-'}</div></div>
       <div class="mpa-f"><div class="mpa-l">Operario</div><div class="mpa-v">${op.operario_nombre||'<span style="color:#9ca3af">Sin asignar</span>'}</div></div>
@@ -1377,6 +1609,11 @@ function showOPDetail(id) {
       ${op.operario_inicio?`<div class="mpa-f"><div class="mpa-l">Inicio real</div><div class="mpa-v" style="font-size:12px">${op.operario_inicio.replace('T',' ').slice(0,16)}</div></div>`:''}
       ${op.operario_fin?`<div class="mpa-f"><div class="mpa-l">Fin real</div><div class="mpa-v" style="font-size:12px">${op.operario_fin.replace('T',' ').slice(0,16)}</div></div>`:''}
     </div>
+    ${hr ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:9px 12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:600;color:#14532d;margin-bottom:6px"><i class="ti ti-file-check"></i> Hoja de Ruta</div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px">${hrHtml}</div>
+      ${hr.mediciones&&hr.mediciones.length?`<div style="font-size:11px;color:#374151;margin-top:4px"><i class="ti ti-ruler"></i> ${hr.mediciones.map(m=>m.instrumento).join(' · ')}</div>`:''}
+    </div>` : ''}
     <div style="font-size:13px;font-weight:600;margin-bottom:6px">Materiales</div>${items}
     ${op.estado!=='completada'?`<div style="margin-top:10px"><div style="font-size:13px;font-weight:600;margin-bottom:5px">Progreso: ${op.progreso}%</div><div class="prog-bg" style="height:9px"><div class="prog-bar" style="width:${op.progreso}%;height:9px;background:${op.progreso>=80?'#f59e0b':'#22c55e'}"></div></div></div>`:''}
     <div style="margin-top:11px"><div style="font-size:13px;font-weight:600;margin-bottom:5px">Historial de Novedades</div>${novedades}</div>
@@ -1389,10 +1626,9 @@ function showOPDetail(id) {
   `;
   
   let acts=`<button class="btn btn-s" onclick="closeModal('modal-op-det')">Cerrar</button>`;
-  if(can('canAssignMaq')&&op.estado==='pendiente') acts+=`<button class="btn btn-p" onclick="closeModal('modal-op-det');populateOpMaq();openModal('modal-op')">Reasignar</button>`;
+  if(can('canAssignMaq')&&op.estado!=='completada') acts+=`<button class="btn btn-p" onclick="closeModal('modal-op-det');abrirAsignMaq('${id}')"><i class="ti ti-tool"></i> Asignar máquinas</button>`;
   if(can('canEditProg')&&(op.estado==='asignada'||op.estado==='en_proceso'||op.estado==='pausada')) acts+=`<button class="btn btn-p" onclick="closeModal('modal-op-det');openProgModal('${id}')"><i class="ti ti-edit"></i> Actualizar progreso</button>`;
   
-  // Botón de login/logout de operario (produccion o admin)
   if((currentUser.rol==='produccion'||currentUser.rol==='admin') && op.estado!=='completada') {
     const loginLabel = op.operario_inicio && !op.operario_fin
       ? `<i class="ti ti-player-stop"></i> Registrar Fin OP`
@@ -1400,12 +1636,15 @@ function showOPDetail(id) {
     acts+=`<button class="btn btn-warning" onclick="closeModal('modal-op-det');openOpLogin('${id}')">${loginLabel}</button>`;
   }
   
-  // Calidad o admin pueden liberar OPs bloqueadas o retroceder rechazos
   if(can('canLiberar') && (op.estado==='bloqueada' || op.estado==='pendiente')) {
-    acts+=`<button class="btn btn-success" onclick="liberarOP('${id}')"><i class="ti ti-lock-open"></i> Reversar Rechazo / Liberar</button>`;
+    acts+=`<button class="btn btn-success" onclick="liberarOP('${id}')"><i class="ti ti-lock-open"></i> Reversar / Liberar</button>`;
+  }
+
+  if(can('canLiberarPieza') && op.estado==='completada' && !op.liberacion_calidad) {
+    acts+=`<button class="btn btn-p" style="background:#065f46;border-color:#065f46" onclick="closeModal('modal-op-det');abrirLiberacionPieza('${id}')"><i class="ti ti-clipboard-check"></i> Liberar pieza</button>`;
   }
   
-  if(can('canNovedad')) acts+=`<button class="btn btn-danger" onclick="closeModal('modal-op-det');openNovedadForOP('${id}')"><i class="ti ti-alert-triangle"></i> Registrar Novedad</button>`;
+  if(can('canNovedad')) acts+=`<button class="btn btn-danger" onclick="closeModal('modal-op-det');openNovedadForOP('${id}')"><i class="ti ti-alert-triangle"></i> Novedad</button>`;
   
   document.getElementById('op-det-actions').innerHTML=acts;
   openModal('modal-op-det');
@@ -1590,13 +1829,19 @@ function tplProduccion() {
 }
 
 // ============================================================
-// CALIDAD Y CERTIFICADOS (Logística puede "ver", Calidad puede validar/rechazar/reversar)
+// CALIDAD — Certificados MTR + LIBERACIÓN DE PIEZAS post-inspección
 // ============================================================
+function libBadge(lc) {
+  if(!lc) return '<span class="badge bgr"><i class="ti ti-clock"></i> Pendiente liberación</span>';
+  return lc.liberado
+    ? `<span class="badge bg"><i class="ti ti-lock-open"></i> Liberada</span>`
+    : `<span class="badge br"><i class="ti ti-lock"></i> Rechazada</span>`;
+}
+
 function tplCalidad() {
-  // Verificamos si tiene acceso a la página (Logística ahora tiene acceso como Solo Lectura)
   if(!currentPerm.pages.includes('calidad')) return accessDeniedBlock('Módulo de Calidad');
-  
   const tienePermisoValidar = can('canValidateCert');
+  const tienePermisoLiberar = can('canLiberarPieza');
 
   const certs=DB.certificados.map(c=>{ 
     const lote=DB.lotes.find(l=>l.id===c.lote_id); 
@@ -1611,41 +1856,212 @@ function tplCalidad() {
       </div>
       <div style="display:flex;gap:5px;flex-shrink:0">
         <button class="btn btn-sm btn-s" onclick="showCertDet('${c.id}')"><i class="ti ti-eye"></i> Inspeccionar MTR</button>
-        
         ${tienePermisoValidar && c.estado==='pendiente' ? `
           <button class="btn btn-sm btn-success" onclick="validarCert('${c.id}','validado')"><i class="ti ti-check"></i> Validar</button>
-          <button class="btn btn-sm btn-danger" onclick="validarCert('${c.id}','rechazado')"><i class="ti ti-x"></i> Rechazar</button>
-        `:''}
-
+          <button class="btn btn-sm btn-danger" onclick="validarCert('${c.id}','rechazado')"><i class="ti ti-x"></i> Rechazar</button>`:''}
         ${tienePermisoValidar && (c.estado==='validado' || c.estado==='rechazado') ? `
-          <button class="btn btn-sm btn-warning" onclick="reversarDecisionCert('${c.id}')" title="Reversar dictamen de calidad"><i class="ti ti-arrow-back-up"></i> Reversar</button>
-        `:''}
+          <button class="btn btn-sm btn-warning" onclick="reversarDecisionCert('${c.id}')"><i class="ti ti-arrow-back-up"></i> Reversar</button>`:''}
       </div>
     </div>`; 
   }).join('');
-  
+
+  // ── LIBERACIÓN DE PIEZAS ──────────────────────────────────
+  // Ops que tienen hoja de ruta definida (completadas o en_proceso con progreso >= 80)
+  const opsConHR = DB.ops.filter(o => o.hoja_ruta);
+  const liberacionRows = opsConHR.map(op => {
+    const hr = op.hoja_ruta;
+    const lc = op.liberacion_calidad;
+    const ensayosBadges = [
+      hr.fosfato ? `<span class="badge bb" style="font-size:10px"><i class="ti ti-droplet"></i> Fosfato</span>` : '',
+      hr.particulas_magneticas ? `<span class="badge by" style="font-size:10px"><i class="ti ti-magnet"></i> Part. Magnéticas</span>` : '',
+      hr.tintas_penetrantes ? `<span class="badge bpu" style="font-size:10px"><i class="ti ti-palette"></i> Tintas Penet.</span>` : '',
+      hr.prueba_estructural ? `<span class="badge br" style="font-size:10px"><i class="ti ti-building-bridge"></i> Estructural</span>` : '',
+    ].filter(Boolean).join(' ');
+    const medCount = hr.mediciones ? hr.mediciones.length : 0;
+    const medAprobadas = hr.mediciones ? hr.mediciones.filter(m=>m.aprobado===true).length : 0;
+    return `<tr>
+      <td style="font-weight:700;color:#1d4ed8">${op.numero}</td>
+      <td>${op.area||'—'}</td>
+      <td>${opBadge(op.estado)}</td>
+      <td style="max-width:200px">${ensayosBadges||'<span style="color:#9ca3af;font-size:11px">Sin ensayos</span>'}</td>
+      <td style="font-size:12px">${medCount>0?`${medAprobadas}/${medCount} aprob.`:'<span style="color:#9ca3af">—</span>'}</td>
+      <td>${libBadge(lc)}</td>
+      <td>
+        ${tienePermisoLiberar && op.estado==='completada' && !lc ? `<button class="btn btn-sm btn-success" onclick="abrirLiberacionPieza('${op.id}')"><i class="ti ti-clipboard-check"></i> Liberar pieza</button>` : ''}
+        ${lc ? `<button class="btn btn-sm btn-s" onclick="verLiberacion('${op.id}')"><i class="ti ti-eye"></i> Ver dictamen</button>` : ''}
+        ${tienePermisoLiberar && op.progreso>=80 && op.estado!=='completada' && !lc ? `<button class="btn btn-sm btn-warning" onclick="abrirLiberacionPieza('${op.id}')"><i class="ti ti-clipboard-check"></i> Inspeccionar</button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+
+  // KPIs liberación
+  const totalLibs = opsConHR.length;
+  const liberadas = opsConHR.filter(o=>o.liberacion_calidad&&o.liberacion_calidad.liberado).length;
+  const rechazadas = opsConHR.filter(o=>o.liberacion_calidad&&!o.liberacion_calidad.liberado).length;
+  const pendLib = opsConHR.filter(o=>!o.liberacion_calidad&&o.estado==='completada').length;
+
   const novedades=DB.ops.filter(o=>o.novedades&&o.novedades.length).flatMap(o=>o.novedades.map(n=>({...n,op_num:o.numero}))).map(n=>`<div class="nov-item">
     <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-weight:600;font-size:13px">${n.op_num} — ${n.tipo.toUpperCase()}</span><span style="font-size:11px;color:#9ca3af">${n.fecha} · ${n.por}</span></div>
     <div style="font-size:12px;color:#374151">${n.desc}</div>
     ${n.accion?`<div style="font-size:12px;color:#6b7280;margin-top:2px">Acción: ${n.accion}</div>`:''}
   </div>`).join('');
-  
+
   return `
-  ${!tienePermisoValidar ? `
-    <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:12px; color:#1e40af">
-      <i class="ti ti-info-circle"></i> <strong>Modo Solo Consulta:</strong> Tu rol permite visualizar los ensayos mecánicos y MTR de materiales, pero no autorizar su liberación ni registrar novedades.
-    </div>
-  `:''}
-  
+  ${!tienePermisoValidar && !tienePermisoLiberar ? `
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#1e40af">
+      <i class="ti ti-info-circle"></i> <strong>Modo Solo Consulta:</strong> Tu rol puede visualizar certificados MTR y liberaciones de piezas, pero no autorizar ni registrar novedades.
+    </div>`:''}
+
   <div class="panel" style="margin-bottom:14px">
-    <div class="panel-hdr"><span class="panel-title">Dictámenes de Calidad en Certificados Mecánicos (MTR)</span>
-      ${can('canNovedad')?`<button class="btn btn-sm btn-p" onclick="openNovedad()"><i class="ti ti-alert-triangle"></i> + Registrar Novedad</button>`:''}
-    </div>${certs}
+    <div class="panel-hdr"><span class="panel-title"><i class="ti ti-certificate" style="color:#1d4ed8"></i> Dictámenes de Calidad — Certificados Mecánicos (MTR)</span>
+      ${can('canNovedad')?`<button class="btn btn-sm btn-p" onclick="openNovedad()"><i class="ti ti-alert-triangle"></i> + Novedad</button>`:''}
+    </div>${certs||'<div style="padding:14px;color:#9ca3af;font-size:13px">Sin certificados registrados</div>'}
   </div>
+
+  <!-- SECCIÓN LIBERACIÓN DE PIEZAS -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+    <div class="kpi"><div class="kpi-label">OPs con hoja ruta</div><div class="kpi-val">${totalLibs}</div></div>
+    <div class="kpi"><div class="kpi-label">Piezas liberadas</div><div class="kpi-val" style="color:#15803d">${liberadas}</div></div>
+    <div class="kpi"><div class="kpi-label">Rechazadas</div><div class="kpi-val" style="color:#dc2626">${rechazadas}</div></div>
+    <div class="kpi"><div class="kpi-label">Pend. liberación</div><div class="kpi-val" style="color:#b45309">${pendLib}</div></div>
+  </div>
+
+  <div class="panel" style="margin-bottom:14px">
+    <div class="panel-hdr">
+      <span class="panel-title"><i class="ti ti-clipboard-check" style="color:#065f46"></i> Liberación de Piezas — Post Inspección (Hoja de Ruta)</span>
+    </div>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:9px 13px;margin:10px 14px;font-size:12px;color:#14532d">
+      <i class="ti ti-info-circle"></i> Calidad inspecciona cada pieza según la <strong>hoja de ruta</strong> definida por Ingeniería (fosfato, partículas magnéticas, tintas penetrantes, prueba estructural y mediciones con instrumentos) y emite el dictamen de <strong>liberación o rechazo</strong>.
+    </div>
+    <div style="overflow-x:auto"><table style="min-width:700px">
+      <thead><tr>
+        <th style="width:10%">OP</th><th style="width:10%">Área</th><th style="width:11%">Estado OP</th>
+        <th style="width:28%">Ensayos requeridos</th><th style="width:12%">Mediciones</th>
+        <th style="width:13%">Liberación</th><th style="width:16%">Acción</th>
+      </tr></thead>
+      <tbody>${liberacionRows||'<tr><td colspan="7" style="text-align:center;padding:20px;color:#9ca3af">Sin OPs con hoja de ruta</td></tr>'}</tbody>
+    </table></div>
+  </div>
+
   <div class="panel">
     <div class="panel-hdr"><span class="panel-title">Novedades y Desviaciones de Planta</span></div>
     <div style="padding:12px 15px" class="nov-list">${novedades||'<span style="color:#9ca3af;font-size:13px">Sin novedades registradas</span>'}</div>
   </div>`;
+}
+
+function abrirLiberacionPieza(opId) {
+  if(!can('canLiberarPieza')){ denied(); return; }
+  const op = DB.ops.find(o=>o.id===opId);
+  const hr = op.hoja_ruta || {};
+  document.getElementById('lib-op-id').value = opId;
+  document.getElementById('lib-op-label').textContent = op.numero + ' — ' + op.area;
+  // Checkboxes ensayos
+  document.getElementById('lib-fosfato').checked = !!hr.fosfato;
+  document.getElementById('lib-partmag').checked = !!hr.particulas_magneticas;
+  document.getElementById('lib-tintas').checked = !!hr.tintas_penetrantes;
+  document.getElementById('lib-estructural').checked = !!hr.prueba_estructural;
+  // Render mediciones
+  const medCont = document.getElementById('lib-mediciones-list');
+  const meds = hr.mediciones || [];
+  medCont.innerHTML = meds.map((m,i) => `
+    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #f3f4f6">
+      <span style="font-size:12px;font-weight:500"><i class="ti ti-ruler" style="color:#6b7280"></i> ${m.instrumento}</span>
+      <input type="text" placeholder="Resultado medido..." value="${m.resultado||''}" id="lib-med-res-${i}" style="padding:4px 8px;border:1px solid #d1d5db;border-radius:5px;font-size:12px">
+      <select id="lib-med-ok-${i}" style="padding:4px 7px;border:1px solid #d1d5db;border-radius:5px;font-size:12px">
+        <option value="">—</option>
+        <option value="ok" ${m.aprobado===true?'selected':''}>✅ OK</option>
+        <option value="nok" ${m.aprobado===false?'selected':''}>❌ No OK</option>
+      </select>
+    </div>`).join('') + `
+    <button class="btn btn-sm btn-s" style="margin-top:8px" onclick="agregarMedicionLib()"><i class="ti ti-plus"></i> Agregar instrumento</button>`;
+  document.getElementById('lib-obs').value = hr.observaciones || '';
+  document.getElementById('lib-dictamen').value = op.liberacion_calidad ? (op.liberacion_calidad.liberado ? 'liberar' : 'rechazar') : 'liberar';
+  openModal('modal-liberacion');
+}
+
+function agregarMedicionLib() {
+  const opId = document.getElementById('lib-op-id').value;
+  const op = DB.ops.find(o=>o.id===opId);
+  if(!op.hoja_ruta) op.hoja_ruta = {fosfato:false,particulas_magneticas:false,tintas_penetrantes:false,prueba_estructural:false,mediciones:[],observaciones:''};
+  // Show instrument selector
+  const inst = prompt('Nombre del instrumento de medición:');
+  if(!inst) return;
+  op.hoja_ruta.mediciones.push({instrumento:inst,resultado:'',aprobado:null});
+  abrirLiberacionPieza(opId);
+}
+
+function guardarLiberacionPieza() {
+  if(!can('canLiberarPieza')){ denied(); return; }
+  const opId = document.getElementById('lib-op-id').value;
+  const op = DB.ops.find(o=>o.id===opId);
+  const hr = op.hoja_ruta;
+  // Actualizar ensayos
+  hr.fosfato = document.getElementById('lib-fosfato').checked;
+  hr.particulas_magneticas = document.getElementById('lib-partmag').checked;
+  hr.tintas_penetrantes = document.getElementById('lib-tintas').checked;
+  hr.prueba_estructural = document.getElementById('lib-estructural').checked;
+  hr.observaciones = document.getElementById('lib-obs').value;
+  // Actualizar mediciones
+  (hr.mediciones||[]).forEach((m,i) => {
+    const r = document.getElementById('lib-med-res-'+i);
+    const k = document.getElementById('lib-med-ok-'+i);
+    if(r) m.resultado = r.value;
+    if(k) m.aprobado = k.value==='ok' ? true : k.value==='nok' ? false : null;
+  });
+  const dictamen = document.getElementById('lib-dictamen').value;
+  const obs = document.getElementById('lib-obs').value;
+  op.liberacion_calidad = {
+    liberado: dictamen === 'liberar',
+    fecha: new Date().toISOString().split('T')[0],
+    inspector: currentUser.nombre,
+    obs: obs
+  };
+  if(dictamen === 'rechazar') {
+    op.estado = 'bloqueada';
+    op.novedades.push({tipo:'calidad',desc:'Pieza rechazada en inspección post-producción. '+obs,accion:'Revisar proceso y hoja de ruta.',fecha:new Date().toISOString().split('T')[0],por:currentUser.username});
+    addNotif('op','ti-lock','#fee2e2','#b91c1c',`${op.numero}: pieza RECHAZADA en liberación de calidad.`);
+    toast(`❌ Pieza de ${op.numero} rechazada. OP bloqueada.`);
+  } else {
+    addNotif('op','ti-lock-open','#dcfce7','#15803d',`${op.numero}: pieza LIBERADA por Calidad — ${currentUser.nombre}.`);
+    toast(`✅ Pieza de ${op.numero} liberada por Calidad.`);
+  }
+  closeModal('modal-liberacion');
+  renderPage('calidad');
+}
+
+function verLiberacion(opId) {
+  const op = DB.ops.find(o=>o.id===opId);
+  const lc = op.liberacion_calidad;
+  const hr = op.hoja_ruta || {};
+  const ensayos = [
+    {label:'Tratamiento con Fosfato',val:hr.fosfato},
+    {label:'Partículas Magnéticas',val:hr.particulas_magneticas},
+    {label:'Tintas Penetrantes',val:hr.tintas_penetrantes},
+    {label:'Prueba Estructural',val:hr.prueba_estructural},
+  ].map(e=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:12px">
+    <span style="flex:1">${e.label}</span>
+    ${e.val ? '<span class="badge bg">Requerido ✓</span>' : '<span class="badge bgr">No aplica</span>'}
+  </div>`).join('');
+  const meds = (hr.mediciones||[]).map(m=>`<div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:12px">
+    <span><i class="ti ti-ruler" style="color:#6b7280"></i> ${m.instrumento}</span>
+    <span style="font-weight:600">${m.resultado||'—'}</span>
+    ${m.aprobado===true?'<span class="badge bg">OK</span>':m.aprobado===false?'<span class="badge br">No OK</span>':'<span class="badge bgr">—</span>'}
+  </div>`).join('');
+  
+  const title = document.getElementById('det-lib-title');
+  const body = document.getElementById('det-lib-body');
+  if(title) title.innerHTML = `Dictamen de Liberación — ${op.numero} <button class="btn-icon" onclick="closeModal('modal-det-lib')"><i class="ti ti-x"></i></button>`;
+  if(body) body.innerHTML = `
+    <div style="margin-bottom:12px;display:flex;gap:8px;align-items:center">
+      ${libBadge(lc)}
+      <span style="font-size:12px;color:#6b7280">${lc.fecha} · Inspector: <strong>${lc.inspector}</strong></span>
+    </div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px">Ensayos de la Hoja de Ruta</div>
+    ${ensayos}
+    ${meds.length?`<div style="font-size:13px;font-weight:600;margin:10px 0 5px">Mediciones con Instrumentos</div>${meds}`:''}
+    ${lc.obs?`<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:7px;padding:8px 11px;font-size:12px;margin-top:10px"><strong>Observaciones:</strong> ${lc.obs}</div>`:''}
+  `;
+  openModal('modal-det-lib');
 }
 
 function showCertDet(id) {
@@ -2038,6 +2454,89 @@ function filterTbody(tbodyId, q) {
 }
 
 // ============================================================
+// SEGUIMIENTO DE OPs
+// ============================================================
+function tplSeguimiento() {
+  var etapas = [
+    {id:'compras',    label:'Compras',    icon:'ti-shopping-cart', color:'#9d174d', bg:'#fce7f3', border:'#f9a8d4'},
+    {id:'logistica',  label:'En Stock',   icon:'ti-package',       color:'#1d4ed8', bg:'#eff6ff', border:'#bfdbfe'},
+    {id:'produccion', label:'Producción', icon:'ti-tool',          color:'#92400e', bg:'#fffbeb', border:'#fcd34d'},
+    {id:'calidad',    label:'Calidad',    icon:'ti-certificate',   color:'#065f46', bg:'#f0fdf4', border:'#a7f3d0'},
+    {id:'completada', label:'Completada', icon:'ti-circle-check',  color:'#374151', bg:'#f9fafb', border:'#e5e7eb'},
+  ];
+
+  function getEtapa(op) {
+    if(op.estado==='completada') return 'completada';
+    if(op.estado==='en_proceso') return 'produccion';
+    var hasCmp=false;
+    DB.compras_items.forEach(function(ci){ if(ci.op===op.numero) hasCmp=true; });
+    if(hasCmp) return 'logistica';
+    return 'compras';
+  }
+
+  function etapaBar(op) {
+    var curr=getEtapa(op);
+    var ids=['compras','logistica','produccion','calidad','completada'];
+    var idx=ids.indexOf(curr);
+    var h='<div style="display:flex;gap:1px;margin:6px 0 4px">';
+    ids.forEach(function(id,i){
+      var done=i<idx, activ=i===idx;
+      var bg=activ?'#1d4ed8':done?'#86efac':'#e5e7eb';
+      var ht=activ?'6px':'4px';
+      h+='<div style="flex:1;height:'+ht+';background:'+bg+';border-radius:3px;margin-top:'+(activ?'0':'1px')+'"></div>';
+    });
+    return h+'</div>';
+  }
+
+  var grouped={};
+  etapas.forEach(function(e){ grouped[e.id]=[]; });
+  DB.ops.forEach(function(op){ var e=getEtapa(op); if(grouped[e]) grouped[e].push(op); });
+
+  var total=DB.ops.length;
+  var activas=DB.ops.filter(function(o){return o.estado==='en_proceso';}).length;
+  var retrasadas=DB.ops.filter(function(o){return estaOpRetrasada(o);}).length;
+  var completadas=DB.ops.filter(function(o){return o.estado==='completada';}).length;
+
+  var out='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px">'
+    +'<div class="kpi"><div class="kpi-label">Total OPs</div><div class="kpi-val">'+total+'</div></div>'
+    +'<div class="kpi"><div class="kpi-label">En proceso</div><div class="kpi-val" style="color:#1d4ed8">'+activas+'</div></div>'
+    +'<div class="kpi"><div class="kpi-label">Retrasadas</div><div class="kpi-val" style="color:#dc2626">'+retrasadas+'</div></div>'
+    +'<div class="kpi"><div class="kpi-label">Completadas</div><div class="kpi-val" style="color:#15803d">'+completadas+'</div></div>'
+    +'</div>';
+
+  // On mobile stack columns, on desktop show 5 columns
+  out += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px" class="seg-kanban">';
+  etapas.forEach(function(etapa){
+    var ops=grouped[etapa.id];
+    var cards='';
+    ops.forEach(function(op){
+      var cmpItem=null;
+      DB.compras_items.forEach(function(ci){ if(ci.op===op.numero) cmpItem=ci; });
+      var mtrBadge=cmpItem&&cmpItem.mtr
+        ?'<span style="font-size:10px;background:#d1fae5;color:#065f46;border-radius:4px;padding:1px 5px"><i class="ti ti-file-certificate"></i> MTR</span>'
+        :'<span style="font-size:10px;background:#fee2e2;color:#dc2626;border-radius:4px;padding:1px 5px">Sin MTR</span>';
+      var retraso=estaOpRetrasada(op)?'<span style="font-size:10px;background:#fee2e2;color:#dc2626;border-radius:4px;padding:1px 5px">⚠ Retraso</span>':'';
+      cards+='<div onclick="showOPDetail(\''+op.id+'\')" style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:9px 10px;margin-bottom:7px;cursor:pointer;transition:box-shadow .15s" onmouseover="this.style.boxShadow=\'0 2px 8px rgba(0,0,0,.1)\'" onmouseout="this.style.boxShadow=\'none\'">'
+        +'<div style="font-weight:700;font-size:13px;color:#1d4ed8">'+op.numero+'</div>'
+        +'<div style="font-size:11px;color:#6b7280;margin-bottom:2px">'+op.area+'</div>'
+        +etapaBar(op)
+        +'<div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px">'+mtrBadge+retraso+'</div>'
+        +(op.fin?'<div style="font-size:10px;color:#9ca3af;margin-top:3px">Fin: '+op.fin.slice(0,10)+'</div>':'')
+        +'</div>';
+    });
+    if(!cards) cards='<div style="font-size:12px;color:#d1d5db;text-align:center;padding:14px 0"><i class="ti ti-inbox" style="display:block;font-size:20px;margin-bottom:3px"></i>Sin OPs</div>';
+    out+='<div>'
+      +'<div style="display:flex;align-items:center;gap:6px;padding:7px 10px;background:'+etapa.bg+';border:1px solid '+etapa.border+';border-radius:8px;margin-bottom:8px">'
+      +'<i class="ti '+etapa.icon+'" style="color:'+etapa.color+'"></i>'
+      +'<span style="font-weight:600;font-size:12px;color:'+etapa.color+'">'+etapa.label+'</span>'
+      +'<span style="margin-left:auto;background:'+etapa.border+';color:'+etapa.color+';border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700">'+ops.length+'</span>'
+      +'</div>'+cards+'</div>';
+  });
+  out+='</div>';
+  return out;
+}
+
+// ============================================================
 // COMPRAS
 // ============================================================
 function tplCompras() {
@@ -2189,6 +2688,46 @@ function guardarCompra() {
 // ============================================================
 var modoRecepcion='stock';
 
+function abrirRecepcion() {
+  // Reset to STOCK mode
+  var stockDiv = document.getElementById('recep-modo-stock');
+  var opDiv = document.getElementById('recep-modo-op');
+  if(stockDiv) stockDiv.style.display = 'block';
+  if(opDiv)    opDiv.style.display    = 'none';
+  // Reset button styles
+  var bs = document.getElementById('btn-modo-stock');
+  var bo = document.getElementById('btn-modo-op');
+  if(bs){ bs.style.border='2px solid #1d4ed8'; bs.style.background='#eff6ff'; bs.style.color='#1d4ed8'; }
+  if(bo){ bo.style.border='2px solid #e5e7eb'; bo.style.background='#fff';    bo.style.color='#374151'; }
+  // Populate OP selector — solo OPs que Compras haya registrado
+  var sel = document.getElementById('r-op-consulta');
+  if(sel){
+    var opsConCompras = DB.compras_items.map(function(ci){ return ci.op; });
+    var opsFiltradas = DB.ops.filter(function(o){
+      return o.estado!=='completada' && opsConCompras.indexOf(o.numero) > -1;
+    });
+    if(opsFiltradas.length > 0){
+      var opts = '<option value="">Seleccionar OP registrada por Compras...</option>';
+      opsFiltradas.forEach(function(o){
+        var ci=null; DB.compras_items.forEach(function(c){ if(c.op===o.numero) ci=c; });
+        var mtrLabel = ci && ci.mtr ? ' ✓ MTR' : ' ⚠ Sin MTR';
+        opts += '<option value="'+o.id+'">'+o.numero+' — '+o.area+mtrLabel+'</option>';
+      });
+      sel.innerHTML = opts;
+    } else {
+      sel.innerHTML = '<option value="">— Compras no ha registrado OPs aún —</option>';
+    }
+  }
+  // Clear stock form fields
+  ['r-tipo','r-cod','r-desc','r-lon','r-dia','r-esp','r-col','r-can','r-pro','r-ubi'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  var fn = document.getElementById('r-fname');
+  if(fn) fn.textContent = 'Clic para subir o arrastrar PDF aquí';
+  openModal('modal-recep');
+}
+
 function setModoRecepcion(modo) {
   modoRecepcion=modo;
   document.getElementById('recep-modo-stock').style.display=modo==='stock'?'block':'none';
@@ -2202,63 +2741,161 @@ function setModoRecepcion(modo) {
     bs.style.border='2px solid #e5e7eb';bs.style.background='#fff';bs.style.color='#374151';
     var sel=document.getElementById('r-op-consulta');
     if(sel){
-      var opts='<option value="">Seleccionar OP de Planeación...</option>';
-      DB.ops.filter(function(o){return o.estado!=='completada';}).forEach(function(o){
-        opts+='<option value="'+o.id+'">'+o.numero+' — '+o.area+' ('+o.estado+')</option>';
+      // Solo OPs que Compras haya registrado en DB.compras_items
+      var opsConCompras = DB.compras_items.map(function(ci){ return ci.op; });
+      var opsFiltradas = DB.ops.filter(function(o){
+        return o.estado!=='completada' && opsConCompras.indexOf(o.numero) > -1;
       });
-      sel.innerHTML=opts;
+      if(opsFiltradas.length > 0){
+        var opts='<option value="">Seleccionar OP registrada por Compras...</option>';
+        opsFiltradas.forEach(function(o){
+          // Find compras entry to show extra info
+          var ci=null; DB.compras_items.forEach(function(c){ if(c.op===o.numero) ci=c; });
+          var mtrLabel = ci && ci.mtr ? ' ✓ MTR' : ' ⚠ Sin MTR';
+          opts+='<option value="'+o.id+'">'+o.numero+' — '+o.area+mtrLabel+'</option>';
+        });
+        sel.innerHTML=opts;
+      } else {
+        sel.innerHTML='<option value="">— Compras no ha registrado OPs aún —</option>';
+      }
+      // Update info panel
+      var panel=document.getElementById('op-info-panel');
+      if(panel) panel.style.display='none';
     }
   }
 }
 
 function mostrarInfoOP(opId) {
-  var panel=document.getElementById('op-info-panel');
-  var content=document.getElementById('op-info-content');
-  if(!opId){panel.style.display='none';return;}
-  var op=null; DB.ops.forEach(function(o){if(o.id===opId)op=o;});
-  if(!op){panel.style.display='none';return;}
-  var items='';
-  op.items.forEach(function(it){items+='<span style="font-size:12px;background:#f3f4f6;border-radius:5px;padding:2px 7px;display:inline-block;margin:2px">'+(it.desc||it.lote_num)+' (x'+it.cantidad+')</span>';});
-  // Compras data for this OP
-  var cItem=null; DB.compras_items.forEach(function(ci){if(ci.op===op.numero)cItem=ci;});
-  var cHtml=cItem
-    ?'<div style="margin-top:10px;background:#fce7f3;border:1px solid #f9a8d4;border-radius:7px;padding:9px 11px">'
-      +'<div style="font-size:11px;font-weight:600;color:#9d174d;margin-bottom:6px"><i class="ti ti-shopping-cart"></i> Datos de Compras para esta OP</div>'
-      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:12px">'
-      +'<div><span style="color:#6b7280">ID Compra:</span> <strong>'+(cItem.id_compra||'—')+'</strong></div>'
-      +'<div><span style="color:#6b7280">Tipo material:</span> '+(cItem.tipo_material||'—')+'</div>'
-      +'<div><span style="color:#6b7280">Certificado MTR:</span> '+(cItem.mtr?'<span class="badge bg" style="font-size:10px"><i class="ti ti-file-certificate"></i> '+cItem.mtr+'</span>':'<span class="badge br" style="font-size:10px">Sin MTR</span>')+'</div>'
-      +'<div><span style="color:#6b7280">Por:</span> '+(cItem.creado_por||'—')+'</div>'
-      +'</div>'
-      +(cItem.observacion?'<div style="margin-top:5px;font-size:12px;color:#7f1d1d"><i class="ti ti-note"></i> '+cItem.observacion+'</div>':'')
-      +'</div>'
-    :'<div style="margin-top:10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;padding:8px 11px;font-size:12px;color:#9ca3af"><i class="ti ti-shopping-cart"></i> Compras aún no ha registrado una OC para esta OP.</div>';
+  var panel   = document.getElementById('op-info-panel');
+  var content = document.getElementById('op-info-content');
+  var fields  = document.getElementById('op-recep-fields');
+  var btnConf = document.getElementById('btn-confirmar-recep');
 
-  content.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">'
-    +'<div><span style="font-size:11px;color:#6b7280">OP</span><div style="font-weight:700">'+op.numero+'</div></div>'
-    +'<div><span style="font-size:11px;color:#6b7280">Área</span><div style="font-weight:700">'+op.area+'</div></div>'
-    +'<div><span style="font-size:11px;color:#6b7280">Inicio estimado</span><div style="font-size:12px">'+(op.inicio?op.inicio.replace('T',' ').slice(0,16):'-')+'</div></div>'
-    +'<div><span style="font-size:11px;color:#6b7280">Fin estimado</span><div style="font-size:12px">'+(op.fin?op.fin.replace('T',' ').slice(0,16):'-')+'</div></div>'
-    +'<div><span style="font-size:11px;color:#6b7280">Planeador</span><div style="font-size:12px">'+op.planeador+'</div></div>'
-    +'<div><span style="font-size:11px;color:#6b7280">Estado</span><div>'+opBadge(op.estado)+'</div></div>'
+  if(!opId){ panel.style.display='none'; if(fields) fields.style.display='none'; if(btnConf) btnConf.style.display='none'; return; }
+  var op=null; DB.ops.forEach(function(o){ if(o.id===opId) op=o; });
+  if(!op){ panel.style.display='none'; return; }
+
+  // Compras entry for this OP
+  var ci=null; DB.compras_items.forEach(function(c){ if(c.op===op.numero) ci=c; });
+
+  var mtrHtml = ci && ci.mtr
+    ? '<span class="badge bg" style="font-size:11px"><i class="ti ti-file-certificate"></i> '+ci.mtr+'</span>'
+    : '<span class="badge br" style="font-size:11px"><i class="ti ti-alert-triangle"></i> Sin MTR — debe adjuntarlo aquí</span>';
+
+  // Compras card
+  var cmpCard = ci
+    ? '<div style="background:#fce7f3;border:1px solid #f9a8d4;border-radius:8px;padding:10px 12px;margin-bottom:10px">'
+        +'<div style="font-size:11px;font-weight:700;color:#9d174d;margin-bottom:7px"><i class="ti ti-shopping-cart"></i> Orden de Compras registrada</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px">'
+        +'<div><span style="color:#6b7280">ID Compra:</span> <strong>'+(ci.id_compra||'—')+'</strong></div>'
+        +'<div><span style="color:#6b7280">Material:</span> '+(ci.tipo_material||'—')+'</div>'
+        +'<div style="grid-column:1/-1"><span style="color:#6b7280">Certificado MTR:</span> '+mtrHtml+'</div>'
+        +(ci.observacion ? '<div style="grid-column:1/-1;color:#6b7280;font-size:11px;margin-top:2px"><i class="ti ti-note"></i> '+ci.observacion+'</div>' : '')
+        +'</div></div>'
+    : '<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#92400e"><i class="ti ti-alert-triangle"></i> Compras no ha registrado detalles para esta OP.</div>';
+
+  // OP summary card
+  var opItems = '';
+  op.items.forEach(function(it){ opItems += '<span style="font-size:11px;background:#f3f4f6;border-radius:4px;padding:2px 6px;display:inline-block;margin:2px">'+(it.desc||it.lote_num)+' x'+it.cantidad+'</span>'; });
+
+  var opCard = '<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;margin-bottom:10px">'
+    +'<div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:7px"><i class="ti ti-clipboard-list"></i> OP de Planeación</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:12px">'
+    +'<div><span style="color:#6b7280">Número:</span> <strong style="color:#1d4ed8">'+op.numero+'</strong></div>'
+    +'<div><span style="color:#6b7280">Área:</span> '+op.area+'</div>'
+    +'<div><span style="color:#6b7280">Inicio:</span> '+(op.inicio?op.inicio.slice(0,10):'—')+'</div>'
+    +'<div><span style="color:#6b7280">Fin est.:</span> '+(op.fin?op.fin.slice(0,10):'—')+'</div>'
+    +'<div><span style="color:#6b7280">Planeador:</span> '+op.planeador+'</div>'
+    +'<div><span style="color:#6b7280">Estado:</span> '+opBadge(op.estado)+'</div>'
     +'</div>'
-    +'<div style="font-size:11px;color:#6b7280;margin-bottom:4px">Materiales requeridos:</div>'
-    +'<div>'+(items||'Sin materiales definidos')+'</div>'
-    +cHtml;
-  panel.style.display='block';
+    +(opItems ? '<div style="margin-top:6px;font-size:11px;color:#6b7280">Materiales: '+opItems+'</div>' : '')
+    +'</div>';
+
+  content.innerHTML = cmpCard + opCard;
+  panel.style.display = 'block';
+  if(fields)  fields.style.display  = 'block';
+  if(btnConf) btnConf.style.display = 'inline-flex';
 }
 
-function vincularCertOP() {
-  var opId=document.getElementById('r-op-consulta').value;
-  var file=document.getElementById('r-file-op').files[0];
-  if(!opId){toast('⚠️ Selecciona una OP');return;}
-  if(!file){toast('⚠️ Adjunta el certificado MTR');return;}
-  var op=null; DB.ops.forEach(function(o){if(o.id===opId)op=o;});
-  addNotif('cert','ti-certificate','#dbeafe','#1d4ed8','Certificado MTR "'+file.name+'" adjuntado para '+op.numero+'. Pendiente validación de Calidad.');
+function confirmarRecepcionOP() {
+  var opId  = document.getElementById('r-op-consulta').value;
+  var can2  = document.getElementById('rop-can').value;
+  var ubi   = document.getElementById('rop-ubi').value;
+  var col   = document.getElementById('rop-col').value;
+  var obs   = document.getElementById('rop-obs').value;
+  var uni   = document.getElementById('rop-uni').value;
+  var file  = document.getElementById('r-file-op').files[0];
+
+  if(!opId)  { toast('⚠️ Selecciona una OP'); return; }
+  if(!can2)  { toast('⚠️ Indica la cantidad recibida'); return; }
+  if(!ubi)   { toast('⚠️ Indica la ubicación'); return; }
+
+  var op=null; DB.ops.forEach(function(o){ if(o.id===opId) op=o; });
+  var ci=null; DB.compras_items.forEach(function(c){ if(c.op===op.numero) ci=c; });
+
+  // Create lote linked to this OP
+  var loteId = 'l'+Date.now();
+  var loteNum = 'L-2026-'+(String(DB.lotes.length+1).padStart(4,'0'));
+  DB.lotes.push({
+    id:loteId, numero:loteNum,
+    tipo: ci ? (ci.tipo_material||'Material') : 'Material',
+    codigo: loteNum, desc: (ci ? ci.tipo_material||'Material para '+op.numero : 'Material para '+op.numero),
+    longitud:0, diametro:0, espesor:0,
+    colada: col||'—',
+    cantidad_recibida:+can2, cantidad_disponible:+can2,
+    ubicacion:ubi,
+    fecha: new Date().toISOString().split('T')[0],
+    proveedor: ci ? (ci.creado_por||'Compras') : 'Compras',
+    estado:'en_cuarentena',
+    op_id: op.id, op_numero: op.numero
+  });
+
+  // Attach MTR cert if file provided, or use compras cert
+  var certFile = file ? file.name : (ci && ci.mtr ? ci.mtr : null);
+  DB.certificados.push({
+    id:'c'+Date.now(), lote_id:loteId, tipo:'MTR',
+    archivo: certFile||('mtr_'+loteNum+'.pdf'),
+    fecha_emision: new Date().toISOString().split('T')[0],
+    firmado: file ? ('Logística — '+currentUser.nombre) : (ci&&ci.mtr ? 'Compras — adjunto previo' : 'Pendiente'),
+    estado:'pendiente', obs: obs||'',
+    campos:{norma:'ISO/ASTM',traccion:0,elasticidad:0,elongacion:0,dureza:0,quimico:[]}
+  });
+
+  // Register movement
+  DB.movimientos.unshift({
+    material: ci ? (ci.tipo_material||op.numero) : op.numero,
+    tipo:'entrada', cant:'+'+can2,
+    usuario: currentUser.nombre, hora:'Ahora', op_numero: op.numero
+  });
+
+  // ── Notifications to all areas ──────────────────────────────
+  var fecha = new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});
+  var mtrTxt = certFile ? ' Con MTR: '+certFile+'.' : ' Sin MTR adjunto — Calidad debe solicitarlo.';
+
+  // To Compras
+  addNotif('op','ti-truck-delivery','#fce7f3','#9d174d',
+    '✅ Logística confirmó recepción del material para '+op.numero+' ('+op.area+'). Lote: '+loteNum+'. '+fecha+'.');
+
+  // To Planeación
+  addNotif('op','ti-truck-delivery','#eff6ff','#1d4ed8',
+    '📦 Material para '+op.numero+' recibido en bodega. Lote '+loteNum+' en cuarentena. Planeación puede iniciar coordinación.');
+
+  // To Producción
+  addNotif('op','ti-tool','#fffbeb','#92400e',
+    '🔧 Material listo para '+op.numero+' ('+op.area+'). Lote '+loteNum+' en '+ubi+'. Pendiente liberación por Calidad.');
+
+  // To Calidad
+  addNotif('cert','ti-certificate','#f0fdf4','#15803d',
+    '🔬 Lote '+loteNum+' para '+op.numero+' requiere validación MTR.'+mtrTxt+' Revisar en Certificados.');
+
   closeModal('modal-recep');
-  toast('✅ Certificado vinculado a '+op.numero+'.');
-  updateBadges(); renderPage(currentPage);
+  toast('✅ Recepción de '+op.numero+' confirmada — notificaciones enviadas a todas las áreas');
+  updateBadges();
+  renderPage('recepcion');
 }
+
+// Legacy stub kept for backward compatibility
+function vincularCertOP() { confirmarRecepcionOP(); }
 
 function registrarRecepcion() {
   var tipo=document.getElementById('r-tipo').value;
@@ -2287,6 +2924,248 @@ function registrarRecepcion() {
 }
 
 
+
+
+window.addEventListener('resize', () => { updateBadges(); if(document.getElementById('sidebar-nav').innerHTML) buildSidebar(); });
+// ============================================================
+// AUDITORÍAS
+// ============================================================
+var AUD_ESTADO_CFG = {
+  programada:{label:'Programada',bg:'#eff6ff',color:'#1d4ed8',icon:'ti-calendar'},
+  abierta:   {label:'Abierta',   bg:'#fffbeb',color:'#92400e',icon:'ti-lock-open'},
+  cerrada:   {label:'Cerrada',   bg:'#f0fdf4',color:'#065f46',icon:'ti-circle-check'},
+};
+var HALL_TIPO_CFG = {
+  'NC Mayor':             {bg:'#fee2e2',color:'#dc2626'},
+  'NC Menor':             {bg:'#fef3c7',color:'#92400e'},
+  'Observacion':          {bg:'#eff6ff',color:'#1d4ed8'},
+  'Oportunidad de Mejora':{bg:'#f3e8ff',color:'#7c3aed'},
+  'Buena Practica':       {bg:'#f0fdf4',color:'#15803d'},
+};
+var HALL_EST_CFG = {
+  abierto:   {label:'Abierto',   bg:'#fee2e2',color:'#dc2626'},
+  en_proceso:{label:'En proceso',bg:'#fef3c7',color:'#92400e'},
+  cerrado:   {label:'Cerrado',   bg:'#f0fdf4',color:'#15803d'},
+};
+function audBadge(estado) {
+  var c=AUD_ESTADO_CFG[estado]||{label:estado,bg:'#f3f4f6',color:'#374151',icon:'ti-circle'};
+  return '<span style="font-size:11px;background:'+c.bg+';color:'+c.color+';border-radius:6px;padding:2px 8px;font-weight:600"><i class="ti '+c.icon+'"></i> '+c.label+'</span>';
+}
+function hallBadge(tipo) {
+  var cfg=HALL_TIPO_CFG[tipo]||{bg:'#f3f4f6',color:'#374151'};
+  return '<span style="font-size:10px;background:'+cfg.bg+';color:'+cfg.color+';border-radius:4px;padding:1px 7px;font-weight:600">'+tipo+'</span>';
+}
+function hallEstBadge(estado) {
+  var c=HALL_EST_CFG[estado]||{label:estado,bg:'#f3f4f6',color:'#374151'};
+  return '<span style="font-size:10px;background:'+c.bg+';color:'+c.color+';border-radius:4px;padding:1px 7px">'+c.label+'</span>';
+}
+function tplAuditorias() {
+  var esC=currentUser.rol==='calidad'||currentUser.rol==='admin';
+  var total=DB.auditorias.length;
+  var prog=DB.auditorias.filter(function(a){return a.estado==='programada';}).length;
+  var abiertas=DB.auditorias.filter(function(a){return a.estado==='abierta';}).length;
+  var cerradas=DB.auditorias.filter(function(a){return a.estado==='cerrada';}).length;
+  var hallAb=0;
+  DB.auditorias.forEach(function(a){a.hallazgos.forEach(function(h){if(h.estado!=='cerrado')hallAb++;});});
+  var kpis='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px">'
+    +'<div class="kpi"><div class="kpi-label">Total</div><div class="kpi-val">'+total+'</div></div>'
+    +'<div class="kpi"><div class="kpi-label">Programadas</div><div class="kpi-val" style="color:#1d4ed8">'+prog+'</div></div>'
+    +'<div class="kpi"><div class="kpi-label">Abiertas</div><div class="kpi-val" style="color:#92400e">'+abiertas+'</div></div>'
+    +'<div class="kpi"><div class="kpi-label">Hallazgos abiertos</div><div class="kpi-val" style="color:#dc2626">'+hallAb+'</div></div>'
+    +'</div>';
+  var rows='';
+  DB.auditorias.forEach(function(a){
+    var hAb=a.hallazgos.filter(function(h){return h.estado!=='cerrado';}).length;
+    var hT=a.hallazgos.length;
+    rows+='<tr>'
+      +'<td style="font-weight:700;color:#065f46">'+a.codigo+'</td>'
+      +'<td>'+audBadge(a.estado)+'</td>'
+      +'<td><span style="font-size:11px;background:#f3f4f6;border-radius:4px;padding:2px 7px">'+a.tipo+'</span></td>'
+      +'<td>'+a.area+'</td>'
+      +'<td style="font-size:12px;color:#6b7280">'+a.fecha_prog+'</td>'
+      +'<td style="font-size:12px">'+a.auditor+'</td>'
+      +'<td>'+(hT>0?'<span style="font-size:11px;font-weight:600;color:'+(hAb>0?'#dc2626':'#15803d')+'">'+hAb+'/'+hT+' abiertos</span>':'<span style="font-size:11px;color:#9ca3af">Sin hallazgos</span>')+'</td>'
+      +'<td><div style="display:flex;gap:4px">'
+        +'<button class="btn btn-sm btn-s" onclick="verDetalleAuditoria(\''+a.id+'\')"><i class="ti ti-eye"></i></button>'
+        +(esC?'<button class="btn btn-sm btn-warning" onclick="editarAuditoria(\''+a.id+'\')"><i class="ti ti-edit"></i></button>':'')
+        +(esC?'<button class="btn btn-sm btn-danger" onclick="eliminarAuditoria(\''+a.id+'\')"><i class="ti ti-trash"></i></button>':'')
+      +'</div></td></tr>';
+  });
+  if(!rows) rows='<tr><td colspan="8" style="text-align:center;padding:28px;color:#9ca3af"><i class="ti ti-clipboard-check" style="font-size:28px;display:block;margin-bottom:6px"></i>No hay auditorias registradas</td></tr>';
+  var btnN=esC?'<button class="btn btn-sm btn-p" style="background:#065f46;border-color:#065f46" onclick="abrirNuevaAuditoria()"><i class="ti ti-plus"></i> Nueva Auditoria</button>':'<span class="badge bgr" style="font-size:11px"><i class="ti ti-lock"></i> Solo consulta</span>';
+  return kpis+'<div class="panel"><div class="panel-hdr"><span class="panel-title"><i class="ti ti-clipboard-check" style="color:#065f46"></i> Registro de Auditorias</span>'+btnN+'</div>'
+    +'<div class="search-bar"><input class="search-input" type="text" placeholder="Buscar por codigo, area, auditor..." oninput="filterTbody(\'aud-tbody\',this.value)"></div>'
+    +'<div style="overflow-x:auto"><table style="min-width:680px"><thead><tr>'
+    +'<th style="width:13%">Codigo</th><th style="width:11%">Estado</th><th style="width:10%">Tipo</th>'
+    +'<th style="width:11%">Area</th><th style="width:10%">Fecha prog.</th><th style="width:13%">Auditor</th>'
+    +'<th style="width:14%">Hallazgos</th><th style="width:8%">Acciones</th>'
+    +'</tr></thead><tbody id="aud-tbody">'+rows+'</tbody></table></div></div>';
+}
+function abrirNuevaAuditoria() {
+  document.getElementById('aud-id').value='';
+  document.getElementById('aud-codigo').value='AUD-2026-00'+(DB.auditorias.length+1);
+  document.getElementById('aud-tipo').value='';
+  document.getElementById('aud-area').value='';
+  document.getElementById('aud-estado').value='programada';
+  document.getElementById('aud-fecha-prog').value=new Date().toISOString().split('T')[0];
+  document.getElementById('aud-fecha-real').value='';
+  document.getElementById('aud-auditor').value=currentUser.nombre;
+  document.getElementById('aud-auditado').value='';
+  document.getElementById('aud-alcance').value='';
+  document.getElementById('aud-conclusion').value='';
+  document.getElementById('aud-modal-title').textContent='Nueva Auditoria';
+  openModal('modal-auditoria');
+}
+function editarAuditoria(id) {
+  var a=null; DB.auditorias.forEach(function(x){if(x.id===id)a=x;});
+  if(!a) return;
+  document.getElementById('aud-id').value=id;
+  document.getElementById('aud-codigo').value=a.codigo;
+  document.getElementById('aud-tipo').value=a.tipo;
+  document.getElementById('aud-area').value=a.area;
+  document.getElementById('aud-estado').value=a.estado;
+  document.getElementById('aud-fecha-prog').value=a.fecha_prog;
+  document.getElementById('aud-fecha-real').value=a.fecha_real||'';
+  document.getElementById('aud-auditor').value=a.auditor;
+  document.getElementById('aud-auditado').value=a.auditado;
+  document.getElementById('aud-alcance').value=a.alcance;
+  document.getElementById('aud-conclusion').value=a.conclusion||'';
+  document.getElementById('aud-modal-title').textContent='Editar Auditoria';
+  openModal('modal-auditoria');
+}
+function guardarAuditoria() {
+  var editId=document.getElementById('aud-id').value;
+  var codigo=document.getElementById('aud-codigo').value;
+  var tipo=document.getElementById('aud-tipo').value;
+  var area=document.getElementById('aud-area').value;
+  var estado=document.getElementById('aud-estado').value;
+  var fProg=document.getElementById('aud-fecha-prog').value;
+  var fReal=document.getElementById('aud-fecha-real').value;
+  var auditor=document.getElementById('aud-auditor').value;
+  var auditado=document.getElementById('aud-auditado').value;
+  var alcance=document.getElementById('aud-alcance').value;
+  var concl=document.getElementById('aud-conclusion').value;
+  if(!codigo||!tipo||!area){toast('Complete codigo, tipo y area');return;}
+  if(editId){
+    var a=null; DB.auditorias.forEach(function(x){if(x.id===editId)a=x;});
+    if(a){a.codigo=codigo;a.tipo=tipo;a.area=area;a.estado=estado;a.fecha_prog=fProg;a.fecha_real=fReal;a.auditor=auditor;a.auditado=auditado;a.alcance=alcance;a.conclusion=concl;}
+    toast('Auditoria actualizada.');
+  } else {
+    var newId='aud'+Date.now();
+    DB.auditorias.push({id:newId,codigo:codigo,tipo:tipo,area:area,fecha_prog:fProg,fecha_real:fReal,estado:estado,auditor:auditor,auditado:auditado,alcance:alcance,hallazgos:[],conclusion:concl,creado_por:currentUser.nombre,fecha_creacion:new Date().toISOString().split('T')[0]});
+    addNotif('cert','ti-clipboard-check','#f0fdf4','#065f46','Nueva auditoria '+codigo+' programada para '+area+'. Auditor: '+auditor+'.');
+    toast('Auditoria registrada.');
+  }
+  closeModal('modal-auditoria'); updateBadges(); renderPage('auditorias');
+}
+function eliminarAuditoria(id) {
+  if(!confirm('Eliminar esta auditoria y todos sus hallazgos?')) return;
+  DB.auditorias=DB.auditorias.filter(function(x){return x.id!==id;});
+  toast('Auditoria eliminada.'); renderPage('auditorias');
+}
+function verDetalleAuditoria(id) {
+  var a=null; DB.auditorias.forEach(function(x){if(x.id===id)a=x;});
+  if(!a) return;
+  var esC=currentUser.rol==='calidad'||currentUser.rol==='admin';
+  var hallHtml='';
+  if(a.hallazgos.length===0){
+    hallHtml='<div style="text-align:center;padding:14px 0;color:#9ca3af;font-size:12px"><i class="ti ti-inbox" style="display:block;font-size:22px;margin-bottom:4px"></i>Sin hallazgos</div>';
+  } else {
+    a.hallazgos.forEach(function(h){
+      hallHtml+='<div style="border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;margin-bottom:8px">'
+        +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap">'
+        +hallBadge(h.tipo)+' '+hallEstBadge(h.estado)
+        +(esC?'<button class="btn btn-sm btn-warning" style="margin-left:auto;padding:2px 6px" onclick="editarHallazgo(\''+a.id+'\',\''+h.id+'\')"><i class="ti ti-edit"></i></button>':'')
+        +(esC?'<button class="btn btn-sm btn-danger" style="padding:2px 6px" onclick="eliminarHallazgo(\''+a.id+'\',\''+h.id+'\')"><i class="ti ti-trash"></i></button>':'')
+        +'</div>'
+        +'<div style="font-size:13px;color:#374151;margin-bottom:5px">'+h.descripcion+'</div>'
+        +(h.accion?'<div style="font-size:12px;color:#6b7280"><strong>Accion:</strong> '+h.accion+'</div>':'')
+        +'<div style="font-size:11px;color:#9ca3af;margin-top:4px">'
+        +(h.responsable?'<i class="ti ti-user"></i> '+h.responsable+'  ':'')
+        +(h.fecha_limite?'<i class="ti ti-calendar"></i> Limite: '+h.fecha_limite:'')
+        +'</div></div>';
+    });
+  }
+  document.getElementById('aud-det-title').innerHTML=a.codigo+' - '+a.area
+    +' <button class="btn-icon" onclick="closeModal(\'modal-aud-det\')"><i class="ti ti-x"></i></button>';
+  document.getElementById('aud-det-body').innerHTML=
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'
+    +'<div class="mpa-f"><div class="mpa-l">Estado</div><div class="mpa-v">'+audBadge(a.estado)+'</div></div>'
+    +'<div class="mpa-f"><div class="mpa-l">Tipo</div><div class="mpa-v">'+a.tipo+'</div></div>'
+    +'<div class="mpa-f"><div class="mpa-l">Auditor</div><div class="mpa-v" style="font-size:12px">'+a.auditor+'</div></div>'
+    +'<div class="mpa-f"><div class="mpa-l">Auditado</div><div class="mpa-v" style="font-size:12px">'+a.auditado+'</div></div>'
+    +'<div class="mpa-f"><div class="mpa-l">Fecha programada</div><div class="mpa-v" style="font-size:12px">'+a.fecha_prog+'</div></div>'
+    +'<div class="mpa-f"><div class="mpa-l">Fecha realizacion</div><div class="mpa-v" style="font-size:12px">'+(a.fecha_real||'Sin realizar')+'</div></div>'
+    +'</div>'
+    +(a.alcance?'<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px"><strong>Alcance:</strong><br>'+a.alcance+'</div>':'')
+    +'<div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:8px"><i class="ti ti-alert-triangle"></i> Hallazgos ('+a.hallazgos.length+')</div>'
+    +hallHtml
+    +(a.conclusion?'<div style="background:#f0fdf4;border:1px solid #a7f3d0;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:12px"><strong><i class="ti ti-circle-check"></i> Conclusion:</strong><br>'+a.conclusion+'</div>':'');
+  var btn=document.getElementById('aud-det-add-hall');
+  if(esC){btn.style.display='inline-flex';btn.setAttribute('onclick','abrirNuevoHallazgo(\''+a.id+'\')');}
+  else{btn.style.display='none';}
+  openModal('modal-aud-det');
+}
+function abrirNuevoHallazgo(audId) {
+  document.getElementById('hall-aud-id').value=audId;
+  document.getElementById('hall-id').value='';
+  document.getElementById('hall-tipo').value='';
+  document.getElementById('hall-estado').value='abierto';
+  document.getElementById('hall-desc').value='';
+  document.getElementById('hall-accion').value='';
+  document.getElementById('hall-resp').value='';
+  document.getElementById('hall-fecha').value='';
+  document.getElementById('hall-modal-title').textContent='Agregar Hallazgo';
+  closeModal('modal-aud-det');
+  openModal('modal-hallazgo');
+}
+function editarHallazgo(audId,hallId) {
+  var a=null; DB.auditorias.forEach(function(x){if(x.id===audId)a=x;});
+  var h=null; if(a) a.hallazgos.forEach(function(x){if(x.id===hallId)h=x;});
+  if(!h) return;
+  document.getElementById('hall-aud-id').value=audId;
+  document.getElementById('hall-id').value=hallId;
+  document.getElementById('hall-tipo').value=h.tipo;
+  document.getElementById('hall-estado').value=h.estado;
+  document.getElementById('hall-desc').value=h.descripcion;
+  document.getElementById('hall-accion').value=h.accion||'';
+  document.getElementById('hall-resp').value=h.responsable||'';
+  document.getElementById('hall-fecha').value=h.fecha_limite||'';
+  document.getElementById('hall-modal-title').textContent='Editar Hallazgo';
+  closeModal('modal-aud-det');
+  openModal('modal-hallazgo');
+}
+function guardarHallazgo() {
+  var audId=document.getElementById('hall-aud-id').value;
+  var hallId=document.getElementById('hall-id').value;
+  var tipo=document.getElementById('hall-tipo').value;
+  var estado=document.getElementById('hall-estado').value;
+  var desc=document.getElementById('hall-desc').value;
+  var accion=document.getElementById('hall-accion').value;
+  var resp=document.getElementById('hall-resp').value;
+  var fecha=document.getElementById('hall-fecha').value;
+  if(!tipo||!desc){toast('Complete tipo y descripcion');return;}
+  var a=null; DB.auditorias.forEach(function(x){if(x.id===audId)a=x;});
+  if(!a) return;
+  if(hallId){
+    var h=null; a.hallazgos.forEach(function(x){if(x.id===hallId)h=x;});
+    if(h){h.tipo=tipo;h.estado=estado;h.descripcion=desc;h.accion=accion;h.responsable=resp;h.fecha_limite=fecha;}
+    toast('Hallazgo actualizado.');
+  } else {
+    a.hallazgos.push({id:'h'+Date.now(),tipo:tipo,estado:estado,descripcion:desc,accion:accion,responsable:resp,fecha_limite:fecha});
+    if(tipo==='NC Mayor'||tipo==='NC Menor'){
+      addNotif('cert','ti-alert-triangle','#fee2e2','#dc2626','Hallazgo '+tipo+' en auditoria '+a.codigo+' ('+a.area+'). Responsable: '+(resp||'por asignar')+'.');
+    }
+    toast('Hallazgo agregado.');
+  }
+  closeModal('modal-hallazgo'); updateBadges(); renderPage('auditorias');
+}
+function eliminarHallazgo(audId,hallId) {
+  if(!confirm('Eliminar este hallazgo?')) return;
+  var a=null; DB.auditorias.forEach(function(x){if(x.id===audId)a=x;});
+  if(a) a.hallazgos=a.hallazgos.filter(function(h){return h.id!==hallId;});
+  toast('Hallazgo eliminado.'); closeModal('modal-aud-det'); renderPage('auditorias');
+}
 
 </script>
 
@@ -2394,32 +3273,1006 @@ function registrarRecepcion() {
     <!-- OP ASIGNADA -->
     <div id="recep-modo-op" style="display:none">
       <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#1e40af">
-        <i class="ti ti-info-circle"></i> <strong>Material con OP asignada:</strong> consulta la OP y verifica si Compras adjuntó el certificado MTR.
+        <i class="ti ti-info-circle"></i> <strong>Material con OP asignada:</strong> Solo aparecen las OPs que el área de <strong>Compras</strong> haya registrado. Al confirmar, se notifica a todas las áreas involucradas.
       </div>
+
+      <!-- Selector de OP -->
       <div class="fg"><label>Seleccionar OP *</label>
         <select id="r-op-consulta" onchange="mostrarInfoOP(this.value)">
-          <option value="">Seleccionar OP de Planeación...</option>
+          <option value="">Seleccionar OP registrada por Compras...</option>
         </select>
       </div>
-      <div id="op-info-panel" style="display:none;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin-bottom:10px">
-        <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:8px"><i class="ti ti-clipboard-list"></i> Información de la OP</div>
-        <div id="op-info-content" style="font-size:13px"></div>
+
+      <!-- Panel de info de la OP + datos de compras -->
+      <div id="op-info-panel" style="display:none;margin-bottom:12px">
+        <div id="op-info-content"></div>
       </div>
-      <div class="fg"><label>Adjuntar certificado MTR (PDF)</label>
-        <div class="drag-zone" onclick="document.getElementById('r-file-op').click()">
-          <i class="ti ti-upload" style="font-size:20px;display:block;margin-bottom:3px"></i>
-          <span id="r-fname-op">Clic para subir o arrastrar PDF aquí</span>
-          <input type="file" id="r-file-op" accept=".pdf" style="display:none"
-            onchange="document.getElementById('r-fname-op').textContent=this.files[0]?this.files[0].name:'Sin archivo';document.getElementById('btn-vincular-cert').disabled=!this.files[0]">
+
+      <!-- Campos de recepción (se muestran al seleccionar OP) -->
+      <div id="op-recep-fields" style="display:none">
+        <div style="background:#f0fdf4;border:1px solid #a7f3d0;border-radius:8px;padding:10px 13px;margin-bottom:12px;font-size:12px;color:#065f46">
+          <i class="ti ti-truck-delivery"></i> Completa los datos físicos del material recibido para registrar la entrada al sistema.
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Cantidad recibida *</label><input id="rop-can" type="number" placeholder="50"></div>
+          <div class="fg"><label>Unidad</label><select id="rop-uni"><option>m</option><option>kg</option><option>unid</option><option>pzas</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Colada / Lote</label><input id="rop-col" placeholder="C-2026"></div>
+          <div class="fg"><label>Ubicación *</label><input id="rop-ubi" placeholder="Bodega A - Estante 3"></div>
+        </div>
+        <div class="fg"><label>Observación de recepción</label>
+          <textarea id="rop-obs" placeholder="Estado del material, condiciones de entrega, novedades..." style="min-height:55px"></textarea>
+        </div>
+        <div class="fg"><label>Certificado MTR (PDF) — si no lo adjuntó Compras</label>
+          <div class="drag-zone" onclick="document.getElementById('r-file-op').click()">
+            <i class="ti ti-file-certificate" style="font-size:20px;display:block;margin-bottom:3px;color:#1d4ed8"></i>
+            <span id="r-fname-op">Clic para subir o arrastrar PDF aquí</span>
+            <input type="file" id="r-file-op" accept=".pdf" style="display:none"
+              onchange="document.getElementById('r-fname-op').textContent=this.files[0]?this.files[0].name:'Clic para subir o arrastrar PDF aquí'">
+          </div>
         </div>
       </div>
+
       <div class="form-actions">
-        <button class="btn btn-s" onclick="closeModal('modal-recep')">Cerrar</button>
-        <button id="btn-vincular-cert" class="btn btn-p" disabled onclick="vincularCertOP()"><i class="ti ti-certificate"></i> Vincular Certificado</button>
+        <button class="btn btn-s" onclick="closeModal('modal-recep')">Cancelar</button>
+        <button id="btn-confirmar-recep" class="btn btn-p" style="background:#15803d;border-color:#15803d;display:none" onclick="confirmarRecepcionOP()">
+          <i class="ti ti-truck-delivery"></i> Confirmar recepción
+        </button>
       </div>
     </div>
   </div>
 </div>
+
+
+<!-- MODAL NUEVA / EDITAR AUDITORÍA -->
+<div class="modal-bg" id="modal-auditoria" onclick="if(event.target===this)closeModal('modal-auditoria')">
+  <div class="modal" style="width:580px">
+    <div class="modal-title">
+      <span id="aud-modal-title">Nueva Auditoría</span>
+      <button class="btn-icon" onclick="closeModal('modal-auditoria')"><i class="ti ti-x"></i></button>
+    </div>
+    <input type="hidden" id="aud-id">
+    <div class="form-row">
+      <div class="fg"><label>Código *</label><input id="aud-codigo" placeholder="AUD-2026-004"></div>
+      <div class="fg"><label>Tipo *</label>
+        <select id="aud-tipo">
+          <option value="">Seleccionar...</option>
+          <option>Interna</option>
+          <option>Externa</option>
+          <option>Seguimiento</option>
+          <option>Sorpresa</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Área auditada *</label>
+        <select id="aud-area">
+          <option value="">Seleccionar...</option>
+          <option>Logística</option><option>Planeación</option><option>Producción</option>
+          <option>Calidad</option><option>Compras</option><option>General</option>
+        </select>
+      </div>
+      <div class="fg"><label>Estado</label>
+        <select id="aud-estado">
+          <option value="programada">Programada</option>
+          <option value="abierta">Abierta</option>
+          <option value="cerrada">Cerrada</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Fecha programada</label><input id="aud-fecha-prog" type="date"></div>
+      <div class="fg"><label>Fecha realización</label><input id="aud-fecha-real" type="date"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Auditor</label><input id="aud-auditor" placeholder="Nombre del auditor"></div>
+      <div class="fg"><label>Auditado / Responsable área</label><input id="aud-auditado" placeholder="Nombre del auditado"></div>
+    </div>
+    <div class="fg"><label>Alcance / Objetivo</label>
+      <textarea id="aud-alcance" placeholder="Qué se va a revisar, norma de referencia, procesos involucrados..." style="min-height:65px"></textarea>
+    </div>
+    <div class="fg"><label>Conclusión general</label>
+      <textarea id="aud-conclusion" placeholder="Resultado final de la auditoría..." style="min-height:55px"></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-auditoria')">Cancelar</button>
+      <button class="btn btn-p" style="background:#065f46;border-color:#065f46" onclick="guardarAuditoria()">
+        <i class="ti ti-check"></i> Guardar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL HALLAZGO -->
+<div class="modal-bg" id="modal-hallazgo" onclick="if(event.target===this)closeModal('modal-hallazgo')">
+  <div class="modal" style="width:520px">
+    <div class="modal-title">
+      <span id="hall-modal-title">Agregar Hallazgo</span>
+      <button class="btn-icon" onclick="closeModal('modal-hallazgo')"><i class="ti ti-x"></i></button>
+    </div>
+    <input type="hidden" id="hall-aud-id">
+    <input type="hidden" id="hall-id">
+    <div class="form-row">
+      <div class="fg"><label>Tipo de hallazgo *</label>
+        <select id="hall-tipo">
+          <option value="">Seleccionar...</option>
+          <option>NC Mayor</option>
+          <option>NC Menor</option>
+          <option>Observación</option>
+          <option>Oportunidad de Mejora</option>
+          <option>Buena Práctica</option>
+        </select>
+      </div>
+      <div class="fg"><label>Estado</label>
+        <select id="hall-estado">
+          <option value="abierto">Abierto</option>
+          <option value="en_proceso">En proceso</option>
+          <option value="cerrado">Cerrado</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label>Descripción del hallazgo *</label>
+      <textarea id="hall-desc" placeholder="Qué se encontró, evidencia, referencia a la norma..." style="min-height:70px"></textarea>
+    </div>
+    <div class="fg"><label>Acción correctiva / Plan de mejora</label>
+      <textarea id="hall-accion" placeholder="Qué se va a hacer para corregir o mejorar..." style="min-height:60px"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Responsable</label><input id="hall-resp" placeholder="Quién lo ejecuta"></div>
+      <div class="fg"><label>Fecha límite</label><input id="hall-fecha" type="date"></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-hallazgo')">Cancelar</button>
+      <button class="btn btn-p" style="background:#065f46;border-color:#065f46" onclick="guardarHallazgo()">
+        <i class="ti ti-check"></i> Guardar hallazgo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALLE AUDITORÍA -->
+<div class="modal-bg" id="modal-aud-det" onclick="if(event.target===this)closeModal('modal-aud-det')">
+  <div class="modal" style="width:600px">
+    <div class="modal-title" id="aud-det-title">Detalle Auditoría
+      <button class="btn-icon" onclick="closeModal('modal-aud-det')"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="aud-det-body"></div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-aud-det')">Cerrar</button>
+      <button class="btn btn-p" style="background:#065f46;border-color:#065f46" id="aud-det-add-hall" onclick="">
+        <i class="ti ti-plus"></i> Agregar hallazgo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ASIGNACIÓN MÚLTIPLE DE MÁQUINAS (Planeación) -->
+<div class="modal-bg" id="modal-asig-maq" onclick="if(event.target===this)closeModal('modal-asig-maq')">
+  <div class="modal" style="width:500px">
+    <div class="modal-title">
+      <i class="ti ti-tool"></i> Asignar Máquinas — <span id="asig-op-label"></span>
+      <button class="btn-icon" onclick="closeModal('modal-asig-maq')"><i class="ti ti-x"></i></button>
+    </div>
+    <input type="hidden" id="asig-op-id">
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:7px;padding:9px 13px;margin-bottom:12px;font-size:12px;color:#1e40af">
+      <i class="ti ti-info-circle"></i> Puedes asignar <strong>múltiples máquinas</strong> en secuencia. Marca todas las que procesará esta pieza.
+    </div>
+    <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:6px">Máquinas disponibles:</div>
+    <div id="asig-maq-list" style="max-height:300px;overflow-y:auto"></div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-asig-maq')">Cancelar</button>
+      <button class="btn btn-p" onclick="guardarAsignMaquinas()"><i class="ti ti-check"></i> Guardar asignación</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVA OP (Ingeniería) -->
+<div class="modal-bg" id="modal-ing-op" onclick="if(event.target===this)closeModal('modal-ing-op')">
+  <div class="modal" style="width:620px;max-width:97vw">
+    <div class="modal-title"><i class="ti ti-ruler-2"></i> Nueva Orden de Producción — Ingeniería
+      <button class="btn-icon" onclick="closeModal('modal-ing-op')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>N° OP</label><input id="ing-op-num" placeholder="OP-1005 (auto si vacío)"></div>
+      <div class="fg"><label>Prioridad</label><select id="ing-op-prio"><option value="alta">Alta</option><option value="media">Media</option><option value="baja">Baja</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Inicio estimado</label><input id="ing-op-ini" type="datetime-local"></div>
+      <div class="fg"><label>Fin estimado</label><input id="ing-op-fin" type="datetime-local"></div>
+    </div>
+    <div class="fg"><label>Área / Proceso</label>
+      <select id="ing-op-area">
+        <option value="Tornos">Tornos</option><option value="Corte">Corte</option>
+        <option value="Formado">Formado</option><option value="Soldadura">Soldadura</option>
+        <option value="Acabados">Acabados</option><option value="Mecanizado CNC">Mecanizado CNC</option><option value="Otro">Otro</option>
+      </select>
+    </div>
+    <div class="fg"><label>Materiales requeridos</label>
+      <input type="text" id="ing-mat-search" placeholder="Buscar por código o descripción..." oninput="searchMatIng(this.value)">
+      <div class="sel-mat-list" id="ing-mat-results" style="display:none"></div>
+      <div id="ing-op-items-sel" style="margin-top:7px"></div>
+    </div>
+    <!-- HOJA DE RUTA -->
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px;margin-top:10px">
+      <div style="font-size:13px;font-weight:700;color:#14532d;margin-bottom:10px"><i class="ti ti-file-check"></i> Hoja de Ruta — Inspecciones y Ensayos Requeridos</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="hr-fosfato" style="width:15px;height:15px">
+          <i class="ti ti-droplet" style="color:#1d4ed8"></i> Tratamiento con Fosfato
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="hr-partmag" style="width:15px;height:15px">
+          <i class="ti ti-magnet" style="color:#b45309"></i> Partículas Magnéticas
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="hr-tintas" style="width:15px;height:15px">
+          <i class="ti ti-palette" style="color:#7c3aed"></i> Tintas Penetrantes
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="hr-estructural" style="width:15px;height:15px">
+          <i class="ti ti-building-bridge" style="color:#b91c1c"></i> Prueba Estructural
+        </label>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:6px">Mediciones requeridas (instrumentos):</div>
+      <div id="hr-mediciones-cont"></div>
+      <button class="btn btn-sm btn-s" style="margin-top:6px" onclick="addHRMedicion()"><i class="ti ti-plus"></i> Agregar instrumento</button>
+    </div>
+    <div class="fg" style="margin-top:10px"><label>Observaciones de ingeniería</label>
+      <textarea id="ing-op-obs" placeholder="Especificaciones técnicas, tolerancias, referencias de plano..."></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-ing-op')">Cancelar</button>
+      <button class="btn btn-p" style="background:#065f46;border-color:#065f46" onclick="crearOPIngenieria()"><i class="ti ti-check"></i> Crear OP con Hoja de Ruta</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LIBERACIÓN DE PIEZA (Calidad) -->
+<div class="modal-bg" id="modal-liberacion" onclick="if(event.target===this)closeModal('modal-liberacion')">
+  <div class="modal" style="width:580px;max-width:97vw">
+    <div class="modal-title"><i class="ti ti-clipboard-check" style="color:#065f46"></i> Inspección y Liberación de Pieza — <span id="lib-op-label"></span>
+      <button class="btn-icon" onclick="closeModal('modal-liberacion')"><i class="ti ti-x"></i></button>
+    </div>
+    <input type="hidden" id="lib-op-id">
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:9px 13px;margin-bottom:12px;font-size:12px;color:#14532d">
+      <i class="ti ti-info-circle"></i> Completa la inspección según la hoja de ruta definida por <strong>Ingeniería</strong> y emite el dictamen de liberación.
+    </div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:8px">Ensayos de la hoja de ruta:</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+        <input type="checkbox" id="lib-fosfato" style="width:15px;height:15px">
+        <i class="ti ti-droplet" style="color:#1d4ed8"></i> Fosfato
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+        <input type="checkbox" id="lib-partmag" style="width:15px;height:15px">
+        <i class="ti ti-magnet" style="color:#b45309"></i> Partículas Magnéticas
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+        <input type="checkbox" id="lib-tintas" style="width:15px;height:15px">
+        <i class="ti ti-palette" style="color:#7c3aed"></i> Tintas Penetrantes
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+        <input type="checkbox" id="lib-estructural" style="width:15px;height:15px">
+        <i class="ti ti-building-bridge" style="color:#b91c1c"></i> Prueba Estructural
+      </label>
+    </div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px">Mediciones con instrumentos:</div>
+    <div id="lib-mediciones-list" style="margin-bottom:10px"></div>
+    <div class="fg"><label>Observaciones del inspector</label>
+      <textarea id="lib-obs" placeholder="Observaciones, condiciones de la pieza, desviaciones encontradas..."></textarea>
+    </div>
+    <div class="fg"><label>Dictamen Final</label>
+      <select id="lib-dictamen" style="font-weight:600">
+        <option value="liberar">✅ LIBERAR PIEZA — Aprobada para despacho/siguiente etapa</option>
+        <option value="rechazar">❌ RECHAZAR PIEZA — No cumple especificaciones</option>
+      </select>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-liberacion')">Cancelar</button>
+      <button class="btn btn-p" style="background:#065f46;border-color:#065f46" onclick="guardarLiberacionPieza()"><i class="ti ti-shield-check"></i> Emitir Dictamen</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL VER DICTAMEN DE LIBERACIÓN -->
+<div class="modal-bg" id="modal-det-lib" onclick="if(event.target===this)closeModal('modal-det-lib')">
+  <div class="modal" style="width:520px">
+    <div class="modal-title" id="det-lib-title">Dictamen de Liberación
+      <button class="btn-icon" onclick="closeModal('modal-det-lib')"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="det-lib-body"></div>
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-det-lib')">Cerrar</button>
+      <button class="btn btn-s" onclick="toast('📥 Descargando dictamen PDF...')"><i class="ti ti-download"></i> PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// INGENIERÍA — Template y funciones
+// ============================================================
+let hrMedicionesIng = [];
+let ingOpItems = [];
+
+function tplIngenieria() {
+  if(!currentPerm.pages.includes('ingenieria')) return accessDeniedBlock('Módulo de Ingeniería');
+  const esIng = can('canIngenieria') || can('canCreateOP');
+
+  const rows = DB.ops.map(op => {
+    const hr = op.hoja_ruta;
+    const ensayos = hr ? [
+      hr.fosfato ? '<span class="badge bb" style="font-size:10px"><i class="ti ti-droplet"></i> Fosfato</span>' : '',
+      hr.particulas_magneticas ? '<span class="badge by" style="font-size:10px"><i class="ti ti-magnet"></i> P.Mag.</span>' : '',
+      hr.tintas_penetrantes ? '<span class="badge bpu" style="font-size:10px"><i class="ti ti-palette"></i> Tintas</span>' : '',
+      hr.prueba_estructural ? '<span class="badge br" style="font-size:10px"><i class="ti ti-building-bridge"></i> Estruc.</span>' : '',
+    ].filter(Boolean).join(' ') : '<span style="color:#9ca3af;font-size:11px">Sin hoja de ruta</span>';
+
+    const medCount = hr && hr.mediciones ? hr.mediciones.length : 0;
+    const libBadgeHtml = libBadge(op.liberacion_calidad);
+    return `<tr>
+      <td style="font-weight:700;color:#065f46">${op.numero}</td>
+      <td>${prioBadge(op.prioridad)}</td>
+      <td>${op.area||'—'}</td>
+      <td>${estaOpRetrasada(op)?'<span class="badge br"><i class="ti ti-alert-triangle"></i> Retrasada</span>':opBadge(op.estado)}</td>
+      <td style="font-size:12px">${ensayos}</td>
+      <td style="font-size:12px">${medCount > 0 ? medCount+' instr.' : '<span style="color:#9ca3af">—</span>'}</td>
+      <td>${libBadgeHtml}</td>
+      <td style="font-size:12px;color:#6b7280">${op.fin?op.fin.split('T')[0]:'-'}</td>
+      <td>
+        ${esIng ? `<button class="btn btn-sm btn-warning" onclick="editarHojaRuta('${op.id}')"><i class="ti ti-edit"></i> H. Ruta</button>` : ''}
+        <button class="btn btn-sm btn-s" onclick="showOPDetail('${op.id}')">Ver</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  // KPIs
+  const conHR = DB.ops.filter(o=>o.hoja_ruta).length;
+  const sinHR = DB.ops.length - conHR;
+  const liberadas = DB.ops.filter(o=>o.liberacion_calidad&&o.liberacion_calidad.liberado).length;
+
+  return `
+  <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#14532d">
+    <i class="ti ti-ruler-2"></i> <strong>Módulo de Ingeniería:</strong> Aquí se crean las Órdenes de Producción y se define la <strong>Hoja de Ruta</strong> de cada pieza (ensayos requeridos e instrumentos de medición). Las máquinas son asignadas por <strong>Planeación</strong>.
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+    <div class="kpi"><div class="kpi-label">Total OPs</div><div class="kpi-val">${DB.ops.length}</div></div>
+    <div class="kpi"><div class="kpi-label">Con hoja de ruta</div><div class="kpi-val" style="color:#15803d">${conHR}</div></div>
+    <div class="kpi"><div class="kpi-label">Sin hoja de ruta</div><div class="kpi-val" style="color:#dc2626">${sinHR}</div></div>
+    <div class="kpi"><div class="kpi-label">Liberadas calidad</div><div class="kpi-val" style="color:#1d4ed8">${liberadas}</div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-hdr">
+      <span class="panel-title"><i class="ti ti-ruler-2" style="color:#065f46"></i> Órdenes de Producción — Creadas por Ingeniería</span>
+      ${esIng ? `<button class="btn btn-sm btn-p" style="background:#065f46;border-color:#065f46" onclick="populateIngOPModal();openModal('modal-ing-op')"><i class="ti ti-plus"></i> Nueva OP</button>` : '<span class="badge bgr"><i class="ti ti-lock"></i> Solo lectura</span>'}
+    </div>
+    <div class="search-bar"><input class="search-input" placeholder="Buscar OP, área, ensayo..." oninput="filterTbody('ing-ops-tbody',this.value)"></div>
+    <div style="overflow-x:auto"><table style="min-width:800px">
+      <thead><tr>
+        <th style="width:10%">OP</th><th style="width:9%">Prioridad</th><th style="width:9%">Área</th>
+        <th style="width:11%">Estado</th><th style="width:22%">Ensayos H. Ruta</th>
+        <th style="width:8%">Medic.</th><th style="width:12%">Lib. Calidad</th>
+        <th style="width:9%">ETA</th><th style="width:10%">Acción</th>
+      </tr></thead>
+      <tbody id="ing-ops-tbody">${rows||'<tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">Sin OPs registradas</td></tr>'}</tbody>
+    </table></div>
+  </div>`;
+}
+
+function populateIngOPModal() {
+  hrMedicionesIng = [];
+  ingOpItems = [];
+  document.getElementById('ing-op-num').value = '';
+  document.getElementById('ing-op-prio').value = 'alta';
+  document.getElementById('ing-op-obs').value = '';
+  document.getElementById('hr-fosfato').checked = false;
+  document.getElementById('hr-partmag').checked = false;
+  document.getElementById('hr-tintas').checked = false;
+  document.getElementById('hr-estructural').checked = false;
+  document.getElementById('ing-op-items-sel').innerHTML = '';
+  document.getElementById('ing-mat-results').style.display = 'none';
+  renderHRMediciones();
+}
+
+function renderHRMediciones() {
+  const cont = document.getElementById('hr-mediciones-cont');
+  if(!cont) return;
+  cont.innerHTML = hrMedicionesIng.map((m,i) => `
+    <div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #dcfce7">
+      <i class="ti ti-ruler" style="color:#15803d;font-size:14px"></i>
+      <span style="flex:1;font-size:12px;font-weight:500">${m}</span>
+      <button class="btn-icon" style="width:22px;height:22px;color:#dc2626;border-color:#fca5a5" onclick="hrMedicionesIng.splice(${i},1);renderHRMediciones()"><i class="ti ti-x"></i></button>
+    </div>`).join('') || '<span style="font-size:12px;color:#9ca3af">Sin instrumentos agregados</span>';
+}
+
+function addHRMedicion() {
+  // List of common instruments
+  const instrumentos = [
+    'Micrómetro digital','Calibrador pie de rey (Vernier)','Reloj comparador',
+    'Durómetro Rockwell','Durómetro Brinell','Rugosímetro',
+    'Galga de espesores','Proyector de perfiles','CMM (Máquina medición coordenadas)',
+    'Esclerómetro','Goniómetro','Termómetro infrarrojo',
+    'Detector de partículas magnéticas','Lámpara UV (tintas penetrantes)',
+    'Calibrador de profundidad','Medidor de ultrasonido'
+  ];
+  const sel = prompt(
+    'Selecciona o escribe el instrumento:\n\n' +
+    instrumentos.map((x,i)=>`${i+1}. ${x}`).join('\n') +
+    '\n\n(escribe el número o el nombre)'
+  );
+  if(!sel) return;
+  const num = parseInt(sel);
+  const nombre = (!isNaN(num) && num >= 1 && num <= instrumentos.length)
+    ? instrumentos[num-1]
+    : sel.trim();
+  if(nombre && !hrMedicionesIng.includes(nombre)) {
+    hrMedicionesIng.push(nombre);
+    renderHRMediciones();
+  }
+}
+
+function searchMatIng(q) {
+  const res = document.getElementById('ing-mat-results');
+  if(!q){res.style.display='none';return;}
+  const found = DB.lotes.filter(l=>(l.desc.toLowerCase()+l.codigo.toLowerCase()).includes(q.toLowerCase())&&l.estado==='disponible');
+  res.style.display = 'block';
+  res.innerHTML = found.length
+    ? found.map(l=>`<div class="sel-mat-item" onclick="addIngOpItem('${l.id}','${l.desc}','${l.numero}')"><div><strong>${l.codigo}</strong> — ${l.desc}</div><span class="badge bg">${l.cantidad_disponible} disp.</span></div>`).join('')
+    : '<div style="padding:8px 11px;color:#9ca3af;font-size:12px">Sin coincidencias en stock disponible</div>';
+}
+
+function addIngOpItem(id, desc, loteNum) {
+  if(ingOpItems.find(i=>i.id===id)){toast('Ya fue agregado');return;}
+  ingOpItems.push({id,desc,lote_id:id,lote_num:loteNum,cant:1});
+  document.getElementById('ing-mat-results').style.display='none';
+  document.getElementById('ing-mat-search').value='';
+  renderIngItems();
+}
+
+function renderIngItems() {
+  document.getElementById('ing-op-items-sel').innerHTML = ingOpItems.map((it,i)=>`
+    <div class="sel-item"><span>${it.desc} <span style="font-size:11px;color:#6b7280">(${it.lote_num})</span></span>
+    <div style="display:flex;align-items:center;gap:5px">
+      <input type="number" min="1" value="${it.cant}" onchange="ingOpItems[${i}].cant=+this.value" style="width:55px;padding:3px 6px;border:1px solid #d1d5db;border-radius:5px;font-size:12px">
+      <button class="btn-icon" style="width:24px;height:24px;color:#dc2626;border-color:#fca5a5" onclick="ingOpItems.splice(${i},1);renderIngItems()"><i class="ti ti-x"></i></button>
+    </div></div>`).join('');
+}
+
+function crearOPIngenieria() {
+  if(!can('canCreateOP')){ denied(); closeModal('modal-ing-op'); return; }
+  const num = document.getElementById('ing-op-num').value || `OP-${1000+DB.ops.length+1}`;
+  const prio = document.getElementById('ing-op-prio').value;
+  const area = document.getElementById('ing-op-area').value;
+  const ini = document.getElementById('ing-op-ini').value;
+  const fin = document.getElementById('ing-op-fin').value;
+  const obs = document.getElementById('ing-op-obs').value;
+  if(!ingOpItems.length){ toast('⚠️ Agrega al menos un material'); return; }
+
+  const hojaRuta = {
+    fosfato: document.getElementById('hr-fosfato').checked,
+    particulas_magneticas: document.getElementById('hr-partmag').checked,
+    tintas_penetrantes: document.getElementById('hr-tintas').checked,
+    prueba_estructural: document.getElementById('hr-estructural').checked,
+    mediciones: hrMedicionesIng.map(inst=>({instrumento:inst,resultado:'',aprobado:null})),
+    observaciones: obs,
+  };
+
+  DB.ops.push({
+    id:'op'+Date.now(),
+    numero:num,prioridad:prio,estado:'pendiente',
+    items:ingOpItems.map(i=>({lote_id:i.id,cantidad:i.cant,lote_num:i.lote_num,desc:i.desc})),
+    maquinas:[],maquina:null,maquina_nombre:null,area,
+    inicio:ini,fin,
+    planeador:currentUser.nombre,
+    progreso:0,novedades:[],
+    hoja_ruta:hojaRuta,
+    liberacion_calidad:null,
+  });
+  ingOpItems = [];
+  hrMedicionesIng = [];
+  closeModal('modal-ing-op');
+  addNotif('op','ti-ruler-2','#f0fdf4','#065f46',`OP ${num} creada por Ingeniería (${area}). Pendiente asignación de máquinas.`);
+  toast(`✅ OP ${num} creada. Planeación asignará las máquinas.`);
+  updateBadges();
+  renderPage('ingenieria');
+}
+
+function editarHojaRuta(opId) {
+  if(!can('canIngenieria')&&!can('canCreateOP')){ denied(); return; }
+  const op = DB.ops.find(o=>o.id===opId);
+  if(!op.hoja_ruta) op.hoja_ruta = {fosfato:false,particulas_magneticas:false,tintas_penetrantes:false,prueba_estructural:false,mediciones:[],observaciones:''};
+  const hr = op.hoja_ruta;
+  // Pre-fill
+  document.getElementById('ing-op-num').value = op.numero;
+  document.getElementById('ing-op-prio').value = op.prioridad;
+  document.getElementById('ing-op-area').value = op.area;
+  document.getElementById('ing-op-ini').value = op.inicio||'';
+  document.getElementById('ing-op-fin').value = op.fin||'';
+  document.getElementById('ing-op-obs').value = hr.observaciones||'';
+  document.getElementById('hr-fosfato').checked = !!hr.fosfato;
+  document.getElementById('hr-partmag').checked = !!hr.particulas_magneticas;
+  document.getElementById('hr-tintas').checked = !!hr.tintas_penetrantes;
+  document.getElementById('hr-estructural').checked = !!hr.prueba_estructural;
+  hrMedicionesIng = (hr.mediciones||[]).map(m=>m.instrumento);
+  ingOpItems = op.items.map(it=>({id:it.lote_id,desc:it.desc,lote_id:it.lote_id,lote_num:it.lote_num,cant:it.cantidad}));
+  renderHRMediciones();
+  renderIngItems();
+  openModal('modal-ing-op');
+}
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MÓDULO SOLDADURA — MODALES
+════════════════════════════════════════════════════════════ -->
+
+<!-- MODAL NUEVO REGISTRO SOLDADURA -->
+<div class="modal-bg" id="modal-sol-new" onclick="if(event.target===this)closeModal('modal-sol-new')">
+  <div class="modal" style="width:640px;max-width:97vw;max-height:90vh;overflow-y:auto">
+    <div class="modal-title"><i class="ti ti-flame" style="color:#ea580c"></i> Nuevo Registro de Soldadura
+      <button class="btn-icon" onclick="closeModal('modal-sol-new')"><i class="ti ti-x"></i></button>
+    </div>
+
+    <!-- Sección 1: Identificación -->
+    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:11px 13px;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:#9a3412;margin-bottom:9px"><i class="ti ti-id-badge"></i> Identificación del Registro</div>
+      <div class="form-row">
+        <div class="fg"><label>OP asociada</label>
+          <select id="sol-op-sel" onchange="solAutoFillLote()">
+            <option value="">— Seleccionar OP —</option>
+          </select>
+        </div>
+        <div class="fg"><label>Lote de material</label>
+          <select id="sol-lote-sel">
+            <option value="">— Seleccionar lote —</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Fecha</label><input type="date" id="sol-fecha"></div>
+        <div class="fg"><label>Turno</label>
+          <select id="sol-turno"><option>Mañana</option><option>Tarde</option><option>Noche</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Operario soldador</label><input id="sol-operario" placeholder="Nombre del soldador"></div>
+        <div class="fg"><label>WPS aplicable</label><input id="sol-wps" placeholder="Ej: WPS-003-2026"></div>
+      </div>
+    </div>
+
+    <!-- Sección 2: Tipo y proceso de soldadura -->
+    <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:11px 13px;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:9px"><i class="ti ti-flame"></i> Proceso y Tipo de Soldadura</div>
+      <div class="form-row">
+        <div class="fg"><label>Tipo de soldadura</label>
+          <select id="sol-tipo">
+            <option>SMAW (Electrodo revestido)</option>
+            <option>GMAW (MIG/MAG)</option>
+            <option>GTAW (TIG)</option>
+            <option>FCAW (Alambre tubular)</option>
+            <option>SAW (Arco sumergido)</option>
+            <option>PAW (Plasma)</option>
+            <option>OFW (Oxiacetilénica)</option>
+            <option>RSW (Resistencia por puntos)</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="fg"><label>Proceso ISO / AWS</label>
+          <select id="sol-proceso">
+            <option>111 — SMAW</option>
+            <option>131 — MIG (GMAW)</option>
+            <option>135 — MAG</option>
+            <option>141 — TIG (GTAW)</option>
+            <option>121 — SAW</option>
+            <option>136 — FCAW</option>
+            <option>15 — PAW (Plasma)</option>
+            <option>311 — OFW</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>Consumible / Electrodo / Alambre</label>
+        <input id="sol-consumible" placeholder="Ej: Electrodo E7018 Ø3.2mm / Alambre ER70S-6 Ø1.2mm + Gas Ar75%CO₂25%">
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Norma aplicable</label>
+          <select id="sol-norma">
+            <option>AWS D1.1 — Estructuras de acero</option>
+            <option>AWS D1.2 — Aluminio</option>
+            <option>AWS D1.6 — Acero inoxidable</option>
+            <option>ASME IX — Recipientes a presión</option>
+            <option>ISO 3834 — Requisitos de calidad</option>
+            <option>EN 1090 — Estructuras de acero</option>
+            <option>Otra</option>
+          </select>
+        </div>
+        <div class="fg"><label>Posición de soldadura</label>
+          <select id="sol-posicion">
+            <option>1G — Plana</option>
+            <option>2G — Horizontal</option>
+            <option>3G — Vertical</option>
+            <option>4G — Sobre cabeza</option>
+            <option>1F — Filete plano</option>
+            <option>2F — Filete horizontal</option>
+            <option>3F — Filete vertical</option>
+            <option>6G — Tubería (posición fija)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Temperatura precalentamiento</label>
+          <input id="sol-precal" placeholder="Ej: 150°C / Sin precalentamiento">
+        </div>
+        <div class="fg"><label>Temp. máx. entre pases</label>
+          <input id="sol-interpass" placeholder="Ej: 250°C max.">
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección 3: Fotos -->
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:11px 13px;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:#14532d;margin-bottom:9px"><i class="ti ti-camera"></i> Registro Fotográfico del Lote de Soldadura</div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:8px">
+        Adjunta fotos del cordón, sección transversal, zona HAZ, o cualquier evidencia del proceso. En producción se integraría con la cámara del dispositivo.
+      </div>
+      <div id="sol-fotos-preview" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm btn-s" onclick="simularFoto('frente')"><i class="ti ti-camera"></i> Foto frontal</button>
+        <button class="btn btn-sm btn-s" onclick="simularFoto('perfil')"><i class="ti ti-camera-rotate"></i> Foto lateral</button>
+        <button class="btn btn-sm btn-s" onclick="simularFoto('raiz')"><i class="ti ti-scan"></i> Foto raíz</button>
+        <button class="btn btn-sm btn-s" onclick="simularFoto('macro')"><i class="ti ti-zoom-in"></i> Macrofoto</button>
+      </div>
+      <div style="margin-top:8px">
+        <label style="font-size:12px;font-weight:500;display:block;margin-bottom:4px">O adjuntar imagen desde dispositivo:</label>
+        <input type="file" id="sol-foto-file" accept="image/*" multiple style="font-size:12px" onchange="agregarFotosArchivo(this)">
+      </div>
+    </div>
+
+    <!-- Sección 4: Observaciones y dictamen -->
+    <div class="fg"><label>Observaciones técnicas</label>
+      <textarea id="sol-obs" rows="3" placeholder="Descripción del proceso, condiciones ambientales, anomalías encontradas, acciones correctivas..."></textarea>
+    </div>
+    <div class="fg"><label>Estado del registro</label>
+      <select id="sol-estado">
+        <option value="en_proceso">En proceso</option>
+        <option value="completado">Completado — pendiente inspección calidad</option>
+        <option value="aprobado">Aprobado por calidad</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-sol-new')">Cancelar</button>
+      <button class="btn btn-p" style="background:#c2410c;border-color:#c2410c" onclick="guardarRegistroSoldadura()">
+        <i class="ti ti-device-floppy"></i> Guardar Registro
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALLE REGISTRO SOLDADURA -->
+<div class="modal-bg" id="modal-sol-det" onclick="if(event.target===this)closeModal('modal-sol-det')">
+  <div class="modal" style="width:640px;max-width:97vw;max-height:90vh;overflow-y:auto">
+    <div class="modal-title" id="sol-det-title">Detalle Registro Soldadura
+      <button class="btn-icon" onclick="closeModal('modal-sol-det')"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="sol-det-body"></div>
+    <div class="form-actions" id="sol-det-actions">
+      <button class="btn btn-s" onclick="closeModal('modal-sol-det')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// SOLDADURA — Template y lógica completa
+// ════════════════════════════════════════════════════════════
+
+let solFotosTemp = []; // fotos en el modal actual
+
+const SOL_ESTADO_BADGE = {
+  en_proceso: '<span class="badge by"><i class="ti ti-flame"></i> En proceso</span>',
+  completado:  '<span class="badge bb"><i class="ti ti-clock"></i> Pend. inspección</span>',
+  aprobado:    '<span class="badge bg"><i class="ti ti-shield-check"></i> Aprobado</span>',
+  rechazado:   '<span class="badge br"><i class="ti ti-shield-x"></i> Rechazado</span>',
+};
+
+function tplSoldadura() {
+  if(!currentPerm.pages.includes('soldadura')) return accessDeniedBlock('Módulo de Soldadura');
+
+  const regs = DB.soldadura_registros || [];
+  const esSold = can('canSoldadura');
+
+  // KPIs
+  const total = regs.length;
+  const aprobados = regs.filter(r=>r.estado==='aprobado').length;
+  const enProceso = regs.filter(r=>r.estado==='en_proceso').length;
+  const totalFotos = regs.reduce((acc,r)=>acc+(r.fotos?r.fotos.length:0),0);
+
+  // Tabla registros
+  const rows = regs.map(r => {
+    const fotosBadge = r.fotos && r.fotos.length
+      ? `<span class="badge bb" style="font-size:10px"><i class="ti ti-camera"></i> ${r.fotos.length} foto(s)</span>`
+      : `<span class="badge bgr" style="font-size:10px">Sin fotos</span>`;
+    return `<tr>
+      <td style="font-weight:700;color:#c2410c">${r.codigo}</td>
+      <td style="font-size:12px">${r.fecha}</td>
+      <td style="font-size:12px;font-weight:600">${r.op_num||'—'}</td>
+      <td style="font-size:12px">${r.tipo_soldadura.split(' ')[0]}</td>
+      <td style="font-size:12px;max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.consumible}</td>
+      <td>${fotosBadge}</td>
+      <td>${SOL_ESTADO_BADGE[r.estado]||r.estado}</td>
+      <td>
+        <button class="btn btn-sm btn-s" onclick="verRegistroSoldadura('${r.id}')"><i class="ti ti-eye"></i> Ver</button>
+        ${esSold && r.estado!=='aprobado' ? `<button class="btn btn-sm btn-warning" onclick="agregarFotoRegistro('${r.id}')"><i class="ti ti-camera"></i> Foto</button>` : ''}
+        ${can('canValidateCert') && r.estado==='completado' ? `<button class="btn btn-sm btn-success" onclick="aprobarSoldadura('${r.id}')"><i class="ti ti-check"></i> Aprobar</button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+
+  // Galería global de fotos
+  const todasFotos = regs.flatMap(r=>(r.fotos||[]).map(f=>({...f, reg_codigo:r.codigo, reg_id:r.id, tipo_sol:r.tipo_soldadura})));
+  const galeriaHtml = todasFotos.length
+    ? todasFotos.map(f=>`
+        <div onclick="verRegistroSoldadura('${f.reg_id}')" style="cursor:pointer;border-radius:10px;overflow:hidden;border:1px solid #e5e7eb;box-shadow:0 1px 4px #0001">
+          <!-- Foto simulada como bloque de color con ícono -->
+          <div style="background:${f.color||'#f3f4f6'};height:90px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px">
+            <i class="ti ti-camera" style="font-size:26px;color:#78716c;opacity:0.7"></i>
+            <span style="font-size:10px;color:#78716c">${f.nombre}</span>
+          </div>
+          <div style="padding:6px 8px;background:#fff">
+            <div style="font-size:11px;font-weight:600;color:#374151">${f.reg_codigo}</div>
+            <div style="font-size:10px;color:#9ca3af;margin-top:1px">${f.descripcion}</div>
+          </div>
+        </div>`).join('')
+    : '<span style="color:#9ca3af;font-size:13px">Sin fotografías registradas</span>';
+
+  return `
+  <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#9a3412">
+    <i class="ti ti-flame"></i> <strong>Módulo de Soldadura:</strong> Registra cada proceso de soldadura con su tipo, consumibles, norma WPS aplicable y <strong>evidencia fotográfica</strong> del lote. El área de <strong>Calidad</strong> puede aprobar los registros completados.
+  </div>
+
+  <!-- KPIs -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+    <div class="kpi"><div class="kpi-label">Registros totales</div><div class="kpi-val">${total}</div></div>
+    <div class="kpi"><div class="kpi-label">Aprobados</div><div class="kpi-val" style="color:#15803d">${aprobados}</div></div>
+    <div class="kpi"><div class="kpi-label">En proceso</div><div class="kpi-val" style="color:#c2410c">${enProceso}</div></div>
+    <div class="kpi"><div class="kpi-label">Fotos registradas</div><div class="kpi-val" style="color:#1d4ed8">${totalFotos}</div></div>
+  </div>
+
+  <!-- Tabla de registros -->
+  <div class="panel" style="margin-bottom:14px">
+    <div class="panel-hdr">
+      <span class="panel-title"><i class="ti ti-flame" style="color:#c2410c"></i> Registros de Soldadura</span>
+      ${esSold ? `<button class="btn btn-sm btn-p" style="background:#c2410c;border-color:#c2410c" onclick="abrirNuevoRegistroSoldadura()"><i class="ti ti-plus"></i> Nuevo registro</button>` : ''}
+    </div>
+    <div class="search-bar"><input class="search-input" placeholder="Buscar por OP, tipo, consumible..." oninput="filterTbody('sol-tbody',this.value)"></div>
+    <div style="overflow-x:auto"><table style="min-width:700px">
+      <thead><tr>
+        <th>Código</th><th>Fecha</th><th>OP</th><th>Tipo</th><th style="max-width:130px">Consumible</th><th>Fotos</th><th>Estado</th><th>Acción</th>
+      </tr></thead>
+      <tbody id="sol-tbody">${rows||'<tr><td colspan="8" style="text-align:center;padding:24px;color:#9ca3af">Sin registros de soldadura</td></tr>'}</tbody>
+    </table></div>
+  </div>
+
+  <!-- Galería fotográfica -->
+  <div class="panel">
+    <div class="panel-hdr">
+      <span class="panel-title"><i class="ti ti-camera" style="color:#0369a1"></i> Galería Fotográfica — Evidencias de Proceso</span>
+    </div>
+    <div style="padding:12px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px">
+      ${galeriaHtml}
+    </div>
+    ${todasFotos.length===0?'':
+      `<div style="padding:0 14px 12px;font-size:11px;color:#9ca3af"><i class="ti ti-info-circle"></i> En un entorno de producción las fotos se capturan directamente desde la cámara del dispositivo o se adjuntan desde galería.</div>`}
+  </div>`;
+}
+
+function abrirNuevoRegistroSoldadura() {
+  solFotosTemp = [];
+  // Poblar selects
+  const opSel = document.getElementById('sol-op-sel');
+  opSel.innerHTML = '<option value="">— Seleccionar OP —</option>' +
+    DB.ops.map(o=>`<option value="${o.id}">${o.numero} — ${o.area}</option>`).join('');
+  const loteSel = document.getElementById('sol-lote-sel');
+  loteSel.innerHTML = '<option value="">— Seleccionar lote —</option>' +
+    DB.lotes.filter(l=>l.estado==='disponible'||l.estado==='en_uso').map(l=>`<option value="${l.id}">${l.numero} — ${l.desc}</option>`).join('');
+  // Fecha hoy
+  document.getElementById('sol-fecha').value = new Date().toISOString().split('T')[0];
+  document.getElementById('sol-operario').value = currentUser.nombre;
+  document.getElementById('sol-obs').value = '';
+  document.getElementById('sol-wps').value = '';
+  document.getElementById('sol-fotos-preview').innerHTML = '';
+  renderFotosPreview();
+  openModal('modal-sol-new');
+}
+
+function solAutoFillLote() {
+  const opId = document.getElementById('sol-op-sel').value;
+  if(!opId) return;
+  const op = DB.ops.find(o=>o.id===opId);
+  if(op && op.items && op.items.length) {
+    const primerLote = op.items[0].lote_id;
+    document.getElementById('sol-lote-sel').value = primerLote;
+  }
+}
+
+function simularFoto(tipo) {
+  const colores = {frente:'#fef3c7',perfil:'#dbeafe',raiz:'#fce7f3',macro:'#dcfce7',otro:'#f3f4f6'};
+  const desc = {frente:'Vista frontal del cordón',perfil:'Vista lateral — zona HAZ',raiz:'Raíz del cordón / pase de raíz',macro:'Macrofotografía de sección'};
+  const ts = Date.now();
+  solFotosTemp.push({
+    id:'ft'+ts, nombre:`SOL-foto-${tipo}-${ts}.jpg`,
+    descripcion: desc[tipo]||'Foto de proceso',
+    fecha: new Date().toISOString().split('T')[0],
+    simulada:true, color: colores[tipo]||'#f3f4f6'
+  });
+  renderFotosPreview();
+  toast(`📷 Foto "${tipo}" capturada`);
+}
+
+function agregarFotosArchivo(input) {
+  Array.from(input.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      solFotosTemp.push({
+        id:'ft'+Date.now()+Math.random(),
+        nombre:file.name,
+        descripcion:'Foto adjunta desde dispositivo',
+        fecha:new Date().toISOString().split('T')[0],
+        simulada:false,
+        dataUrl: e.target.result
+      });
+      renderFotosPreview();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderFotosPreview() {
+  const cont = document.getElementById('sol-fotos-preview');
+  if(!cont) return;
+  cont.innerHTML = solFotosTemp.map((f,i)=>`
+    <div style="position:relative;border-radius:8px;overflow:hidden;border:1px solid #d1d5db;width:90px">
+      ${f.dataUrl
+        ? `<img src="${f.dataUrl}" style="width:90px;height:70px;object-fit:cover">`
+        : `<div style="background:${f.color||'#f3f4f6'};width:90px;height:70px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px">
+            <i class="ti ti-camera" style="font-size:20px;color:#78716c"></i>
+            <span style="font-size:9px;color:#78716c;text-align:center;padding:0 3px">${f.nombre.split('-')[2]||'foto'}</span>
+          </div>`}
+      <div style="padding:3px 5px;font-size:10px;color:#374151;background:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${f.descripcion}</div>
+      <button onclick="solFotosTemp.splice(${i},1);renderFotosPreview()" style="position:absolute;top:2px;right:2px;background:#dc2626;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:9px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>`).join('');
+}
+
+function guardarRegistroSoldadura() {
+  if(!can('canSoldadura')){ denied(); return; }
+  const opId = document.getElementById('sol-op-sel').value;
+  const loteId = document.getElementById('sol-lote-sel').value;
+  const op = DB.ops.find(o=>o.id===opId);
+  const lote = DB.lotes.find(l=>l.id===loteId);
+  const codigo = `SOL-2026-${String((DB.soldadura_registros||[]).length+1).padStart(3,'0')}`;
+
+  const reg = {
+    id:'sol'+Date.now(),
+    codigo,
+    fecha: document.getElementById('sol-fecha').value,
+    op_id: opId, op_num: op?op.numero:'—',
+    lote_id: loteId, lote_num: lote?lote.numero:'—',
+    material_base: lote?lote.desc:'—',
+    tipo_soldadura: document.getElementById('sol-tipo').value,
+    proceso: document.getElementById('sol-proceso').value,
+    consumible: document.getElementById('sol-consumible').value,
+    norma: document.getElementById('sol-norma').value,
+    posicion: document.getElementById('sol-posicion').value,
+    precalentamiento: document.getElementById('sol-precal').value||'No especificado',
+    temperatura_interpase: document.getElementById('sol-interpass').value||'No especificado',
+    inspector: currentUser.nombre,
+    wps: document.getElementById('sol-wps').value,
+    operario: document.getElementById('sol-operario').value,
+    turno: document.getElementById('sol-turno').value,
+    observaciones: document.getElementById('sol-obs').value,
+    fotos: [...solFotosTemp],
+    estado: document.getElementById('sol-estado').value,
+    liberado_calidad: false,
+  };
+
+  if(!DB.soldadura_registros) DB.soldadura_registros = [];
+  DB.soldadura_registros.push(reg);
+  solFotosTemp = [];
+  closeModal('modal-sol-new');
+  addNotif('op','ti-flame','#fff7ed','#c2410c',`Registro ${codigo} de soldadura creado — ${reg.tipo_soldadura.split(' ')[0]}. ${reg.fotos.length} foto(s).`);
+  toast(`✅ Registro ${codigo} guardado (${reg.fotos.length} foto(s))`);
+  renderPage('soldadura');
+}
+
+function verRegistroSoldadura(id) {
+  const r = DB.soldadura_registros.find(x=>x.id===id);
+  if(!r) return;
+  document.getElementById('sol-det-title').innerHTML =
+    `<i class="ti ti-flame" style="color:#c2410c"></i> ${r.codigo} — ${r.tipo_soldadura.split(' ')[0]}
+     <button class="btn-icon" onclick="closeModal('modal-sol-det')"><i class="ti ti-x"></i></button>`;
+
+  const fotosHtml = r.fotos && r.fotos.length
+    ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:6px">
+        ${r.fotos.map(f=>`
+          <div style="border-radius:8px;overflow:hidden;border:1px solid #e5e7eb">
+            ${f.dataUrl
+              ? `<img src="${f.dataUrl}" style="width:100%;height:85px;object-fit:cover">`
+              : `<div style="background:${f.color||'#f3f4f6'};height:85px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px">
+                  <i class="ti ti-camera" style="font-size:24px;color:#78716c"></i>
+                  <span style="font-size:10px;color:#78716c;text-align:center;padding:0 5px">${f.nombre}</span>
+                </div>`}
+            <div style="padding:5px 7px;background:#fff;font-size:10px;color:#6b7280">${f.descripcion}</div>
+          </div>`).join('')}
+      </div>`
+    : '<span style="color:#9ca3af;font-size:12px">Sin fotografías adjuntas</span>';
+
+  document.getElementById('sol-det-body').innerHTML = `
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      ${SOL_ESTADO_BADGE[r.estado]||r.estado}
+      ${r.liberado_calidad?'<span class="badge bg"><i class="ti ti-shield-check"></i> Aprobado calidad</span>':''}
+    </div>
+    <div class="mpa-grid" style="margin-bottom:12px">
+      <div class="mpa-f"><div class="mpa-l">OP asociada</div><div class="mpa-v">${r.op_num}</div></div>
+      <div class="mpa-f"><div class="mpa-l">Lote material</div><div class="mpa-v">${r.lote_num}</div></div>
+      <div class="mpa-f"><div class="mpa-l">Material base</div><div class="mpa-v">${r.material_base}</div></div>
+      <div class="mpa-f"><div class="mpa-l">Fecha / Turno</div><div class="mpa-v">${r.fecha} — ${r.turno}</div></div>
+      <div class="mpa-f"><div class="mpa-l">Operario</div><div class="mpa-v">${r.operario}</div></div>
+      <div class="mpa-f"><div class="mpa-l">WPS</div><div class="mpa-v">${r.wps||'—'}</div></div>
+    </div>
+    <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:7px;padding:10px 13px;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:8px"><i class="ti ti-flame"></i> Datos del Proceso</div>
+      <div class="mpa-grid">
+        <div class="mpa-f"><div class="mpa-l">Tipo de soldadura</div><div class="mpa-v">${r.tipo_soldadura}</div></div>
+        <div class="mpa-f"><div class="mpa-l">Proceso ISO/AWS</div><div class="mpa-v">${r.proceso}</div></div>
+        <div class="mpa-f" style="grid-column:1/-1"><div class="mpa-l">Consumible</div><div class="mpa-v">${r.consumible}</div></div>
+        <div class="mpa-f"><div class="mpa-l">Norma</div><div class="mpa-v">${r.norma}</div></div>
+        <div class="mpa-f"><div class="mpa-l">Posición</div><div class="mpa-v">${r.posicion}</div></div>
+        <div class="mpa-f"><div class="mpa-l">Precalentamiento</div><div class="mpa-v">${r.precalentamiento}</div></div>
+        <div class="mpa-f"><div class="mpa-l">Temp. entre pases</div><div class="mpa-v">${r.temperatura_interpase}</div></div>
+      </div>
+    </div>
+    ${r.observaciones?`<div style="background:#f3f4f6;border-radius:7px;padding:9px 12px;margin-bottom:12px;font-size:12px"><strong>Observaciones:</strong> ${r.observaciones}</div>`:''}
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px"><i class="ti ti-camera" style="color:#0369a1"></i> Registro fotográfico (${r.fotos?r.fotos.length:0} foto(s))</div>
+    ${fotosHtml}
+  `;
+
+  let acts = `<button class="btn btn-s" onclick="closeModal('modal-sol-det')">Cerrar</button>`;
+  if(can('canSoldadura') && r.estado!=='aprobado')
+    acts += `<button class="btn btn-warning" onclick="closeModal('modal-sol-det');agregarFotoRegistro('${r.id}')"><i class="ti ti-camera"></i> Agregar foto</button>`;
+  if(can('canValidateCert') && r.estado==='completado')
+    acts += `<button class="btn btn-success" onclick="closeModal('modal-sol-det');aprobarSoldadura('${r.id}')"><i class="ti ti-shield-check"></i> Aprobar para calidad</button>`;
+  document.getElementById('sol-det-actions').innerHTML = acts;
+  openModal('modal-sol-det');
+}
+
+function aprobarSoldadura(id) {
+  const r = DB.soldadura_registros.find(x=>x.id===id);
+  r.estado = 'aprobado';
+  r.liberado_calidad = true;
+  addNotif('op','ti-shield-check','#dcfce7','#15803d',`Registro ${r.codigo} aprobado por Calidad — soldadura ${r.tipo_soldadura.split(' ')[0]}.`);
+  toast(`✅ Registro ${r.codigo} aprobado por Calidad`);
+  renderPage('soldadura');
+}
+
+function agregarFotoRegistro(id) {
+  // Abre el modal de nuevo registro pre-cargado para agregar foto
+  const r = DB.soldadura_registros.find(x=>x.id===id);
+  toast(`📷 Selecciona la foto para ${r.codigo}`);
+  // Simular captura rápida
+  const tipo = ['frente','perfil','raiz','macro'][Math.floor(Math.random()*4)];
+  const colores = ['#fef3c7','#dbeafe','#fce7f3','#dcfce7'];
+  const color = colores[Math.floor(Math.random()*4)];
+  if(!r.fotos) r.fotos = [];
+  r.fotos.push({
+    id:'ft'+Date.now(), nombre:`${r.codigo}-foto${r.fotos.length+1}.jpg`,
+    descripcion:`Foto ${tipo} — agregada por ${currentUser.nombre}`,
+    fecha:new Date().toISOString().split('T')[0], simulada:true, color
+  });
+  addNotif('op','ti-camera','#eff6ff','#1d4ed8',`Foto agregada al registro ${r.codigo} por ${currentUser.nombre}.`);
+  toast(`📸 Foto agregada a ${r.codigo} (total: ${r.fotos.length})`);
+  renderPage('soldadura');
+}
+</script>
 
 </body>
 </html>
